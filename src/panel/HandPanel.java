@@ -73,12 +73,17 @@ public class HandPanel extends JPanel {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     System.out.println(game.getPlayer().getHand().get(ii).getName() + "을/를 소환합니다");
-                                    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
+                                //    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
                                     //summon.removeAll();
-                                    summon.invalidate();
-                                    summon.repaint();
-                                    summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
-                                    summon.validate();
+                                 //   summon.invalidate();
+                                 //   summon.repaint();
+                                 //   summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
+                                 //   summon.validate();
+
+                              game.getDfp().getCenter().setCard(preview,1);
+                              remove(preview);
+                        //      repaint();
+                              validate();
                                 }
                             });
                             m2.addActionListener(new ActionListener() {
