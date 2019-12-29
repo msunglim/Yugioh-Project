@@ -24,6 +24,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
@@ -64,7 +65,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1577132370889</updated>
-      <workItem from="1577132374353" duration="108082000" />
+      <workItem from="1577132374353" duration="108181000" />
+      <workItem from="1577600406276" duration="6527000" />
     </task>
     <servers />
   </component>

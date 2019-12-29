@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class DuelField extends JPanel {
 
+    private PlayZonePanel center;
     public DuelField(Game game) {
 
         //  gameField = new JPanel();
@@ -24,7 +25,7 @@ public class DuelField extends JPanel {
         add(west, BorderLayout.WEST);
 
 
-        PlayZonePanel center = new PlayZonePanel(game);
+        center = new PlayZonePanel(game);
         center.setBorder(BorderFactory.createLineBorder(Color.lightGray));
         add(center, BorderLayout.CENTER);
 
@@ -40,6 +41,10 @@ public class DuelField extends JPanel {
         add(north, BorderLayout.NORTH);
 
         // add(gameField);
+    }
+
+    public PlayZonePanel getCenter(){
+        return center;
     }
 
 
