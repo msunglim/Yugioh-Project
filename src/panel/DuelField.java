@@ -8,6 +8,7 @@ import java.awt.*;
 public class DuelField extends JPanel {
 
     private PlayZonePanel center;
+    private JPanel west;
     public DuelField(Game game) {
 
         //  gameField = new JPanel();
@@ -18,7 +19,7 @@ public class DuelField extends JPanel {
 
         add(hp, BorderLayout.SOUTH);
 
-        JPanel west = new JPanel();
+         west = new JPanel();
 
         west.setBorder(BorderFactory.createLineBorder(Color.darkGray));
         west.add(game.getPlayer().getDeck()[0].getCardImage());
@@ -47,6 +48,18 @@ public class DuelField extends JPanel {
         return center;
     }
 
+    public void addAtWest(JPanel cardImage){
+      //  JPanel useMe = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.WEST);
+        //JPanel useMe =  (JPanel)(((BorderLayout)DuelField.getGameField().getLayout()).getLayoutComponent(BorderLayout.WEST));
+
+        //borderLayout을 쓰는 Panel의 west size acess하기...
+//                    JPanel useMe = (JPanel)(((BorderLayout)parent.getLayout()).getLayoutComponent(BorderLayout.WEST));
+        west.removeAll();
+        west.invalidate();
+        west.repaint();
+        west.add(cardImage);
+        west.validate();
+    }
 
 
 }

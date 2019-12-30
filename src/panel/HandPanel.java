@@ -1,5 +1,6 @@
 package panel;
 
+import Cards.Card;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import main.Game;
 
@@ -30,7 +31,10 @@ public class HandPanel extends JPanel {
         for (int i = 0; i < game.getPlayer().getHandSize(); i++) {
             //       System.out.println("패의 카드:"+game.getPlayer().getHand());
             JPanel preview = game.getPlayer().getHand().get(i).getCardPreviewImage();
+            JPanel cardBack = game.getPlayer().getHand().get(i).getCardBack();
+
             final int ii = i;
+            Card card = game.getPlayer().getHand().get(ii);
             preview.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -39,16 +43,19 @@ public class HandPanel extends JPanel {
                     // JPanel parent =  (JPanel)game.getJf().getContentPane();
 
 
-                    JPanel useMe = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.WEST);
-                    //JPanel useMe =  (JPanel)(((BorderLayout)DuelField.getGameField().getLayout()).getLayoutComponent(BorderLayout.WEST));
 
-                    //borderLayout을 쓰는 Panel의 west size acess하기...
-//                    JPanel useMe = (JPanel)(((BorderLayout)parent.getLayout()).getLayoutComponent(BorderLayout.WEST));
-                    useMe.removeAll();
-                    useMe.invalidate();
-                    useMe.repaint();
-                    useMe.add(game.getPlayer().getHand().get(ii).getCardImage());
-                    useMe.validate();
+                    game.getDfp().addAtWest(card.getCardImage());
+                    //이제 addAtWest가 있으니 밑에 코드를 쓸필요가없지만, 좋은 코드라 남겨둡니다.
+//                    JPanel useMe = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.WEST);
+//                    //JPanel useMe =  (JPanel)(((BorderLayout)DuelField.getGameField().getLayout()).getLayoutComponent(BorderLayout.WEST));
+//
+//                    //borderLayout을 쓰는 Panel의 west size acess하기...
+////                    JPanel useMe = (JPanel)(((BorderLayout)parent.getLayout()).getLayoutComponent(BorderLayout.WEST));
+//                    useMe.removeAll();
+//                    useMe.invalidate();
+//                    useMe.repaint();
+//                    useMe.add(game.getPlayer().getHand().get(ii).getCardImage());
+//                    useMe.validate();
 
                 }
             });
@@ -73,23 +80,27 @@ public class HandPanel extends JPanel {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     System.out.println(game.getPlayer().getHand().get(ii).getName() + "을/를 소환합니다");
-                                //    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
+                                    //    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
                                     //summon.removeAll();
-                                 //   summon.invalidate();
-                                 //   summon.repaint();
-                                 //   summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
-                                 //   summon.validate();
+                                    //   summon.invalidate();
+                                    //   summon.repaint();
+                                    //   summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
+                                    //   summon.validate();
 
-                              game.getDfp().getCenter().setCard(preview,1);
-                              remove(preview);
-                        //      repaint();
-                              validate();
+                                    game.getDfp().getCenter().setCard(card, 1, false);
+                                    remove(preview);
+                                    //      repaint();
+                                    validate();
                                 }
                             });
                             m2.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     System.out.println(game.getPlayer().getHand().get(ii).getName() + "을/를 세트합니다");
+                                    game.getDfp().getCenter().setCard(card, 1, true);
+                                    remove(preview);
+                                    //      repaint();
+                                    validate();
                                 }
                             });
                             break;
@@ -105,12 +116,28 @@ public class HandPanel extends JPanel {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     System.out.println(game.getPlayer().getHand().get(ii).getName() + "을/를 발동합니다");
+                                    //    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
+                                    //summon.removeAll();
+                                    //   summon.invalidate();
+                                    //   summon.repaint();
+                                    //   summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
+                                    //   summon.validate();
+
+                                    game.getDfp().getCenter().setCard(card, 0,false);
+                                    remove(preview);
+                                    //      repaint();
+                                    validate();
                                 }
                             });
                             m2.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     System.out.println(game.getPlayer().getHand().get(ii).getName() + "을/를 세트합니다");
+
+                                    game.getDfp().getCenter().setCard(card, 0,true);
+                                    remove(preview);
+                                    //      repaint();
+                                    validate();
                                 }
                             });
                             break;
@@ -127,6 +154,12 @@ public class HandPanel extends JPanel {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     System.out.println(game.getPlayer().getHand().get(ii).getName() + "을/를 세트합니다");
+
+
+                                        game.getDfp().getCenter().setCard(card, 0,true);
+                                        remove(preview);
+                                        //      repaint();
+                                        validate();
                                 }
                             });
                             break;
