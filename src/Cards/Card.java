@@ -11,6 +11,7 @@ public abstract class Card {
     protected JLabel image;
     protected String description;
 
+    private JPanel cardBack;
     private static Card card;
 
     public Card() {
@@ -42,6 +43,8 @@ public abstract class Card {
     //descriptin 넣으면되겠다. 속성이랑도. 지금은 몬스터 작업중이라.
     public static Card getCard(String name, String imgURL, int type, String description) {
 
+
+
         switch (type) {
 
 
@@ -61,6 +64,23 @@ public abstract class Card {
 
         }
 
+    }
+    public JPanel getCardBack(){
+
+        cardBack = new JPanel();
+
+        //.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+       cardBack.setPreferredSize(new Dimension(60, 80));
+       cardBack.setLayout(new BorderLayout());
+        ImageIcon bimg = new ImageIcon("data/images/cards/back.PNG");
+        bimg.setImage(bimg.getImage().getScaledInstance(60,80,Image.SCALE_DEFAULT));
+
+        JLabel back = new JLabel(bimg);
+
+        cardBack.add(back, BorderLayout.CENTER);
+        cardBack.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        return cardBack;
     }
 
     public String toString() {
@@ -94,6 +114,8 @@ public abstract class Card {
         previewImage.setAlignmentX(Component.CENTER_ALIGNMENT);
         previewImage.setAlignmentY(Component.CENTER_ALIGNMENT);
 
+
+
         p.add(Box.createRigidArea(new Dimension(0, 5)));
         p.add(previewImage);
         p.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -105,4 +127,5 @@ public abstract class Card {
     public int getCardType() {
         return cardType;
     }
+
 }
