@@ -13,7 +13,7 @@ public abstract class Card {
 
     private JPanel cardBack;
     private static Card card;
-
+private  ImageIcon bimg;
     public Card() {
         // Card card = new Monster();
     }
@@ -40,6 +40,9 @@ public abstract class Card {
         return card;
     }
 
+    public ImageIcon getBackIcon(){
+        return bimg;
+    }
     //descriptin 넣으면되겠다. 속성이랑도. 지금은 몬스터 작업중이라.
     public static Card getCard(String name, String imgURL, int type, String description) {
 
@@ -72,7 +75,7 @@ public abstract class Card {
         //.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
        cardBack.setPreferredSize(new Dimension(60, 80));
        cardBack.setLayout(new BorderLayout());
-        ImageIcon bimg = new ImageIcon("data/images/cards/back.PNG");
+       bimg = new ImageIcon("data/images/cards/back.PNG");
         bimg.setImage(bimg.getImage().getScaledInstance(60,80,Image.SCALE_DEFAULT));
 
         JLabel back = new JLabel(bimg);
