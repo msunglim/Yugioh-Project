@@ -80,10 +80,11 @@ public class PlayZonePanel extends JPanel {
 //            System.out.println("row좌표는: " + y);
 //            System.out.println("column좌표는: " + numberOfMonsters);
 
-
+            final int location = numberOfMonsters + 1;
             if (!set) {
                 zones[y][numberOfMonsters + 1].add(cardImage);
                 zones[y][numberOfMonsters + 1].validate();
+
 
                 //     cardImage.removeMouseListener(cardImage.getMouseListeners()[1]);
                 JPopupMenu pm = new JPopupMenu("선택창");
@@ -140,8 +141,8 @@ public class PlayZonePanel extends JPanel {
 
                                     cardImage.validate();
 
-                                    zones[y][numberOfMonsters ].add(cardImage);
-                                    zones[y][numberOfMonsters ].validate();
+                                    zones[y][location ].add(cardImage);
+                                    zones[y][location ].validate();
 
 
                                     m1.removeActionListener(m1.getActionListeners()[0]);
@@ -185,8 +186,8 @@ public class PlayZonePanel extends JPanel {
                                     cardImage.validate();
 
 
-                                    zones[y][numberOfMonsters ].add(cardImage);
-                                    zones[y][numberOfMonsters ].validate();
+                                    zones[y][location ].add(cardImage);
+                                    zones[y][location ].validate();
 
 
                                     m1.removeActionListener(m1.getActionListeners()[0]);
@@ -206,6 +207,7 @@ public class PlayZonePanel extends JPanel {
                 //하지만 이렇게 instiantiate를 하면, 이미지 본연을 받아 다시 scale을 하기때문에 1번 만 shirnk되는것을 볼수있다.
 
                 img.setImage(img.getImage().getScaledInstance(80,60,Image.SCALE_DEFAULT));
+
                 JLabel previewImage = new JLabel(null, img, JLabel.CENTER) {
                     @Override
                     protected void paintComponent(Graphics g) {
@@ -234,8 +236,8 @@ public class PlayZonePanel extends JPanel {
                 pm.add(m1);
 
 
-                zones[y][numberOfMonsters + 1].add(cardBack);
-                zones[y][numberOfMonsters + 1].validate();
+                zones[y][location].add(cardBack);
+                zones[y][location].validate();
 
                 cardBack.addMouseListener(new MouseAdapter() {
                     @Override
@@ -257,11 +259,11 @@ public class PlayZonePanel extends JPanel {
                                 //            m1.validate();
 
                                 m1.removeActionListener(m1.getActionListeners()[0]);
-                                zones[y][numberOfMonsters].remove(cardBack);
+                                zones[y][location].remove(cardBack);
 
-                                zones[y][numberOfMonsters].add(cardImage);
+                                zones[y][location].add(cardImage);
 
-                                zones[y][numberOfMonsters].validate();
+                                zones[y][location].validate();
                                 JPopupMenu pm = new JPopupMenu("선택창");
                                 JMenuItem m1 = new JMenuItem("수비표시");
 
@@ -314,8 +316,8 @@ public class PlayZonePanel extends JPanel {
 
                                                     cardImage.validate();
 
-                                                    zones[y][numberOfMonsters ].add(cardImage);
-                                                    zones[y][numberOfMonsters ].validate();
+                                                    zones[y][location ].add(cardImage);
+                                                    zones[y][location ].validate();
 
 
                                                     m1.removeActionListener(m1.getActionListeners()[0]);
@@ -358,8 +360,8 @@ public class PlayZonePanel extends JPanel {
                                                     cardImage.validate();
 
 
-                                                    zones[y][numberOfMonsters ].add(cardImage);
-                                                    zones[y][numberOfMonsters ].validate();
+                                                    zones[y][location ].add(cardImage);
+                                                    zones[y][location ].validate();
 
 
                                                     m1.removeActionListener(m1.getActionListeners()[0]);
@@ -398,6 +400,7 @@ public class PlayZonePanel extends JPanel {
             //     zones[x][y].repaint();
             numberOfMonsters++;
         } else {
+            final int location = numberOfMagicTrap +1 ;
             //그냥 발동이었을때
             if (!set) {
                 //그냥 발동이면, 아무것도 add할필요없잖아?
@@ -408,8 +411,8 @@ public class PlayZonePanel extends JPanel {
             } //이하는 세트일때
             else {
 
-                zones[y][numberOfMagicTrap + 1].add(cardBack);
-                zones[y][numberOfMagicTrap + 1].validate();
+                zones[y][location].add(cardBack);
+                zones[y][location].validate();
 
                 JPopupMenu pm = new JPopupMenu("선택창");
                 JMenuItem m1 = new JMenuItem("발동(리버스)");
@@ -438,11 +441,11 @@ public class PlayZonePanel extends JPanel {
                                 //            m1.validate();
 
                                 m1.removeActionListener(m1.getActionListeners()[0]);
-                                zones[y][numberOfMagicTrap].remove(cardBack);
+                                zones[y][location].remove(cardBack);
 
-                                zones[y][numberOfMagicTrap].add(cardImage);
+                                zones[y][location].add(cardImage);
 
-                                zones[y][numberOfMagicTrap].validate();
+                                zones[y][location].validate();
                             }
 
                         });
