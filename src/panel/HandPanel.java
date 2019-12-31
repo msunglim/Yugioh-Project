@@ -158,7 +158,7 @@ public class HandPanel extends JPanel {
 
                                         game.getDfp().getCenter().setCard(card, 0,true);
                                         remove(preview);
-                                       repaint();
+                                        repaint();
                                         validate();
                                 }
                             });

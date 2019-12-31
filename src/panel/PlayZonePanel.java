@@ -33,48 +33,57 @@ public class PlayZonePanel extends JPanel {
 
                 JPanel zone = new JPanel();
                 //     zone.setLayout(null);
+                JLabel text = new JLabel();
+                text.setPreferredSize(new Dimension(100, 30));
+                text.setHorizontalAlignment(JLabel.CENTER);
                 if (i == 0) {
                     if (j == 0) {
                         zone.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-                        zone.add(new JLabel("융합"));
+                        text.setText("융합");
                     } else if (j == 6) {
                         zone.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                        zone.add(new JLabel("덱" + game.getPlayer().getDeckStack().size()));
+                        text.setText("덱" + game.getPlayer().getDeckStack().size());
                         //남은 덱카드수만큼 add.
 
 
-                        zone.add(((Card) game.getPlayer().getDeckStack().peek()).getCardBack());
 
                     } else {
                         zone.setBorder(BorderFactory.createLineBorder(Color.blue));
-                        zone.add(new JLabel("마/함"));
+                        text.setText("마/함");
+
+
                     }
                 } else {
 
                     if (i == 1 && j == 0) {
                         zone.setBorder(BorderFactory.createLineBorder(Color.green));
-                        zone.add(new JLabel("필드"));
+                        text.setText("필드");
                     } else if (i == 1 && j == 6) {
                         zone.setBorder(BorderFactory.createLineBorder(Color.darkGray));
-                        zone.add(new JLabel("묘지"));
-
+                        text.setText("묘지");
                     } else {
                         zone.setBorder(BorderFactory.createLineBorder(Color.RED));
-                        zone.add(new JLabel("몬스터"));
+                        text.setText("몬스터");
+
                     }
                 }
+                zone.add(text);
                 add(zone, i, j);
                 zones[i][j] = zone;
+
+
             }
         }
 
 
+        zones[0][6].add(((Card) game.getPlayer().getDeckStack().peek()).getCardBack());
     }
 
     public void setCard(Card card, int y, boolean set) {
         JPanel cardImage = card.getCardPreviewImage();
 
         //   JPanel cardBack = card.getCardPreviewImage();
+        //좀 추잡한 method지만 상황마다 해야할게 다다르니, 저렇게 그냥 중복되는거있어도 세세한게달라 저렇게한점 양해하자..
         JPanel cardBack = card.getCardBack();
         if (y == 1) {
 //            System.out.println("row좌표는: " + y);
@@ -112,15 +121,15 @@ public class PlayZonePanel extends JPanel {
                                     //            m1.validate();
 
 
-                                    ImageIcon img =  new ImageIcon(card.getIcon().getImage());
+                                    ImageIcon img = new ImageIcon(card.getIcon().getImage());
 
-                                    img.setImage(img.getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT)); //아마 여기서 ㅇㅈㄹ하기때문에 이미지가 shrink 되는거같다.
+                                    img.setImage(img.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)); //아마 여기서 ㅇㅈㄹ하기때문에 이미지가 shrink 되는거같다.
                                     JLabel previewImage = new JLabel(null, img, JLabel.CENTER) {
                                         @Override
                                         protected void paintComponent(Graphics g) {
                                             super.paintComponent(g);
                                             Graphics2D g2 = (Graphics2D) g;
-                                            g2.rotate(Math.PI/2f, img.getIconWidth() / 2, img.getIconHeight() / 2);
+                                            g2.rotate(Math.PI / 2f, img.getIconWidth() / 2, img.getIconHeight() / 2);
                                             g2.drawImage(img.getImage(), 0, 0, null);
                                         }
                                     };
@@ -128,21 +137,21 @@ public class PlayZonePanel extends JPanel {
                                     previewImage.setAlignmentX(0.75f);
                                     previewImage.setAlignmentY(Component.CENTER_ALIGNMENT);
 
-                                 //초강수 삼총사
+                                    //초강수 삼총사
                                     cardImage.removeAll();
                                     cardImage.revalidate();
                                     cardImage.repaint();
 
-                                    cardImage.setPreferredSize(new Dimension(80,60));
+                                    cardImage.setPreferredSize(new Dimension(80, 60));
 
-                                    cardImage.add(Box.createRigidArea(new Dimension(0,4 )));
+                                    cardImage.add(Box.createRigidArea(new Dimension(0, 4)));
 
                                     cardImage.add(previewImage);
 
                                     cardImage.validate();
 
-                                    zones[y][location ].add(cardImage);
-                                    zones[y][location ].validate();
+                                    zones[y][location].add(cardImage);
+                                    zones[y][location].validate();
 
 
                                     m1.removeActionListener(m1.getActionListeners()[0]);
@@ -158,11 +167,11 @@ public class PlayZonePanel extends JPanel {
                                     //             m1.validate();
 
 
-                                    ImageIcon img =  new ImageIcon(card.getIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
+                                    ImageIcon img = new ImageIcon(card.getIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
                                     //image의 quality 를 2번 scaledInstance하는것과같고, 그 여파로 west에 image와 preview의 image가 전부 doomed 되는것을 볼수있다.
                                     //하지만 이렇게 instiantiate를 하면, 이미지 본연을 받아 다시 scale을 하기때문에 1번 만 shirnk되는것을 볼수있다.
 
-                                    img.setImage(img.getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
+                                    img.setImage(img.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
                                     JLabel previewImage = new JLabel(null, img, JLabel.CENTER) {
                                         @Override
                                         protected void paintComponent(Graphics g) {
@@ -177,7 +186,7 @@ public class PlayZonePanel extends JPanel {
                                     previewImage.setAlignmentY(Component.CENTER_ALIGNMENT);
 
 
-                                    cardImage.setPreferredSize(new Dimension(60,80));
+                                    cardImage.setPreferredSize(new Dimension(60, 80));
                                     cardImage.removeAll();
                                     cardImage.add(Box.createRigidArea(new Dimension(0, 5)));
 
@@ -186,8 +195,8 @@ public class PlayZonePanel extends JPanel {
                                     cardImage.validate();
 
 
-                                    zones[y][location ].add(cardImage);
-                                    zones[y][location ].validate();
+                                    zones[y][location].add(cardImage);
+                                    zones[y][location].validate();
 
 
                                     m1.removeActionListener(m1.getActionListeners()[0]);
@@ -202,27 +211,27 @@ public class PlayZonePanel extends JPanel {
 
                 });
             } else {//세트할시.
-                ImageIcon img =  new ImageIcon(card.getBackIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
+                ImageIcon img = new ImageIcon(card.getBackIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
                 //image의 quality 를 2번 scaledInstance하는것과같고, 그 여파로 west에 image와 preview의 image가 전부 doomed 되는것을 볼수있다.
                 //하지만 이렇게 instiantiate를 하면, 이미지 본연을 받아 다시 scale을 하기때문에 1번 만 shirnk되는것을 볼수있다.
 
-                img.setImage(img.getImage().getScaledInstance(80,60,Image.SCALE_DEFAULT));
+                img.setImage(img.getImage().getScaledInstance(80, 60, Image.SCALE_DEFAULT));
 
                 JLabel previewImage = new JLabel(null, img, JLabel.CENTER) {
                     @Override
                     protected void paintComponent(Graphics g) {
                         super.paintComponent(g);
                         Graphics2D g2 = (Graphics2D) g;
-                        g2.rotate(Math.PI/2f, img.getIconWidth() / 2, img.getIconHeight() / 2);
-           //             g2.drawImage(img.getImage(), 0, 0, null); 이거있음 중복되는경향있다..
+                        g2.rotate(Math.PI / 2f, img.getIconWidth() / 2, img.getIconHeight() / 2);
+                        //             g2.drawImage(img.getImage(), 0, 0, null); 이거있음 중복되는경향있다..
                     }
                 };
 
-        //        previewImage.setAlignmentX(Component.CENTER_ALIGNMENT);
-          //      previewImage.setAlignmentY(Component.CENTER_ALIGNMENT);
+                //        previewImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+                //      previewImage.setAlignmentY(Component.CENTER_ALIGNMENT);
 
 
-                cardBack.setPreferredSize(new Dimension(80,60));
+                cardBack.setPreferredSize(new Dimension(80, 60));
                 cardBack.removeAll();
                 cardImage.add(Box.createRigidArea(new Dimension(0, 5)));
 
@@ -254,7 +263,7 @@ public class PlayZonePanel extends JPanel {
                             @Override
                             public void actionPerformed(ActionEvent e) {
 
-                                System.out.println("반전소환되었따");
+                                System.out.println("반전소환되었다");
                                 //카드덱지우고 카드이미지ㄴ허기
                                 //            m1.validate();
 
@@ -287,15 +296,15 @@ public class PlayZonePanel extends JPanel {
                                                     m1.setText("공격표시");
                                                     //            m1.validate();
 
-                                                    ImageIcon img =  new ImageIcon(card.getIcon().getImage());
+                                                    ImageIcon img = new ImageIcon(card.getIcon().getImage());
 
-                                                    img.setImage(img.getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT)); //아마 여기서 ㅇㅈㄹ하기때문에 이미지가 shrink 되는거같다.
+                                                    img.setImage(img.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)); //아마 여기서 ㅇㅈㄹ하기때문에 이미지가 shrink 되는거같다.
                                                     JLabel previewImage = new JLabel(null, img, JLabel.CENTER) {
                                                         @Override
                                                         protected void paintComponent(Graphics g) {
                                                             super.paintComponent(g);
                                                             Graphics2D g2 = (Graphics2D) g;
-                                                            g2.rotate(Math.PI/2f, img.getIconWidth() / 2, img.getIconHeight() / 2);
+                                                            g2.rotate(Math.PI / 2f, img.getIconWidth() / 2, img.getIconHeight() / 2);
                                                             g2.drawImage(img.getImage(), 0, 0, null);
                                                         }
                                                     };
@@ -308,16 +317,16 @@ public class PlayZonePanel extends JPanel {
                                                     cardImage.revalidate();
                                                     cardImage.repaint();
 
-                                                    cardImage.setPreferredSize(new Dimension(80,60));
+                                                    cardImage.setPreferredSize(new Dimension(80, 60));
 
-                                                    cardImage.add(Box.createRigidArea(new Dimension(0,4 )));
+                                                    cardImage.add(Box.createRigidArea(new Dimension(0, 4)));
 
                                                     cardImage.add(previewImage);
 
                                                     cardImage.validate();
 
-                                                    zones[y][location ].add(cardImage);
-                                                    zones[y][location ].validate();
+                                                    zones[y][location].add(cardImage);
+                                                    zones[y][location].validate();
 
 
                                                     m1.removeActionListener(m1.getActionListeners()[0]);
@@ -332,11 +341,11 @@ public class PlayZonePanel extends JPanel {
                                                     m1.setText("수비표시");
                                                     //             m1.validate();
 
-                                                    ImageIcon img =  new ImageIcon(card.getIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
+                                                    ImageIcon img = new ImageIcon(card.getIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
                                                     //image의 quality 를 2번 scaledInstance하는것과같고, 그 여파로 west에 image와 preview의 image가 전부 doomed 되는것을 볼수있다.
                                                     //하지만 이렇게 instiantiate를 하면, 이미지 본연을 받아 다시 scale을 하기때문에 1번 만 shirnk되는것을 볼수있다.
 
-                                                    img.setImage(img.getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
+                                                    img.setImage(img.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
                                                     JLabel previewImage = new JLabel(null, img, JLabel.CENTER) {
                                                         @Override
                                                         protected void paintComponent(Graphics g) {
@@ -351,17 +360,15 @@ public class PlayZonePanel extends JPanel {
                                                     previewImage.setAlignmentY(Component.CENTER_ALIGNMENT);
 
 
-                                                    cardImage.setPreferredSize(new Dimension(60,80));
+                                                    cardImage.setPreferredSize(new Dimension(60, 80));
                                                     cardImage.removeAll();
                                                     cardImage.add(Box.createRigidArea(new Dimension(0, 5)));
-
                                                     cardImage.add(previewImage);
-
                                                     cardImage.validate();
 
 
-                                                    zones[y][location ].add(cardImage);
-                                                    zones[y][location ].validate();
+                                                    zones[y][location].add(cardImage);
+                                                    zones[y][location].validate();
 
 
                                                     m1.removeActionListener(m1.getActionListeners()[0]);
@@ -400,12 +407,12 @@ public class PlayZonePanel extends JPanel {
             //     zones[x][y].repaint();
             numberOfMonsters++;
         } else {
-            final int location = numberOfMagicTrap +1 ;
+            final int location = numberOfMagicTrap + 1;
             //그냥 발동이었을때
             if (!set) {
                 //그냥 발동이면, 아무것도 add할필요없잖아?
-                zones[y][numberOfMagicTrap + 1].add(cardImage);
-                zones[y][numberOfMagicTrap + 1].validate();
+                zones[y][location].add(cardImage);
+                zones[y][location].validate();
 
                 //    cardImage.removeMouseListener(cardImage.getMouseListeners()[1]); 이제 새로운 cardImage기 때문에 preview와 연관이없다.
             } //이하는 세트일때
@@ -484,4 +491,5 @@ public class PlayZonePanel extends JPanel {
             }
         });
     }
+
 }
