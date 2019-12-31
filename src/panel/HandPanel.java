@@ -17,10 +17,21 @@ public class HandPanel extends JPanel {
 
     private Game game;
     private Player player;
+       private Player enemy;
 
-    public HandPanel(Game game, Player player) {
+    public HandPanel(Player enemy) {
+        this.enemy = enemy;
+        for (int i = 0; i < enemy.getHandSize(); i++) {
+            JPanel cardBack = enemy.getHand().get(i).getCardBack();
+            add(cardBack);
+        }
+
+    }
+
+    public HandPanel(Game game, Player player, Player enemy) {
         this.game = game;
         this.player = player;
+        this.enemy = enemy;
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(500, 100));
         setBorder(BorderFactory.createLineBorder(Color.black));
@@ -33,11 +44,14 @@ public class HandPanel extends JPanel {
 //        west.validate();
         for (int i = 0; i < player.getHandSize(); i++) {
             //       System.out.println("패의 카드:"+game.getPlayer().getHand());
-            JPanel preview =  player.getHand().get(i).getCardPreviewImage();
-            JPanel cardBack =  player.getHand().get(i).getCardBack();
-            if(player.equals(game.getPlayer())) {
+            JPanel preview = player.getHand().get(i).getCardPreviewImage();
+
+
+            //      System.out.println("너냐?"+ game.getDfp().getPlayer());
+            //      if (player.equals(
+            //             game.getDfp().getPlayer())) {
             final int ii = i;
-            Card card =  player.getHand().get(ii);
+            Card card = player.getHand().get(ii);
             preview.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -46,7 +60,7 @@ public class HandPanel extends JPanel {
                     // JPanel parent =  (JPanel)game.getJf().getContentPane();
 
 
-                    game.getDfp().addAtWest(card.getCardImage());
+                    player.getDfp().addAtWest(card.getCardImage());
                     //이제 addAtWest가 있으니 밑에 코드를 쓸필요가없지만, 좋은 코드라 남겨둡니다.
 //                    JPanel useMe = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.WEST);
 //                    //JPanel useMe =  (JPanel)(((BorderLayout)DuelField.getGameField().getLayout()).getLayoutComponent(BorderLayout.WEST));
@@ -68,7 +82,7 @@ public class HandPanel extends JPanel {
                     // System.out.println("두둥탁!");
                     //   System.out.println("카드타입을알수있나요?" + game.getPlayer().getDeck()[ii].getCardType());
                     JMenuItem m1, m2;
-                    switch ( player.getHand().get(ii).getCardType()) {
+                    switch (player.getHand().get(ii).getCardType()) {
                         case 0:
                             JPopupMenu pm = new JPopupMenu("선택창");
                             m1 = new JMenuItem("소환");
@@ -81,7 +95,7 @@ public class HandPanel extends JPanel {
                             m1.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    System.out.println( player.getHand().get(ii).getName() + "을/를 소환합니다");
+                                    System.out.println(player.getHand().get(ii).getName() + "을/를 소환합니다");
                                     //    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
                                     //summon.removeAll();
                                     //   summon.invalidate();
@@ -89,7 +103,8 @@ public class HandPanel extends JPanel {
                                     //   summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
                                     //   summon.validate();
 
-                                    game.getDfp().getCenter().setCard(card, 1, false);
+                                   player.getDfp().getCenter().setCard(card, 1, false);
+                                    enemy.getDfp().getCenter().updateEnemyField(card, 0, false);
                                     remove(preview);
                                     repaint();
                                     validate();
@@ -98,8 +113,10 @@ public class HandPanel extends JPanel {
                             m2.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    System.out.println( player.getHand().get(ii).getName() + "을/를 세트합니다");
-                                    game.getDfp().getCenter().setCard(card, 1, true);
+                                    System.out.println(player.getHand().get(ii).getName() + "을/를 세트합니다");
+                                    player.getDfp().getCenter().setCard(card, 1, true);
+                                //    enemy.getDfp().getCenter().setCard(card, 0, true);
+                                    enemy.getDfp().getCenter().updateEnemyField(card, 0, true);
                                     remove(preview);
                                     repaint();
                                     validate();
@@ -117,7 +134,7 @@ public class HandPanel extends JPanel {
                             m1.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    System.out.println( player.getHand().get(ii).getName() + "을/를 발동합니다");
+                                    System.out.println(player.getHand().get(ii).getName() + "을/를 발동합니다");
                                     //    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
                                     //summon.removeAll();
                                     //   summon.invalidate();
@@ -125,8 +142,9 @@ public class HandPanel extends JPanel {
                                     //   summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
                                     //   summon.validate();
 
-                                    game.getDfp().getCenter().setCard(card, 0, false);
-                                    remove(preview);
+                                    player.getDfp().getCenter().setCard(card, 0, false);
+                                    enemy.getDfp().getCenter().updateEnemyField(card, 1, false);
+                                   remove(preview);
                                     repaint();
                                     validate();
                                 }
@@ -134,9 +152,10 @@ public class HandPanel extends JPanel {
                             m2.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    System.out.println( player.getHand().get(ii).getName() + "을/를 세트합니다");
+                                    System.out.println(player.getHand().get(ii).getName() + "을/를 세트합니다");
 
-                                    game.getDfp().getCenter().setCard(card, 0, true);
+                                    player.getDfp().getCenter().setCard(card, 0, true);
+                                    enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
                                     remove(preview);
                                     repaint();
                                     validate();
@@ -155,10 +174,11 @@ public class HandPanel extends JPanel {
                             m2.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    System.out.println( player.getHand().get(ii).getName() + "을/를 세트합니다");
+                                    System.out.println(player.getHand().get(ii).getName() + "을/를 세트합니다");
 
 
-                                    game.getDfp().getCenter().setCard(card, 0, true);
+                                    player.getDfp().getCenter().setCard(card, 0, true);
+                                    enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
                                     remove(preview);
                                     repaint();
                                     validate();
@@ -178,11 +198,12 @@ public class HandPanel extends JPanel {
                 }
             });
 
-                add(preview);
-            }
-            else{
-                add(cardBack);
-            }
+            add(preview);
+            //     } else {
+            //        add(cardBack);
+            //     }
         }
     }
+
+
 }

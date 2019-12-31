@@ -16,6 +16,8 @@ import characters.Character;
 
 public class Game {
     private JFrame jf;
+    private JFrame jf2;
+
     private WelcomePanel wp;
     private PlayerCreationPanel pcp;
     private Player player;
@@ -38,7 +40,7 @@ public class Game {
         jf = new JFrame();
         showWelcomePanel();
 
-        jf.setSize(new Dimension(1280, 720));
+        jf.setPreferredSize(new Dimension(1280, 820));
         jf.setVisible(true);
         jf.pack();//이것은 알아서 resize를 해준다.
         jf.setLocationRelativeTo(null); //이것은 창을 모니터 가운데에 띄우게해준다.
@@ -81,7 +83,8 @@ public class Game {
         player2 = new Player(character2);
         player2.shuffleDeck();
         player2.gameStart();
-        dfp = new DuelField(this);
+        dfp = new DuelField(this, player, player2);
+        player.setDfp(dfp);
         jf.setContentPane(dfp);
 
 //
@@ -94,16 +97,22 @@ public class Game {
 //        }
         jf.validate();
 
-//        DuelField dfp2 = new DuelField(this);
-//        JFrame jf2 = new JFrame();
-//        jf2.setTitle("복제품");
-//        jf2.setSize(new Dimension(1280, 720));
-//        jf2.setVisible(true);
-//        jf2.pack();//이것은 알아서 resize를 해준다.
-//        jf2.setLocationRelativeTo(null); //이것은 창을 모니터 가운데에 띄우게해준다.
-//        jf2.setContentPane(dfp2);
-//        jf2.validate();
 
+        //상대방진영추가.
+        DuelField dfp2 = new DuelField(this, player2, player);
+        player2.setDfp(dfp2);
+         jf2 = new JFrame();
+        jf2.setTitle("복제품");
+        jf2.setPreferredSize(new Dimension(1280, 820));
+
+        jf2.setContentPane(dfp2);
+        jf2.dispose();
+        jf2.validate();
+
+        //이밑에 3놈이 밑에있어야 위에서 다 confirm된것을 보여준다.
+        jf2.setVisible(true);
+        jf2.pack();//이것은 알아서 resize를 해준다.
+        jf2.setLocationRelativeTo(null); //이것은 창을 모니터 가운데에 띄우게해준다.
 
     }
 

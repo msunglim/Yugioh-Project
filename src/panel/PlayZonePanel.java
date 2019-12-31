@@ -4,6 +4,7 @@ import Cards.Card;
 import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import main.Game;
 import org.w3c.dom.ls.LSOutput;
+import support.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,11 +23,21 @@ public class PlayZonePanel extends JPanel {
     private int numberOfMonsters;
     private int numberOfMagicTrap;
     // private JLabel cardBack;
+    private Player player;
+    private Player enemy;
 
-    public PlayZonePanel(Game game) {
+    private int numberOfMonstersOfEnemy;
+    private int numberOfMagicTrapOfEnemy;
+    public PlayZonePanel(Game game, Player player, Player enemy) {
         this.game = game;
+        this.player = player;
+        this.enemy = enemy;
         numberOfMonsters = 0;
         numberOfMagicTrap = 0;
+
+        numberOfMonstersOfEnemy =0;
+        numberOfMagicTrapOfEnemy = 0;
+
         setLayout(new BorderLayout());
 
         JPanel myField = new JPanel();
@@ -66,7 +77,7 @@ public class PlayZonePanel extends JPanel {
                     } else if (j == 6) {
                         zone.setBorder(BorderFactory.createLineBorder(Color.GRAY));
                         enemyZone.setBorder(BorderFactory.createLineBorder(Color.green));
-                        text.setText("덱" + game.getPlayer().getDeckStack().size());
+                        text.setText("덱" + player.getDeckStack().size());
                         //남은 덱카드수만큼 add.
                         text2.setText("필드");
 
@@ -84,7 +95,7 @@ public class PlayZonePanel extends JPanel {
                         zone.setBorder(BorderFactory.createLineBorder(Color.green));
                         enemyZone.setBorder(BorderFactory.createLineBorder(Color.GRAY));
                         text.setText("필드");
-                        text2.setText("덱" + game.getPlayer2().getDeckStack().size());
+                        text2.setText("덱" + enemy.getDeckStack().size());
                     } else if (i == 1 && j == 6) {
                         zone.setBorder(BorderFactory.createLineBorder(Color.darkGray));
                         enemyZone.setBorder(BorderFactory.createLineBorder(Color.BLUE));
@@ -111,11 +122,11 @@ public class PlayZonePanel extends JPanel {
         }
 
 
-        zones[0][6].add(((Card) game.getPlayer().getDeckStack().peek()).getCardBack());
+        zones[0][6].add(((Card) player.getDeckStack().peek()).getCardBack());
 
 
-        enemyZones[1][0].add(((Card) game.getPlayer2().getDeckStack().peek()).getCardBack());
-        add(new HandPanel(game, game.getPlayer2()), BorderLayout.NORTH);
+        enemyZones[1][0].add(((Card) enemy.getDeckStack().peek()).getCardBack());
+        add(new HandPanel(enemy), BorderLayout.NORTH);
         add(myField, BorderLayout.SOUTH);
         add(enemyField, BorderLayout.CENTER);
     }
@@ -126,6 +137,7 @@ public class PlayZonePanel extends JPanel {
         //   JPanel cardBack = card.getCardPreviewImage();
         //좀 추잡한 method지만 상황마다 해야할게 다다르니, 저렇게 그냥 중복되는거있어도 세세한게달라 저렇게한점 양해하자..
         JPanel cardBack = card.getCardBack();
+
         if (y == 1) {
 //            System.out.println("row좌표는: " + y);
 //            System.out.println("column좌표는: " + numberOfMonsters);
@@ -135,6 +147,9 @@ public class PlayZonePanel extends JPanel {
                 zones[y][numberOfMonsters + 1].add(cardImage);
                 zones[y][numberOfMonsters + 1].validate();
 
+
+             //   enemyZones[y][numberOfMonsters + 1].add(cardImage);
+            //    enemyZones[y][numberOfMonsters + 1].validate();
 
                 //     cardImage.removeMouseListener(cardImage.getMouseListeners()[1]);
                 JPopupMenu pm = new JPopupMenu("선택창");
@@ -519,7 +534,7 @@ public class PlayZonePanel extends JPanel {
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
 
-                game.getDfp().addAtWest(card.getCardImage());
+                player.getDfp().addAtWest(card.getCardImage());
             }
         });
         cardBack.addMouseListener(new MouseAdapter() {
@@ -528,9 +543,101 @@ public class PlayZonePanel extends JPanel {
                 super.mouseEntered(e);
 
 
-                game.getDfp().addAtWest(card.getCardImage());
+                player.getDfp().addAtWest(card.getCardImage());
             }
         });
+
+      //  updateEnemyField(card, y, set);
+    }
+
+    public void updateEnemyField(Card card, int y, boolean set){
+        JPanel cardImage = card.getCardPreviewImage();
+
+        JPanel cardBack = card.getCardBack();
+        if (y == 0) {
+
+            final int location = numberOfMonstersOfEnemy+1;
+            if (!set) {
+                enemyZones[y][location ].add(cardImage);
+                enemyZones[y][location ].validate();
+
+
+            } else {//세트할시.
+                ImageIcon img = new ImageIcon(card.getBackIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
+                //image의 quality 를 2번 scaledInstance하는것과같고, 그 여파로 west에 image와 preview의 image가 전부 doomed 되는것을 볼수있다.
+                //하지만 이렇게 instiantiate를 하면, 이미지 본연을 받아 다시 scale을 하기때문에 1번 만 shirnk되는것을 볼수있다.
+
+                img.setImage(img.getImage().getScaledInstance(80, 60, Image.SCALE_DEFAULT));
+
+                JLabel previewImage = new JLabel(null, img, JLabel.CENTER) {
+                    @Override
+                    protected void paintComponent(Graphics g) {
+                        super.paintComponent(g);
+                        Graphics2D g2 = (Graphics2D) g;
+                        g2.rotate(Math.PI / 2f, img.getIconWidth() / 2, img.getIconHeight() / 2);
+                        //             g2.drawImage(img.getImage(), 0, 0, null); 이거있음 중복되는경향있다..
+                    }
+                };
+
+                //        previewImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+                //      previewImage.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+
+                cardBack.setPreferredSize(new Dimension(80, 60));
+                cardBack.removeAll();
+                cardImage.add(Box.createRigidArea(new Dimension(0, 5)));
+
+                cardBack.add(previewImage);
+
+                cardBack.validate();
+
+
+
+                enemyZones[y][location].add(cardBack);
+                enemyZones[y][location].validate();
+
+
+
+
+
+            }
+
+            numberOfMonstersOfEnemy++;
+
+        } else {
+            final int location = numberOfMagicTrapOfEnemy+1;
+
+            //그냥 발동이었을때
+            if (!set) {
+                //그냥 발동이면, 아무것도 add할필요없잖아?
+                enemyZones[y][location].add(cardImage);
+                enemyZones[y][location].validate();
+
+                //    cardImage.removeMouseListener(cardImage.getMouseListeners()[1]); 이제 새로운 cardImage기 때문에 preview와 연관이없다.
+            } //이하는 세트일때
+            else {
+
+                enemyZones[y][location].add(cardBack);
+                enemyZones[y][location].validate();
+
+
+
+
+
+
+            }
+            numberOfMagicTrapOfEnemy++;
+
+        }
+        cardImage.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                player.getDfp().addAtWest(card.getCardImage());
+            }
+        });
+
     }
 
 }
