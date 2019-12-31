@@ -89,7 +89,7 @@ public class HandPanel extends JPanel {
 
                                     game.getDfp().getCenter().setCard(card, 1, false);
                                     remove(preview);
-                                    //      repaint();
+                                    repaint();
                                     validate();
                                 }
                             });
@@ -99,7 +99,7 @@ public class HandPanel extends JPanel {
                                     System.out.println(game.getPlayer().getHand().get(ii).getName() + "을/를 세트합니다");
                                     game.getDfp().getCenter().setCard(card, 1, true);
                                     remove(preview);
-                                    //      repaint();
+                                    repaint();
                                     validate();
                                 }
                             });
@@ -125,7 +125,7 @@ public class HandPanel extends JPanel {
 
                                     game.getDfp().getCenter().setCard(card, 0,false);
                                     remove(preview);
-                                    //      repaint();
+                                     repaint();
                                     validate();
                                 }
                             });
@@ -136,7 +136,7 @@ public class HandPanel extends JPanel {
 
                                     game.getDfp().getCenter().setCard(card, 0,true);
                                     remove(preview);
-                                    //      repaint();
+                                   repaint();
                                     validate();
                                 }
                             });
@@ -158,7 +158,7 @@ public class HandPanel extends JPanel {
 
                                         game.getDfp().getCenter().setCard(card, 0,true);
                                         remove(preview);
-                                        //      repaint();
+                                       repaint();
                                         validate();
                                 }
                             });
