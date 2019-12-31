@@ -2,6 +2,7 @@ package support;
 
 import Cards.Card;
 import characters.Character;
+import panel.DuelField;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Player {
     private int handSize;
     private Stack<Card> deckStack = new Stack<>();
     private int lp;
+    private DuelField dfp;
 
 
     public Player(Character c) {
@@ -122,5 +124,12 @@ public class Player {
 
     public ArrayList<Card> getHand() {
         return hand;
+    }
+
+    public void setDfp(DuelField dfp){
+        this.dfp = dfp;
+    }
+    public DuelField getDfp(){
+        return dfp;
     }
 }

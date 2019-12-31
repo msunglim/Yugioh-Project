@@ -1,6 +1,7 @@
 package panel;
 
 import main.Game;
+import support.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,26 +10,31 @@ public class DuelField extends JPanel {
 
     private PlayZonePanel center;
     private JPanel west;
-    public DuelField(Game game) {
+    private Player player;
+    private Player enemy;
+    public DuelField(Game game, Player player, Player enemy) {
 
+        this.player = player;
+        this.enemy= enemy;
         //  gameField = new JPanel();
         // gameField.setPreferredSize(new Dimension(1280,720));
         setLayout(new BorderLayout());
 
-        HandPanel hp = new HandPanel(game, game.getPlayer());
 
-        add(hp, BorderLayout.SOUTH);
 
          west = new JPanel();
 
         west.setBorder(BorderFactory.createLineBorder(Color.darkGray));
-        west.add(game.getPlayer().getDeck()[0].getCardImage());
+        west.add(player.getHand().get(0).getCardImage());
         add(west, BorderLayout.WEST);
 
-
-        center = new PlayZonePanel(game);
+        center = new PlayZonePanel(game, player, enemy);
         center.setBorder(BorderFactory.createLineBorder(Color.lightGray));
         add(center, BorderLayout.CENTER);
+
+        HandPanel hp = new HandPanel(game, player, enemy);
+
+        add(hp, BorderLayout.SOUTH);
 
         PhasePanel east = new PhasePanel(game);
         east.setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -42,13 +48,13 @@ public class DuelField extends JPanel {
         lpPanel.setPreferredSize(new Dimension(1000, 30));
         lpPanel.setLayout(new BorderLayout());
 
-        JLabel lp = new JLabel("생존점수:" + game.getPlayer().getLp());
+        JLabel lp = new JLabel("생존점수:" + player.getLp());
         lp.setHorizontalAlignment( JLabel.LEFT);
         lp.setAlignmentX(Component.LEFT_ALIGNMENT);
         lpPanel.add(lp, BorderLayout.WEST);
 
 
-        JLabel lp2 = new JLabel("생존점수:" + game.getPlayer2().getLp());
+        JLabel lp2 = new JLabel("생존점수:" + enemy.getLp());
        //lp2.setHorizontalAlignment( JLabel.RIGHT);
         lp2.setAlignmentX(Component.RIGHT_ALIGNMENT);
         lpPanel.add(lp2, BorderLayout.EAST);
@@ -74,6 +80,7 @@ public class DuelField extends JPanel {
         west.add(cardImage);
         west.validate();
     }
+
 
 
 }
