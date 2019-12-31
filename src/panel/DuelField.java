@@ -15,7 +15,7 @@ public class DuelField extends JPanel {
         // gameField.setPreferredSize(new Dimension(1280,720));
         setLayout(new BorderLayout());
 
-        HandPanel hp = new HandPanel(game);
+        HandPanel hp = new HandPanel(game, game.getPlayer());
 
         add(hp, BorderLayout.SOUTH);
 
@@ -35,10 +35,24 @@ public class DuelField extends JPanel {
         add(east, BorderLayout.EAST);
 
 
+
         JPanel north = new JPanel();
 
+        JPanel lpPanel = new JPanel();
+        lpPanel.setPreferredSize(new Dimension(1000, 30));
+        lpPanel.setLayout(new BorderLayout());
+
         JLabel lp = new JLabel("생존점수:" + game.getPlayer().getLp());
-        north.add(lp);
+        lp.setHorizontalAlignment( JLabel.LEFT);
+        lp.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lpPanel.add(lp, BorderLayout.WEST);
+
+
+        JLabel lp2 = new JLabel("생존점수:" + game.getPlayer2().getLp());
+       //lp2.setHorizontalAlignment( JLabel.RIGHT);
+        lp2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        lpPanel.add(lp2, BorderLayout.EAST);
+        north.add(lpPanel);
         add(north, BorderLayout.NORTH);
 
         // add(gameField);

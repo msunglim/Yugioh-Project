@@ -19,10 +19,14 @@ public class Game {
     private WelcomePanel wp;
     private PlayerCreationPanel pcp;
     private Player player;
+    private Player player2;
+
+
     private Character character;
     private CardUniverse cardUniverse;
     private DeckCreationPanel dcp;
     private DuelField dfp;
+
     public static void main(String[] args) {
         new Game();
 
@@ -69,18 +73,25 @@ public class Game {
         jf.remove(dcp);
 
         player.shuffleDeck();
+
         player.gameStart();
+
+
+        Character character2 = new Character(this, 1);
+        player2 = new Player(character2);
+        player2.shuffleDeck();
+        player2.gameStart();
         dfp = new DuelField(this);
         jf.setContentPane(dfp);
 
-
-        System.out.println("플레이어 확인:"+ player.getName());
-        System.out.println("플레이어 덱확인:");
-        int i = 0;
-        while(i < player.getDeckSize()){
-        //    System.out.println(((Card)player.getDeckStack().peek()).getName());
-            i++;
-        }
+//
+//        System.out.println("플레이어 확인:"+ player.getName());
+//        System.out.println("플레이어 덱확인:");
+//        int i = 0;
+//        while(i < player.getDeckSize()){
+//        //    System.out.println(((Card)player.getDeckStack().peek()).getName());
+//            i++;
+//        }
         jf.validate();
 
 //        DuelField dfp2 = new DuelField(this);
@@ -107,10 +118,13 @@ public class Game {
     public Player getPlayer() {
         return player;
     }
-
+    public Player getPlayer2(){
+        return player2;
+    }
     public void setCharacter(int i) {
         character = new Character(this, i);
         setPlayer(character);
+
     }
 
     public Character getCharacter() {
