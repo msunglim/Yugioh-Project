@@ -17,6 +17,7 @@ public class PlayZonePanel extends JPanel {
     private Game game;
 
     private JPanel[][] zones = new JPanel[2][7];
+    private JPanel[][] enemyZones = new JPanel[2][7];
 
     private int numberOfMonsters;
     private int numberOfMagicTrap;
@@ -26,50 +27,84 @@ public class PlayZonePanel extends JPanel {
         this.game = game;
         numberOfMonsters = 0;
         numberOfMagicTrap = 0;
-        setLayout(new GridLayout(2, 7));
+        setLayout(new BorderLayout());
+
+        JPanel myField = new JPanel();
+        myField.setLayout(new GridLayout(2, 7));
+
+        JPanel enemyField = new JPanel();
+        enemyField.setLayout(new GridLayout(2, 7));
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 7; j++) {
 
                 JPanel zone = new JPanel();
+
+                zone.setPreferredSize(new Dimension(75, 130));
+
                 //     zone.setLayout(null);
                 JLabel text = new JLabel();
                 text.setPreferredSize(new Dimension(100, 30));
                 text.setHorizontalAlignment(JLabel.CENTER);
+                text.setVerticalAlignment(JLabel.NORTH);
+                //적의진영
+                JPanel enemyZone = new JPanel();
+
+                enemyZone.setPreferredSize(new Dimension(75, 130));
+                //     zone.setLayout(null);
+
+                JLabel text2 = new JLabel();
+                text2.setPreferredSize(new Dimension(100, 30));
+                text2.setHorizontalAlignment(JLabel.CENTER);
+                text2.setVerticalAlignment(JLabel.NORTH);
                 if (i == 0) {
                     if (j == 0) {
                         zone.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+                        enemyZone.setBorder(BorderFactory.createLineBorder(Color.darkGray));
                         text.setText("융합");
+                        text2.setText("묘지");
                     } else if (j == 6) {
                         zone.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                        enemyZone.setBorder(BorderFactory.createLineBorder(Color.green));
                         text.setText("덱" + game.getPlayer().getDeckStack().size());
                         //남은 덱카드수만큼 add.
-
+                        text2.setText("필드");
 
 
                     } else {
                         zone.setBorder(BorderFactory.createLineBorder(Color.blue));
+                        enemyZone.setBorder(BorderFactory.createLineBorder(Color.RED));
                         text.setText("마/함");
-
+                        text2.setText("몬스터");
 
                     }
                 } else {
 
                     if (i == 1 && j == 0) {
                         zone.setBorder(BorderFactory.createLineBorder(Color.green));
+                        enemyZone.setBorder(BorderFactory.createLineBorder(Color.GRAY));
                         text.setText("필드");
+                        text2.setText("덱" + game.getPlayer2().getDeckStack().size());
                     } else if (i == 1 && j == 6) {
                         zone.setBorder(BorderFactory.createLineBorder(Color.darkGray));
+                        enemyZone.setBorder(BorderFactory.createLineBorder(Color.BLUE));
                         text.setText("묘지");
+                        text2.setText("융합");
                     } else {
                         zone.setBorder(BorderFactory.createLineBorder(Color.RED));
+                        enemyZone.setBorder(BorderFactory.createLineBorder(Color.blue));
                         text.setText("몬스터");
-
+                        text2.setText("마/함");
                     }
                 }
                 zone.add(text);
-                add(zone, i, j);
+                enemyZone.add(text2);
+
+                myField.add(zone, i, j);
+                enemyField.add(enemyZone, i, j);
+
                 zones[i][j] = zone;
+                enemyZones[i][j] = enemyZone;
 
 
             }
@@ -77,6 +112,12 @@ public class PlayZonePanel extends JPanel {
 
 
         zones[0][6].add(((Card) game.getPlayer().getDeckStack().peek()).getCardBack());
+
+
+        enemyZones[1][0].add(((Card) game.getPlayer2().getDeckStack().peek()).getCardBack());
+        add(new HandPanel(game, game.getPlayer2()), BorderLayout.NORTH);
+        add(myField, BorderLayout.SOUTH);
+        add(enemyField, BorderLayout.CENTER);
     }
 
     public void setCard(Card card, int y, boolean set) {

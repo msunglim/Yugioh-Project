@@ -22,7 +22,8 @@ public class Player {
 
         this.character = c;
         deck = character.getDeck();
-        deckSize = 0;
+        deckSize = character.getDeckSize();
+      //  deckSize = 0;
         lp = 2000;
 //        handSize = 5;
 //        deckSize -= 5;
@@ -45,7 +46,8 @@ public class Player {
     }
 
     public int getDeckSize() {
-        deckSize = character.getDeckSize();
+
+
         return deckSize;
     }
 
@@ -83,8 +85,10 @@ public class Player {
         }
 //        System.out.println("덱mmmmmmmmmmmmmmmmmmmmmmmmmmm");
         //    System.out.print("덱열람array");
+
         for (int i = 0; i < deckSize; i++) {
             deckStack.push(deck[i]);
+           // System.out.print("넣어진카드"+deck[i]);
             //      System.out.print(deck[i]+", ");
         }
         System.out.println();
