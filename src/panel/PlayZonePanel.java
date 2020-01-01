@@ -28,6 +28,7 @@ public class PlayZonePanel extends JPanel {
 
     private int numberOfMonstersOfEnemy;
     private int numberOfMagicTrapOfEnemy;
+
     public PlayZonePanel(Game game, Player player, Player enemy) {
         this.game = game;
         this.player = player;
@@ -35,7 +36,7 @@ public class PlayZonePanel extends JPanel {
         numberOfMonsters = 0;
         numberOfMagicTrap = 0;
 
-        numberOfMonstersOfEnemy =0;
+        numberOfMonstersOfEnemy = 0;
         numberOfMagicTrapOfEnemy = 0;
 
         setLayout(new BorderLayout());
@@ -131,13 +132,14 @@ public class PlayZonePanel extends JPanel {
         add(enemyField, BorderLayout.CENTER);
     }
 
-    public void setCard(Card card, int y, boolean set) {
+    public void setCard(Card card,  int y, boolean set) {
         JPanel cardImage = card.getCardPreviewImage();
+        JPanel cardImage2 = card.getCardPreviewImage();
 
         //   JPanel cardBack = card.getCardPreviewImage();
         //좀 추잡한 method지만 상황마다 해야할게 다다르니, 저렇게 그냥 중복되는거있어도 세세한게달라 저렇게한점 양해하자..
         JPanel cardBack = card.getCardBack();
-
+        JPanel cardBack2 = card.getCardBack();
         if (y == 1) {
 //            System.out.println("row좌표는: " + y);
 //            System.out.println("column좌표는: " + numberOfMonsters);
@@ -148,8 +150,8 @@ public class PlayZonePanel extends JPanel {
                 zones[y][numberOfMonsters + 1].validate();
 
 
-             //   enemyZones[y][numberOfMonsters + 1].add(cardImage);
-            //    enemyZones[y][numberOfMonsters + 1].validate();
+                //   enemyZones[y][numberOfMonsters + 1].add(cardImage);
+                //    enemyZones[y][numberOfMonsters + 1].validate();
 
                 //     cardImage.removeMouseListener(cardImage.getMouseListeners()[1]);
                 JPopupMenu pm = new JPopupMenu("선택창");
@@ -193,24 +195,47 @@ public class PlayZonePanel extends JPanel {
                                     previewImage.setAlignmentX(0.75f);
                                     previewImage.setAlignmentY(Component.CENTER_ALIGNMENT);
 
+
+
                                     //초강수 삼총사
                                     cardImage.removeAll();
-                                    cardImage.revalidate();
                                     cardImage.repaint();
-
                                     cardImage.setPreferredSize(new Dimension(80, 60));
-
                                     cardImage.add(Box.createRigidArea(new Dimension(0, 4)));
-
                                     cardImage.add(previewImage);
-
                                     cardImage.validate();
-
                                     zones[y][location].add(cardImage);
                                     zones[y][location].validate();
-
-
+                                    //깨끗하게.
                                     m1.removeActionListener(m1.getActionListeners()[0]);
+
+
+                                    //물밑작업
+                              ImageIcon img2 = new ImageIcon(card.getIcon().getImage());
+
+                                    img2.setImage(img2.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)); //아마 여기서 ㅇㅈㄹ하기때문에 이미지가 shrink 되는거같다.
+                                    JLabel previewImage2 = new JLabel(null, img2, JLabel.CENTER) {
+                                        @Override
+                                        protected void paintComponent(Graphics g) {
+                                            super.paintComponent(g);
+                                            Graphics2D g2 = (Graphics2D) g;
+                                            g2.rotate(Math.PI / 2f, img2.getIconWidth() / 2, img2.getIconHeight() / 2);
+                                            g2.drawImage(img2.getImage(), 0, 0, null);
+                                        }
+                                    };
+
+                                    previewImage2.setAlignmentX(0.75f);
+                                    previewImage2.setAlignmentY(Component.CENTER_ALIGNMENT);
+                                    cardImage2.removeAll();
+                                    cardImage2.repaint();
+                                    cardImage2.setPreferredSize(new Dimension(80, 60));
+                                    cardImage2.add(Box.createRigidArea(new Dimension(0, 4)));
+                                    cardImage2.add(previewImage2);
+                                    cardImage2.validate();
+
+
+                                    //frame2 update
+                                    enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, y, location);
                                 }
 
                             });
@@ -256,6 +281,35 @@ public class PlayZonePanel extends JPanel {
 
 
                                     m1.removeActionListener(m1.getActionListeners()[0]);
+
+
+                                            //물밑작업
+
+                                  ImageIcon img2 = new ImageIcon(card.getIcon().getImage());
+
+                                    img2.setImage(img2.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)); //아마 여기서 ㅇㅈㄹ하기때문에 이미지가 shrink 되는거같다.
+                                    JLabel previewImage2 = new JLabel(null, img2, JLabel.CENTER) {
+                                        @Override
+                                        protected void paintComponent(Graphics g) {
+                                            super.paintComponent(g);
+                                            Graphics2D g2 = (Graphics2D) g;
+                                            g2.rotate(0, img2.getIconWidth() / 2, img2.getIconHeight() / 2);
+                                            g2.drawImage(img2.getImage(), 0, 0, null);
+                                        }
+                                    };
+
+                                    previewImage2.setAlignmentX(0.75f);
+                                    previewImage2.setAlignmentY(Component.CENTER_ALIGNMENT);
+                                    cardImage2.removeAll();
+                                    cardImage2.repaint();
+                                    cardImage2.setPreferredSize(new Dimension(60, 80));
+                                    cardImage2.add(Box.createRigidArea(new Dimension(0, 5)));
+                                    cardImage2.add(previewImage2);
+                                    cardImage2.validate();
+
+
+                                    //frame2 update
+                                    enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, y, location);
                                 }
 
                             });
@@ -304,6 +358,36 @@ public class PlayZonePanel extends JPanel {
                 zones[y][location].add(cardBack);
                 zones[y][location].validate();
 
+                //적의 duelfiled 에 반전소환된것을 업데이트
+                ImageIcon img2 = new ImageIcon(card.getBackIcon().getImage());
+                img2.setImage(img2.getImage().getScaledInstance(80, 60, Image.SCALE_DEFAULT));
+
+                JLabel previewImage2 = new JLabel(null, img2, JLabel.CENTER) {
+                    @Override
+                    protected void paintComponent(Graphics g) {
+                        super.paintComponent(g);
+                        Graphics2D g2 = (Graphics2D) g;
+                        g2.rotate(Math.PI / 2f, img2.getIconWidth() / 2, img2.getIconHeight() / 2);
+                        //             g2.drawImage(img.getImage(), 0, 0, null); 이거있음 중복되는경향있다..
+                    }
+                };
+
+                //        previewImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+                //      previewImage.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+
+                cardBack2.setPreferredSize(new Dimension(80, 60));
+                cardBack2.removeAll();
+                cardImage2.add(Box.createRigidArea(new Dimension(0, 5)));
+
+                cardBack2.add(previewImage2);
+
+                cardBack2.validate();
+
+
+             //   enemy.getDfp().getCenter().updateEnemyFieldGraphicForSet(card, cardBack2, y, location);
+
+
                 cardBack.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -328,7 +412,14 @@ public class PlayZonePanel extends JPanel {
 
                                 zones[y][location].add(cardImage);
 
+
+
                                 zones[y][location].validate();
+
+
+
+                                enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, y, location);
+
                                 JPopupMenu pm = new JPopupMenu("선택창");
                                 JMenuItem m1 = new JMenuItem("수비표시");
 
@@ -386,6 +477,33 @@ public class PlayZonePanel extends JPanel {
 
 
                                                     m1.removeActionListener(m1.getActionListeners()[0]);
+
+                                                    //물밑작업 적의 필드업데이트
+                                                    ImageIcon img2 = new ImageIcon(card.getIcon().getImage());
+
+                                                    img2.setImage(img2.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)); //아마 여기서 ㅇㅈㄹ하기때문에 이미지가 shrink 되는거같다.
+                                                    JLabel previewImage2 = new JLabel(null, img2, JLabel.CENTER) {
+                                                        @Override
+                                                        protected void paintComponent(Graphics g) {
+                                                            super.paintComponent(g);
+                                                            Graphics2D g2 = (Graphics2D) g;
+                                                            g2.rotate(Math.PI / 2f, img2.getIconWidth() / 2, img2.getIconHeight() / 2);
+                                                            g2.drawImage(img2.getImage(), 0, 0, null);
+                                                        }
+                                                    };
+
+                                                    previewImage2.setAlignmentX(0.75f);
+                                                    previewImage2.setAlignmentY(Component.CENTER_ALIGNMENT);
+                                                    cardImage2.removeAll();
+                                                    cardImage2.repaint();
+                                                    cardImage2.setPreferredSize(new Dimension(80, 60));
+                                                    cardImage2.add(Box.createRigidArea(new Dimension(0, 4)));
+                                                    cardImage2.add(previewImage2);
+                                                    cardImage2.validate();
+
+
+                                                    //frame2 update
+                                                    enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, y, location);
                                                 }
 
                                             });
@@ -428,6 +546,34 @@ public class PlayZonePanel extends JPanel {
 
 
                                                     m1.removeActionListener(m1.getActionListeners()[0]);
+
+                                                    //물밑작업 반전소환 적의필드 업뎅티ㅡ
+
+                                                    ImageIcon img2 = new ImageIcon(card.getIcon().getImage());
+
+                                                    img2.setImage(img2.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)); //아마 여기서 ㅇㅈㄹ하기때문에 이미지가 shrink 되는거같다.
+                                                    JLabel previewImage2 = new JLabel(null, img2, JLabel.CENTER) {
+                                                        @Override
+                                                        protected void paintComponent(Graphics g) {
+                                                            super.paintComponent(g);
+                                                            Graphics2D g2 = (Graphics2D) g;
+                                                            g2.rotate(0, img2.getIconWidth() / 2, img2.getIconHeight() / 2);
+                                                            g2.drawImage(img2.getImage(), 0, 0, null);
+                                                        }
+                                                    };
+
+                                                    previewImage2.setAlignmentX(0.75f);
+                                                    previewImage2.setAlignmentY(Component.CENTER_ALIGNMENT);
+                                                    cardImage2.removeAll();
+                                                    cardImage2.repaint();
+                                                    cardImage2.setPreferredSize(new Dimension(60, 80));
+                                                    cardImage2.add(Box.createRigidArea(new Dimension(0, 5)));
+                                                    cardImage2.add(previewImage2);
+                                                    cardImage2.validate();
+
+
+                                                    //frame2 update
+                                                    enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, y, location);
                                                 }
 
                                             });
@@ -509,6 +655,9 @@ public class PlayZonePanel extends JPanel {
                                 zones[y][location].add(cardImage);
 
                                 zones[y][location].validate();
+
+
+                                enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, y, location);
                             }
 
                         });
@@ -547,19 +696,18 @@ public class PlayZonePanel extends JPanel {
             }
         });
 
-      //  updateEnemyField(card, y, set);
     }
 
-    public void updateEnemyField(Card card, int y, boolean set){
+    public void updateEnemyField(Card card, int y, boolean set) {
         JPanel cardImage = card.getCardPreviewImage();
 
         JPanel cardBack = card.getCardBack();
         if (y == 0) {
 
-            final int location = numberOfMonstersOfEnemy+1;
+            final int location = numberOfMonstersOfEnemy + 1;
             if (!set) {
-                enemyZones[y][location ].add(cardImage);
-                enemyZones[y][location ].validate();
+                enemyZones[y][location].add(cardImage);
+                enemyZones[y][location].validate();
 
 
             } else {//세트할시.
@@ -592,12 +740,8 @@ public class PlayZonePanel extends JPanel {
                 cardBack.validate();
 
 
-
                 enemyZones[y][location].add(cardBack);
                 enemyZones[y][location].validate();
-
-
-
 
 
             }
@@ -605,7 +749,7 @@ public class PlayZonePanel extends JPanel {
             numberOfMonstersOfEnemy++;
 
         } else {
-            final int location = numberOfMagicTrapOfEnemy+1;
+            final int location = numberOfMagicTrapOfEnemy + 1;
 
             //그냥 발동이었을때
             if (!set) {
@@ -619,10 +763,6 @@ public class PlayZonePanel extends JPanel {
 
                 enemyZones[y][location].add(cardBack);
                 enemyZones[y][location].validate();
-
-
-
-
 
 
             }
@@ -640,4 +780,59 @@ public class PlayZonePanel extends JPanel {
 
     }
 
+    public void updateEnemyFieldGraphic(Card card, JPanel cardImage, int y, int location) {
+
+
+        if (y == 0) {
+            enemyZones[1][location].remove(1);
+            enemyZones[1][location].repaint();
+            enemyZones[1][location].add(cardImage);
+            enemyZones[1][location].validate();
+        } else {
+
+       //    enemyZones[0][numberOfMonstersOfEnemy].removeAll();
+
+            enemyZones[0][location].remove(1);
+            enemyZones[0][location].repaint();
+            enemyZones[0][location].add(cardImage);
+            enemyZones[0][location].validate();
+        }
+
+        cardImage.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                player.getDfp().addAtWest(card.getCardImage());
+            }
+        });
+    }
+
+    public void updateEnemyFieldGraphicForSet(Card card, JPanel cardImage, int y, int location) {
+
+
+        if (y == 0) {
+        //    enemyZones[1][location].remove(1);
+            enemyZones[1][location].repaint();
+       //     enemyZones[1][location].add(cardImage);
+            enemyZones[1][location].validate();
+        } else {
+
+            //    enemyZones[0][numberOfMonstersOfEnemy].removeAll();
+
+           // enemyZones[0][location].remove(1);
+            enemyZones[0][location].repaint();
+     //       enemyZones[0][location].add(cardImage);
+            enemyZones[0][location].validate();
+        }
+
+        cardImage.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                player.getDfp().addAtWest(card.getCardImage());
+            }
+        });
+    }
 }
