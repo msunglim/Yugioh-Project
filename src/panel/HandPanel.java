@@ -17,7 +17,7 @@ public class HandPanel extends JPanel {
 
     private Game game;
     private Player player;
-       private Player enemy;
+    private Player enemy;
 
     public HandPanel(Player enemy) {
         this.enemy = enemy;
@@ -52,7 +52,7 @@ public class HandPanel extends JPanel {
             //             game.getDfp().getPlayer())) {
             final int ii = i;
             Card card = player.getHand().get(ii);
-            Card card2 =player.getHand().get(ii);
+            Card card2 = player.getHand().get(ii);
             preview.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -104,9 +104,12 @@ public class HandPanel extends JPanel {
                                     //   summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
                                     //   summon.validate();
 
-                                   player.getDfp().getCenter().setCard(card, 1, false);
+                                    player.getDfp().getCenter().setCard(card, 1, false);
                                     enemy.getDfp().getCenter().updateEnemyField(card, 0, false);
+
                                     remove(preview);
+                                    enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+
                                     repaint();
                                     validate();
                                 }
@@ -116,9 +119,11 @@ public class HandPanel extends JPanel {
                                 public void actionPerformed(ActionEvent e) {
                                     System.out.println(player.getHand().get(ii).getName() + "을/를 세트합니다");
                                     player.getDfp().getCenter().setCard(card, 1, true);
-                                //    enemy.getDfp().getCenter().setCard(card, 0, true);
+                                    //    enemy.getDfp().getCenter().setCard(card, 0, true);
                                     enemy.getDfp().getCenter().updateEnemyField(card, 0, true);
                                     remove(preview);
+                                    enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+
                                     repaint();
                                     validate();
                                 }
@@ -145,7 +150,9 @@ public class HandPanel extends JPanel {
 
                                     player.getDfp().getCenter().setCard(card, 0, false);
                                     enemy.getDfp().getCenter().updateEnemyField(card, 1, false);
-                                   remove(preview);
+                                    remove(preview);
+                                    enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+
                                     repaint();
                                     validate();
                                 }
@@ -158,6 +165,8 @@ public class HandPanel extends JPanel {
                                     player.getDfp().getCenter().setCard(card, 0, true);
                                     enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
                                     remove(preview);
+                                    enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+
                                     repaint();
                                     validate();
                                 }
@@ -181,6 +190,8 @@ public class HandPanel extends JPanel {
                                     player.getDfp().getCenter().setCard(card, 0, true);
                                     enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
                                     remove(preview);
+                                    enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+
                                     repaint();
                                     validate();
                                 }
@@ -199,11 +210,24 @@ public class HandPanel extends JPanel {
                 }
             });
 
+            //상대가 보고있는 player1의 패의 수를 차감.
             add(preview);
             //     } else {
             //        add(cardBack);
             //     }
         }
+    }
+
+
+    /*
+    @param i: indicates whether enemy gains a card or discards a card.
+     */
+    public void updateEnemyGraphic(int i) {
+        if (i == -1) {
+            remove(0);
+        }
+        repaint();
+        validate();
     }
 
 

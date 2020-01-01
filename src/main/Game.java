@@ -86,6 +86,7 @@ public class Game {
         dfp = new DuelField(this, player, player2);
         player.setDfp(dfp);
         jf.setContentPane(dfp);
+        jf.setTitle("player1");
 
 //
 //        System.out.println("플레이어 확인:"+ player.getName());
@@ -102,7 +103,7 @@ public class Game {
         DuelField dfp2 = new DuelField(this, player2, player);
         player2.setDfp(dfp2);
          jf2 = new JFrame();
-        jf2.setTitle("복제품");
+        jf2.setTitle("player2");
         jf2.setPreferredSize(new Dimension(1280, 820));
 
         jf2.setContentPane(dfp2);

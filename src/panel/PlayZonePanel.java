@@ -29,6 +29,7 @@ public class PlayZonePanel extends JPanel {
     private int numberOfMonstersOfEnemy;
     private int numberOfMagicTrapOfEnemy;
 
+    private HandPanel enemyHand;
     public PlayZonePanel(Game game, Player player, Player enemy) {
         this.game = game;
         this.player = player;
@@ -127,7 +128,13 @@ public class PlayZonePanel extends JPanel {
 
 
         enemyZones[1][0].add(((Card) enemy.getDeckStack().peek()).getCardBack());
-        add(new HandPanel(enemy), BorderLayout.NORTH);
+
+        //적의 수중의 패.
+        enemyHand = new HandPanel(enemy);
+        add(enemyHand  , BorderLayout.NORTH);
+
+
+
         add(myField, BorderLayout.SOUTH);
         add(enemyField, BorderLayout.CENTER);
     }
@@ -808,31 +815,10 @@ public class PlayZonePanel extends JPanel {
         });
     }
 
-    public void updateEnemyFieldGraphicForSet(Card card, JPanel cardImage, int y, int location) {
 
 
-        if (y == 0) {
-        //    enemyZones[1][location].remove(1);
-            enemyZones[1][location].repaint();
-       //     enemyZones[1][location].add(cardImage);
-            enemyZones[1][location].validate();
-        } else {
-
-            //    enemyZones[0][numberOfMonstersOfEnemy].removeAll();
-
-           // enemyZones[0][location].remove(1);
-            enemyZones[0][location].repaint();
-     //       enemyZones[0][location].add(cardImage);
-            enemyZones[0][location].validate();
-        }
-
-        cardImage.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
-
-                player.getDfp().addAtWest(card.getCardImage());
-            }
-        });
+    //상대의 frame 에나오는 enemyHand를 의미함. center North에 있는 그것.
+    public HandPanel getEnemyHand(){
+        return enemyHand;
     }
 }
