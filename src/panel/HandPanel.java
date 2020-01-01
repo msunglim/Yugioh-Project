@@ -52,6 +52,7 @@ public class HandPanel extends JPanel {
             //             game.getDfp().getPlayer())) {
             final int ii = i;
             Card card = player.getHand().get(ii);
+            Card card2 =player.getHand().get(ii);
             preview.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
