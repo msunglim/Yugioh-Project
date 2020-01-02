@@ -6,6 +6,7 @@ import panel.DeckCreationPanel;
 import panel.DuelField;
 import panel.PlayerCreationPanel;
 import panel.WelcomePanel;
+import support.Phase;
 import support.Player;
 
 import javax.swing.*;
@@ -29,6 +30,8 @@ public class Game {
     private DeckCreationPanel dcp;
     private DuelField dfp;
 
+
+    private Phase phase;
     public static void main(String[] args) {
         new Game();
 
@@ -115,6 +118,8 @@ public class Game {
         jf2.pack();//이것은 알아서 resize를 해준다.
         jf2.setLocationRelativeTo(null); //이것은 창을 모니터 가운데에 띄우게해준다.
 
+
+        phase = Phase.getPhase(this, player, player2);
     }
 
     public DuelField getDfp(){

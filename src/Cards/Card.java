@@ -13,7 +13,8 @@ public abstract class Card {
 
     private JPanel cardBack;
     private static Card card;
-private  ImageIcon bimg;
+    private ImageIcon bimg;
+
     public Card() {
         // Card card = new Monster();
     }
@@ -40,12 +41,12 @@ private  ImageIcon bimg;
         return card;
     }
 
-    public ImageIcon getBackIcon(){
+    public ImageIcon getBackIcon() {
         return bimg;
     }
+
     //descriptin 넣으면되겠다. 속성이랑도. 지금은 몬스터 작업중이라.
     public static Card getCard(String name, String imgURL, int type, String description) {
-
 
 
         switch (type) {
@@ -68,15 +69,16 @@ private  ImageIcon bimg;
         }
 
     }
-    public JPanel getCardBack(){
+
+    public JPanel getCardBack() {
 
         cardBack = new JPanel();
 
         //.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-       cardBack.setPreferredSize(new Dimension(60, 80));
-       cardBack.setLayout(new BorderLayout());
-       bimg = new ImageIcon("data/images/cards/back.PNG");
-        bimg.setImage(bimg.getImage().getScaledInstance(60,80,Image.SCALE_DEFAULT));
+        cardBack.setPreferredSize(new Dimension(60, 80));
+        cardBack.setLayout(new BorderLayout());
+        bimg = new ImageIcon("data/images/cards/back.PNG");
+        bimg.setImage(bimg.getImage().getScaledInstance(60, 80, Image.SCALE_DEFAULT));
 
         JLabel back = new JLabel(bimg);
 
@@ -116,7 +118,6 @@ private  ImageIcon bimg;
         JLabel previewImage = new JLabel(new ImageIcon(getIcon().getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
         previewImage.setAlignmentX(Component.CENTER_ALIGNMENT);
         previewImage.setAlignmentY(Component.CENTER_ALIGNMENT);
-
 
 
         p.add(Box.createRigidArea(new Dimension(0, 5)));

@@ -19,13 +19,14 @@ public class Player {
     private int lp;
     private DuelField dfp;
 
+    private boolean defeat = false;
 
     public Player(Character c) {
 
         this.character = c;
         deck = character.getDeck();
         deckSize = character.getDeckSize();
-      //  deckSize = 0;
+        //  deckSize = 0;
         lp = 2000;
 //        handSize = 5;
 //        deckSize -= 5;
@@ -56,13 +57,22 @@ public class Player {
     public void drawCard() {
 //        System.out.println("드로");
 //
-        System.out.println("드로된 카드:" + (Card) deckStack.peek());
-        hand.add((Card) deckStack.pop());
-//
+        if (deckStack.size() != 0){
+            System.out.println("드로된 카드:" + (Card) deckStack.peek());
+            hand.add((Card) deckStack.pop());
+        }
+        else{
+            System.out.println("드로우 할 카드가 없습니다.");
+            defeat = true;
+        }
+        //
 //
 //
     }
 
+    public boolean getDefeat(){
+        return defeat;
+    }
     public Stack getDeckStack() {
         return deckStack;
     }
@@ -90,7 +100,7 @@ public class Player {
 
         for (int i = 0; i < deckSize; i++) {
             deckStack.push(deck[i]);
-           // System.out.print("넣어진카드"+deck[i]);
+            // System.out.print("넣어진카드"+deck[i]);
             //      System.out.print(deck[i]+", ");
         }
         System.out.println();
@@ -126,10 +136,11 @@ public class Player {
         return hand;
     }
 
-    public void setDfp(DuelField dfp){
+    public void setDfp(DuelField dfp) {
         this.dfp = dfp;
     }
-    public DuelField getDfp(){
+
+    public DuelField getDfp() {
         return dfp;
     }
 }
