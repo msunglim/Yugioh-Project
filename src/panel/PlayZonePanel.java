@@ -29,6 +29,8 @@ public class PlayZonePanel extends JPanel {
     private int numberOfMonstersOfEnemy;
     private int numberOfMagicTrapOfEnemy;
 
+    private  JLabel text;
+    private JLabel text2;
     private HandPanel enemyHand;
     public PlayZonePanel(Game game, Player player, Player enemy) {
         this.game = game;
@@ -56,7 +58,7 @@ public class PlayZonePanel extends JPanel {
                 zone.setPreferredSize(new Dimension(75, 130));
 
                 //     zone.setLayout(null);
-                JLabel text = new JLabel();
+               text= new JLabel();
                 text.setPreferredSize(new Dimension(100, 30));
                 text.setHorizontalAlignment(JLabel.CENTER);
                 text.setVerticalAlignment(JLabel.NORTH);
@@ -66,7 +68,7 @@ public class PlayZonePanel extends JPanel {
                 enemyZone.setPreferredSize(new Dimension(75, 130));
                 //     zone.setLayout(null);
 
-                JLabel text2 = new JLabel();
+                text2 = new JLabel();
                 text2.setPreferredSize(new Dimension(100, 30));
                 text2.setHorizontalAlignment(JLabel.CENTER);
                 text2.setVerticalAlignment(JLabel.NORTH);
@@ -117,6 +119,7 @@ public class PlayZonePanel extends JPanel {
                 enemyField.add(enemyZone, i, j);
 
                 zones[i][j] = zone;
+
                 enemyZones[i][j] = enemyZone;
 
 
@@ -820,5 +823,18 @@ public class PlayZonePanel extends JPanel {
     //상대의 frame 에나오는 enemyHand를 의미함. center North에 있는 그것.
     public HandPanel getEnemyHand(){
         return enemyHand;
+    }
+
+    public void updateDeckAmount(){
+       // text.setText("덱" + player.getDeckStack().size());
+        System.out.println("덱사이즈 몇갠데"+text.getText());
+        ((JLabel)(zones[0][6].getComponent(0))).setText("덱" + player.getDeckStack().size());
+        ((JLabel)(enemy.getDfp().getCenter().getEnemyZones()[1][0].getComponent(0))).setText("덱"+player.getDeckStack().size());
+        repaint();
+        validate();
+    }
+
+    public JPanel [][] getEnemyZones(){
+      return enemyZones;
     }
 }
