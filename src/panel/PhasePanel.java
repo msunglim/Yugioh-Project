@@ -1,10 +1,7 @@
 package panel;
 
 import main.Game;
-import support.BattlePhase;
-import support.MainPhase;
-import support.Phase;
-import support.StandbyPhase;
+import support.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,8 +58,16 @@ public class PhasePanel extends JPanel {
 
                 } else if (game.getCurrnetPhase() instanceof BattlePhase) {
                     ((BattlePhase) (game.getCurrnetPhase())).goEnd();
-                }
 
+                //    System.out.println("엔드를눌렀을때..."+game.getCurrnetPhase().toString());
+
+                 //   System.out.println("game.getCurrnetPhase().toString());
+
+                }
+                ((EndPhase)(game.getCurrnetPhase())).goNext();
+                ((StandbyPhase)(game.getCurrnetPhase())).goDraw();
+
+                ((DrawPhase)(game.getCurrnetPhase())).goMain();
             }
         });
 
