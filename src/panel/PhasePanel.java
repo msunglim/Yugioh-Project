@@ -15,7 +15,7 @@ public class PhasePanel extends JPanel {
     private JButton battlePhase = new JButton("배틀");
     private JButton endPahse = new JButton("엔드");
 
-    public PhasePanel(Game game) {
+    public PhasePanel(Game game, Player player) {
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(100, 700));
         setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -24,54 +24,57 @@ public class PhasePanel extends JPanel {
         add(new JButton("메인1"));
 
 
-        battlePhase.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            battlePhase.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
 
-                if (game.getCurrnetPhase() instanceof MainPhase) {
-                    ((MainPhase) (game.getCurrnetPhase())).goFight();
+                    if (player.getMyTurn() && game.getCurrnetPhase() instanceof MainPhase && !game.getCurrnetPhase().isMainPhase2()) {
+                        ((MainPhase) (game.getCurrnetPhase())).goFight();
+                    }
                 }
-            }
-        });
+            });
+            mainPhase2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    if (player.getMyTurn() && game.getCurrnetPhase() instanceof BattlePhase) {
+                        ((BattlePhase) (game.getCurrnetPhase())).goMain();
+                    }
+                }
+            });
+
+
+
+            endPahse.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //  System.out.println("머"+ game.getCurrnetPhase().toString());
+                    //    System.out.println("챜"+game.getCurrnetPhase().toString().equals("메인1"));
+                    if (player.getMyTurn()) {
+                        if (game.getCurrnetPhase() instanceof MainPhase ) {
+
+                            ((MainPhase) (game.getCurrnetPhase())).goEnd();
+
+                        } else if (game.getCurrnetPhase() instanceof BattlePhase) {
+                            ((BattlePhase) (game.getCurrnetPhase())).goEnd();
+
+                            //    System.out.println("엔드를눌렀을때..."+game.getCurrnetPhase().toString());
+
+                            //   System.out.println("game.getCurrnetPhase().toString());
+
+                        }
+                        ((EndPhase) (game.getCurrnetPhase())).goNext();
+                        ((StandbyPhase) (game.getCurrnetPhase())).goDraw();
+
+                        ((DrawPhase) (game.getCurrnetPhase())).goMain();
+                    }
+                }
+            });
+
+
+
         add(battlePhase);
-
-        mainPhase2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                if(game.getCurrnetPhase() instanceof  BattlePhase) {
-                    ((BattlePhase) (game.getCurrnetPhase())).goMain();
-                }
-            }
-        });
         add(mainPhase2);
-
-
-        endPahse.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //  System.out.println("머"+ game.getCurrnetPhase().toString());
-                //    System.out.println("챜"+game.getCurrnetPhase().toString().equals("메인1"));
-                if (game.getCurrnetPhase() instanceof MainPhase) {
-
-                    ((MainPhase) (game.getCurrnetPhase())).goEnd();
-
-                } else if (game.getCurrnetPhase() instanceof BattlePhase) {
-                    ((BattlePhase) (game.getCurrnetPhase())).goEnd();
-
-                //    System.out.println("엔드를눌렀을때..."+game.getCurrnetPhase().toString());
-
-                 //   System.out.println("game.getCurrnetPhase().toString());
-
-                }
-                ((EndPhase)(game.getCurrnetPhase())).goNext();
-                ((StandbyPhase)(game.getCurrnetPhase())).goDraw();
-
-                ((DrawPhase)(game.getCurrnetPhase())).goMain();
-            }
-        });
-
-
         add(endPahse);
 
     }

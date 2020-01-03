@@ -5,7 +5,7 @@ import main.Game;
 public abstract class Phase {
 
 
-    private  static Phase phase;
+    private static Phase phase;
     protected static Game game;
     protected static Player player;
     protected static Player enemy;
@@ -23,14 +23,14 @@ public abstract class Phase {
 //        this.phase = new StandbyPhase();
 //    }
 
-    public static Phase getPhase(Game game, Player player, Player enemy){
+    public static Phase getPhase(Game game, Player player, Player enemy) {
 
         phase = new StandbyPhase(game, player, enemy);
         System.out.println("스텐바이완료했구요 드로우가겠습니다");
 
-        ((StandbyPhase)(phase)).goDraw();
+        ((StandbyPhase) (phase)).goDraw();
         System.out.println("드로우완료했구요 메인1가겠습니다.");
-        ((DrawPhase)(phase)).goMain();
+        ((DrawPhase) (phase)).goMain();
 
 
         //  setPhase(new StandbyPhase(game, player, enemy));
@@ -38,19 +38,27 @@ public abstract class Phase {
         return ((Phase) phase);
     }
 
-    public String toString(){
+    public String toString() {
         return phaseName;
     }
-    public static void setPhase(Phase newPhase){
+
+    public static void setPhase(Phase newPhase) {
 
 
         phase = newPhase;
 
-     //   game.setPhase(newPhase);
+        //   game.setPhase(newPhase);
     }
 
-    public Phase getCurrentPhase(){
+    public Phase getCurrentPhase() {
 
         return phase;
+    }
+    public boolean isMainPhase(){
+        return (phase instanceof MainPhase);
+    }
+
+    public boolean isMainPhase2(){
+        return mainPhase2;
     }
 }

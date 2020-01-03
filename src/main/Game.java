@@ -35,6 +35,7 @@ public class Game {
 
 
     private Phase phase;
+
     public static void main(String[] args) {
         new Game();
 
@@ -77,7 +78,7 @@ public class Game {
 
     }
 
-    public void showDuelField(){
+    public void showDuelField() {
         jf.remove(dcp);
 
         player.shuffleDeck();
@@ -108,7 +109,7 @@ public class Game {
         //상대방진영추가.
         DuelField dfp2 = new DuelField(this, player2, player);
         player2.setDfp(dfp2);
-         jf2 = new JFrame();
+        jf2 = new JFrame();
         jf2.setTitle("player2");
         jf2.setPreferredSize(new Dimension(1280, 820));
 
@@ -126,12 +127,12 @@ public class Game {
 
     }
 
-    public Phase getCurrnetPhase(){
+    public Phase getCurrnetPhase() {
 
         return phase.getCurrentPhase();
     }
 
-    public DuelField getDfp(){
+    public DuelField getDfp() {
         return dfp;
     }
 
@@ -142,9 +143,11 @@ public class Game {
     public Player getPlayer() {
         return player;
     }
-    public Player getPlayer2(){
+
+    public Player getPlayer2() {
         return player2;
     }
+
     public void setCharacter(int i) {
         character = new Character(this, i);
         setPlayer(character);
@@ -159,7 +162,7 @@ public class Game {
         return cardUniverse;
     }
 
-    public JFrame getJf(){
+    public JFrame getJf() {
         return jf;
     }
 }

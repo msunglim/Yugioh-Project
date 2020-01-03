@@ -38,7 +38,7 @@ public class DuelField extends JPanel {
 
         add(hp, BorderLayout.SOUTH);
 
-        east = new PhasePanel(game);
+        east = new PhasePanel(game, player);
         east.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         add(east, BorderLayout.EAST);
 

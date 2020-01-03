@@ -15,6 +15,7 @@ public abstract class Card {
     private static Card card;
     private ImageIcon bimg;
 
+
     public Card() {
         // Card card = new Monster();
     }
