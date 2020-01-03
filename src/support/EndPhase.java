@@ -12,8 +12,11 @@ public class EndPhase extends Phase{
         phaseName = "엔드";
         System.out.println("엔드페이즈입니다.");
 
-        setPhase(new StandbyPhase(game, enemy, player));
     }
 
+    public void goNext(){
+
+        setPhase(new StandbyPhase(game, enemy, player));
+    }
 
 }
