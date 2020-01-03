@@ -13,6 +13,7 @@ public class DuelField extends JPanel {
     private Player player;
     private Player enemy;
     private HandPanel hp;
+    private PhasePanel east;
     public DuelField(Game game, Player player, Player enemy) {
 
         this.player = player;
@@ -37,7 +38,7 @@ public class DuelField extends JPanel {
 
         add(hp, BorderLayout.SOUTH);
 
-        PhasePanel east = new PhasePanel(game);
+        east = new PhasePanel(game);
         east.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         add(east, BorderLayout.EAST);
 
@@ -86,4 +87,7 @@ public class DuelField extends JPanel {
         return hp;
     }
 
+    public PhasePanel getEast(){
+        return east;
+    }
 }
