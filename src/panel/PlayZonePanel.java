@@ -827,7 +827,6 @@ public class PlayZonePanel extends JPanel {
 
     public void updateDeckAmount(){
        // text.setText("덱" + player.getDeckStack().size());
-        System.out.println("덱사이즈 몇갠데"+text.getText());
         ((JLabel)(zones[0][6].getComponent(0))).setText("덱" + player.getDeckStack().size());
         ((JLabel)(enemy.getDfp().getCenter().getEnemyZones()[1][0].getComponent(0))).setText("덱"+player.getDeckStack().size());
         repaint();

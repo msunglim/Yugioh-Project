@@ -10,11 +10,17 @@ public class StandbyPhase extends Phase{
         this.player = player;
         this.enemy = enemy;
 
+        phaseName = "스텐바이";
         System.out.println("스텐바이 페이즈입니다.");
 
 
-        setPhase(new DrawPhase(game, player, enemy));
-    }
+     }
+
+     public void goDraw(){
+         setPhase(new DrawPhase(game, player, enemy));
+     }
+
+
 
 
 }

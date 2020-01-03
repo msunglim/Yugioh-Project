@@ -5,11 +5,12 @@ import main.Game;
 public abstract class Phase {
 
 
-    private static Phase phase;
-    protected Game game;
-    protected Player player;
-    protected Player enemy;
+    private  static Phase phase;
+    protected static Game game;
+    protected static Player player;
+    protected static Player enemy;
 
+    protected static String phaseName;
     protected static boolean mainPhase2;
     //abstract에서 이따구로하면안된다...
 //    public Phase(){
@@ -23,11 +24,33 @@ public abstract class Phase {
 //    }
 
     public static Phase getPhase(Game game, Player player, Player enemy){
+
         phase = new StandbyPhase(game, player, enemy);
-        return phase;
+        System.out.println("스텐바이완료했구요 드로우가겠습니다");
+
+        ((StandbyPhase)(phase)).goDraw();
+        System.out.println("드로우완료했구요 메인1가겠습니다.");
+        ((DrawPhase)(phase)).goMain();
+
+
+        //  setPhase(new StandbyPhase(game, player, enemy));
+        System.out.println("시작은 첫걸음이다.");
+        return ((Phase) phase);
     }
 
-    public void setPhase(Phase phase){
-        this.phase = phase;
+    public String toString(){
+        return phaseName;
+    }
+    public static void setPhase(Phase newPhase){
+
+
+        phase = newPhase;
+
+     //   game.setPhase(newPhase);
+    }
+
+    public Phase getCurrentPhase(){
+
+        return phase;
     }
 }

@@ -6,6 +6,8 @@ import panel.DeckCreationPanel;
 import panel.DuelField;
 import panel.PlayerCreationPanel;
 import panel.WelcomePanel;
+import sun.applet.Main;
+import support.MainPhase;
 import support.Phase;
 import support.Player;
 
@@ -14,6 +16,7 @@ import java.awt.*;
 import java.io.File;
 
 import characters.Character;
+import support.StandbyPhase;
 
 public class Game {
     private JFrame jf;
@@ -120,6 +123,12 @@ public class Game {
 
 
         phase = Phase.getPhase(this, player, player2);
+
+    }
+
+    public Phase getCurrnetPhase(){
+
+        return phase.getCurrentPhase();
     }
 
     public DuelField getDfp(){
