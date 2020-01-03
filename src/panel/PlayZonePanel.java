@@ -828,12 +828,33 @@ public class PlayZonePanel extends JPanel {
     public void updateDeckAmount(){
        // text.setText("덱" + player.getDeckStack().size());
         ((JLabel)(zones[0][6].getComponent(0))).setText("덱" + player.getDeckStack().size());
+        if(player.getDeckStack().size() ==0){
+          zones[0][6].remove(1);
+          enemy.getDfp().getCenter().getEnemyZones()[1][0].remove(1);
+        }
         ((JLabel)(enemy.getDfp().getCenter().getEnemyZones()[1][0].getComponent(0))).setText("덱"+player.getDeckStack().size());
         repaint();
         validate();
+        enemy.getDfp().getCenter().repaint();
+        enemy.getDfp().getCenter().validate();
     }
 
     public JPanel [][] getEnemyZones(){
       return enemyZones;
     }
+
+    public int getNumberOfMonsters(){
+        return numberOfMonsters;
+    }
+    public int getNumberOfMagicTrap(){
+        return numberOfMagicTrap;
+    }
+    public void setNumberOfMonsters(int newNumberOfMonster){
+        this.numberOfMonsters = newNumberOfMonster;
+    }
+    public void setNumberOfMagicTrap(int newNumberOfMagicTrap){
+        this.numberOfMagicTrap = newNumberOfMagicTrap;
+    }
 }
+
+

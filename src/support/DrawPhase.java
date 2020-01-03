@@ -20,7 +20,7 @@ public class DrawPhase extends Phase {
 
 
         } else {
-            System.out.println("플레이어가 졌습니다");
+            System.out.println(player.getName()+ "이/가 졌습니다");
         }
     }
     public void goMain(){
