@@ -92,6 +92,8 @@ public class HandPanel extends JPanel {
         final int ii = i;
         Card card = player.getHand().get(ii);
         //   Card card2 = player.getHand().get(ii);
+
+        //마우스올려놓으면 왼쪽에 정보뜨는거.
         preview.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -118,160 +120,167 @@ public class HandPanel extends JPanel {
         preview.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                // System.out.println("두둥탁!");
-                //   System.out.println("카드타입을알수있나요?" + game.getPlayer().getDeck()[ii].getCardType());
-                JMenuItem m1, m2;
-                switch (player.getHand().get(ii).getCardType()) {
-                    case 0:
-                        JPopupMenu pm = new JPopupMenu("선택창");
-                        m1 = new JMenuItem("소환");
-                        m2 = new JMenuItem("세트");
-                        pm.add(m1);
-                        pm.add(m2);
-                        pm.show(e.getComponent(),
-                                e.getX(), e.getY());
+                //자기턴이아니면 선택할기회조차주어지지않는다. 메인페이즈가아니면 페에서 선택할 기회조차 주어지지않는다.
+                if(player.getMyTurn() && game.getCurrnetPhase().isMainPhase()) {
+                    super.mouseClicked(e);
+                    // System.out.println("두둥탁!");
+                    //   System.out.println("카드타입을알수있나요?" + game.getPlayer().getDeck()[ii].getCardType());
+                    JMenuItem m1, m2;
+                    switch (player.getHand().get(ii).getCardType()) {
+                        case 0:
+                            JPopupMenu pm = new JPopupMenu("선택창");
+                            m1 = new JMenuItem("소환");
+                            m2 = new JMenuItem("세트");
+                            pm.add(m1);
+                            pm.add(m2);
+                            pm.show(e.getComponent(),
+                                    e.getX(), e.getY());
 
-                        m1.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if (player.getDfp().getCenter().getNumberOfMonsters() + 1 <= 5) {
-                                    System.out.println(player.getHand().get(ii).getName() + "을/를 소환합니다");
-                                    //    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
-                                    //summon.removeAll();
-                                    //   summon.invalidate();
-                                    //   summon.repaint();
-                                    //   summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
-                                    //   summon.validate();
+                            m1.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if ( player.getDfp().getCenter().getNumberOfMonsters() + 1 <= 5) {
+                                        System.out.println(player.getHand().get(ii).getName() + "을/를 소환합니다");
+                                        //    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
+                                        //summon.removeAll();
+                                        //   summon.invalidate();
+                                        //   summon.repaint();
+                                        //   summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
+                                        //   summon.validate();
 
-                                    player.getDfp().getCenter().setCard(card, 1, false);
-                                    enemy.getDfp().getCenter().updateEnemyField(card, 0, false);
+                                        player.getDfp().getCenter().setCard(card, 1, false);
+                                        enemy.getDfp().getCenter().updateEnemyField(card, 0, false);
 
-                                    remove(preview);
-                                    enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+                                        remove(preview);
+                                        enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
 
-                                    repaint();
-                                    validate();
-                                } else {
-                                    System.out.println("필드에 몬스터가 이미 5장이라 새로운 몬스터를 소환 할 수 없습니다.");
+                                        repaint();
+                                        validate();
+                                    } else {
+                                        System.out.println("필드에 몬스터가 이미 5장이라 새로운 몬스터를 소환 할 수 없습니다.");
+                                    }
                                 }
-                            }
-                        });
-                        m2.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if (player.getDfp().getCenter().getNumberOfMonsters() + 1 <= 5) {
+                            });
+                            m2.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if (player.getDfp().getCenter().getNumberOfMonsters() + 1 <= 5) {
 
-                                    System.out.println(player.getHand().get(ii).getName() + "을/를 세트합니다");
-                                    player.getDfp().getCenter().setCard(card, 1, true);
-                                    //    enemy.getDfp().getCenter().setCard(card, 0, true);
-                                    enemy.getDfp().getCenter().updateEnemyField(card, 0, true);
-                                    remove(preview);
-                                    enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+                                        System.out.println(player.getHand().get(ii).getName() + "을/를 세트합니다");
+                                        player.getDfp().getCenter().setCard(card, 1, true);
+                                        //    enemy.getDfp().getCenter().setCard(card, 0, true);
+                                        enemy.getDfp().getCenter().updateEnemyField(card, 0, true);
+                                        remove(preview);
+                                        enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
 
-                                    repaint();
-                                    validate();
-                                } else {
+                                        repaint();
+                                        validate();
+                                    } else {
 
-                                    System.out.println("필드에 몬스터가 이미 5장이라 새로운 몬스터를 소환 할 수 없습니다.");
+                                        System.out.println("필드에 몬스터가 이미 5장이라 새로운 몬스터를 소환 할 수 없습니다.");
+                                    }
                                 }
-                            }
-                        });
-                        break;
-                    case 1:
-                        pm = new JPopupMenu("선택창");
-                        m1 = new JMenuItem("발동");
-                        m2 = new JMenuItem("세트");
-                        pm.add(m1);
-                        pm.add(m2);
-                        pm.show(e.getComponent(),
-                                e.getX(), e.getY());
-                        m1.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if (player.getDfp().getCenter().getNumberOfMagicTrap() + 1 <= 5) {
-                                    System.out.println(player.getHand().get(ii).getName() + "을/를 발동합니다");
-                                    //    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
-                                    //summon.removeAll();
-                                    //   summon.invalidate();
-                                    //   summon.repaint();
-                                    //   summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
-                                    //   summon.validate();
+                            });
+                            break;
+                        case 1:
+                            pm = new JPopupMenu("선택창");
+                            m1 = new JMenuItem("발동");
+                            m2 = new JMenuItem("세트");
+                            pm.add(m1);
+                            pm.add(m2);
+                            pm.show(e.getComponent(),
+                                    e.getX(), e.getY());
+                            m1.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if (player.getDfp().getCenter().getNumberOfMagicTrap() + 1 <= 5) {
+                                        System.out.println(player.getHand().get(ii).getName() + "을/를 발동합니다");
+                                        //    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
+                                        //summon.removeAll();
+                                        //   summon.invalidate();
+                                        //   summon.repaint();
+                                        //   summon.add(game.getPlayer().getHand().get(ii).getCardPreviewImage(), BorderLayout.CENTER);
+                                        //   summon.validate();
 
-                                    player.getDfp().getCenter().setCard(card, 0, false);
-                                    enemy.getDfp().getCenter().updateEnemyField(card, 1, false);
-                                    remove(preview);
-                                    enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+                                        player.getDfp().getCenter().setCard(card, 0, false);
+                                        enemy.getDfp().getCenter().updateEnemyField(card, 1, false);
+                                        remove(preview);
+                                        enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
 
-                                    repaint();
-                                    validate();
-                                } else {
-                                    System.out.println("필드에 마법/함정카드가 이미 5장이라 새로운 몬스터를 소환 할 수 없습니다.");
+                                        repaint();
+                                        validate();
+                                    } else {
+                                        System.out.println("필드에 마법/함정카드가 이미 5장이라 새로운 몬스터를 소환 할 수 없습니다.");
+                                    }
                                 }
-                            }
-                        });
-                        m2.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if (player.getDfp().getCenter().getNumberOfMagicTrap() + 1 <= 5) {
-                                    System.out.println(player.getHand().get(ii).getName() + "을/를 세트합니다");
+                            });
+                            m2.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if (player.getDfp().getCenter().getNumberOfMagicTrap() + 1 <= 5) {
+                                        System.out.println(player.getHand().get(ii).getName() + "을/를 세트합니다");
 
-                                    player.getDfp().getCenter().setCard(card, 0, true);
-                                    enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
-                                    remove(preview);
-                                    enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+                                        player.getDfp().getCenter().setCard(card, 0, true);
+                                        enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
+                                        remove(preview);
+                                        enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
 
-                                    repaint();
-                                    validate();
-                                } else {
+                                        repaint();
+                                        validate();
+                                    } else {
 
-                                    System.out.println("필드에 마법/함정카드가 이미 5장이라 새로운 몬스터를 소환 할 수 없습니다.");
+                                        System.out.println("필드에 마법/함정카드가 이미 5장이라 새로운 몬스터를 소환 할 수 없습니다.");
+                                    }
                                 }
-                            }
 
-                        });
-                        break;
-                    case 2:
-                        pm = new JPopupMenu("선택창");
-                        //    m1 = new JMenuItem("발동");
-                        m2 = new JMenuItem("세트");
-                        //     pm.add(m1);
-                        pm.add(m2);
-                        pm.show(e.getComponent(),
-                                e.getX(), e.getY());
+                            });
+                            break;
+                        case 2:
+                            pm = new JPopupMenu("선택창");
+                            //    m1 = new JMenuItem("발동");
+                            m2 = new JMenuItem("세트");
+                            //     pm.add(m1);
+                            pm.add(m2);
+                            pm.show(e.getComponent(),
+                                    e.getX(), e.getY());
 
-                        m2.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
+                            m2.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
 
-                                if (player.getDfp().getCenter().getNumberOfMagicTrap() + 1 <= 5) {
-                                    System.out.println(player.getHand().get(ii).getName() + "을/를 세트합니다");
+                                    if (player.getDfp().getCenter().getNumberOfMagicTrap() + 1 <= 5) {
+                                        System.out.println(player.getHand().get(ii).getName() + "을/를 세트합니다");
 
 
-                                    player.getDfp().getCenter().setCard(card, 0, true);
-                                    enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
-                                    remove(preview);
-                                    enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+                                        player.getDfp().getCenter().setCard(card, 0, true);
+                                        enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
+                                        remove(preview);
+                                        enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
 
-                                    repaint();
-                                    validate();
-                                } else {
+                                        repaint();
+                                        validate();
+                                    } else {
 
-                                    System.out.println("필드에 마법/함정카드가 이미 5장이라 새로운 몬스터를 소환 할 수 없습니다.");
+                                        System.out.println("필드에 마법/함정카드가 이미 5장이라 새로운 몬스터를 소환 할 수 없습니다.");
+                                    }
                                 }
-                            }
-                        });
-                        break;
-                    default:
-                        break;
-                }
+                            });
+                            break;
+                        default:
+                            break;
+                    }
 
 //
 //                    System.out.println("마우스 좌표:" + MouseInfo.getPointerInfo().getLocation().x);
 //
 //                    System.out.println("마우스 좌표:" + MouseInfo.getPointerInfo().getLocation().y);
 
+                }
+                else{
 
+                    //자기턴이 아닐 땐 패에서 소환/세트/발동이 허락되지않는다.
+                //      System.out.println("자기턴이아닌데 왜만져");
+                }
             }
         });
         add(preview);

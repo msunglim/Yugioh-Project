@@ -18,7 +18,7 @@ public class Player {
     private Stack<Card> deckStack = new Stack<>();
     private int lp;
     private DuelField dfp;
-
+    private boolean myTurn;
     private boolean defeat = false;
 
     public Player(Character c) {
@@ -32,6 +32,12 @@ public class Player {
 //        deckSize -= 5;
     }
 
+    public void setMyTurn(boolean tf){
+        myTurn= tf;
+    }
+    public boolean getMyTurn(){
+        return  myTurn;
+    }
     public void gameStart() {
         lp = 2000;
         for (int i = 0; i < 5; i++) {

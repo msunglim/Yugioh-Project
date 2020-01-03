@@ -10,6 +10,11 @@ public class StandbyPhase extends Phase{
         this.player = player;
         this.enemy = enemy;
 
+
+        player.setMyTurn(true);
+        enemy.setMyTurn(false);
+        enemy.getDfp().getCenter().emptyUnchangableList();
+        mainPhase2 = false;
         phaseName = "스텐바이";
         System.out.println("스텐바이 페이즈입니다.");
 
