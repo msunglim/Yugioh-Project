@@ -34,7 +34,7 @@ public abstract class Phase {
 
 
         //  setPhase(new StandbyPhase(game, player, enemy));
-        System.out.println("시작은 첫걸음이다.");
+
         return ((Phase) phase);
     }
 

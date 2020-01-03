@@ -14,26 +14,26 @@ import java.awt.event.ActionListener;
 public class PhasePanel extends JPanel {
 
 
-
     private JButton mainPhase2 = new JButton("메인2");
     private JButton battlePhase = new JButton("배틀");
     private JButton endPahse = new JButton("엔드");
+
     public PhasePanel(Game game) {
         setLayout(new FlowLayout());
-        setPreferredSize(new Dimension(100,700));
+        setPreferredSize(new Dimension(100, 700));
         setAlignmentX(Component.CENTER_ALIGNMENT);
         add(new JButton("스텐바이"));
         add(new JButton("드로우"));
         add(new JButton("메인1"));
 
 
-
         battlePhase.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-
-                ((MainPhase)(game.getCurrnetPhase())).goFight();
+                if (game.getCurrnetPhase() instanceof MainPhase) {
+                    ((MainPhase) (game.getCurrnetPhase())).goFight();
+                }
             }
         });
         add(battlePhase);
@@ -42,8 +42,9 @@ public class PhasePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-
-                ((BattlePhase)(game.getCurrnetPhase())).goMain();
+                if(game.getCurrnetPhase() instanceof  BattlePhase) {
+                    ((BattlePhase) (game.getCurrnetPhase())).goMain();
+                }
             }
         });
         add(mainPhase2);
@@ -54,13 +55,12 @@ public class PhasePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 //  System.out.println("머"+ game.getCurrnetPhase().toString());
                 //    System.out.println("챜"+game.getCurrnetPhase().toString().equals("메인1"));
-                if(game.getCurrnetPhase() instanceof MainPhase){
+                if (game.getCurrnetPhase() instanceof MainPhase) {
 
-                    ((MainPhase)(game.getCurrnetPhase())).goEnd();
+                    ((MainPhase) (game.getCurrnetPhase())).goEnd();
 
-                }
-                else if (game.getCurrnetPhase() instanceof BattlePhase){
-                    ((BattlePhase)(game.getCurrnetPhase())).goEnd();
+                } else if (game.getCurrnetPhase() instanceof BattlePhase) {
+                    ((BattlePhase) (game.getCurrnetPhase())).goEnd();
                 }
 
             }
@@ -70,6 +70,7 @@ public class PhasePanel extends JPanel {
         add(endPahse);
 
     }
+
     public JButton getMainPhase2() {
         return mainPhase2;
     }
