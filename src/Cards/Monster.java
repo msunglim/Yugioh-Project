@@ -41,6 +41,12 @@ public class Monster extends Card {
     }
 
 
+    public int getATK(){
+        return ATK;
+    }
+    public int getDEF(){
+        return DEF;
+    }
     public String getName() {
         return name;
     }

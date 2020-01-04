@@ -124,7 +124,10 @@ public abstract class Card {
         p.add(Box.createRigidArea(new Dimension(0, 5)));
         p.add(previewImage);
         p.setBorder(BorderFactory.createLineBorder(Color.black));
+
+
         return p;
+
     }
 
     public abstract JPanel getCardImage();
