@@ -138,6 +138,9 @@ public class Player {
         return lp;
     }
 
+    public void setLp(int newLp){
+        lp = newLp;
+    }
     public ArrayList<Card> getHand() {
         return hand;
     }

@@ -37,9 +37,12 @@ public class PlayZonePanel extends JPanel {
     private HandPanel enemyHand;
 
     private ArrayList<Card> unchangableList = new ArrayList<>(10);
+    private ArrayList<Card> fightableEnemyMonsterList = new ArrayList<>(5);
+
 
     private Map<Card, JPanel> fightableList = new HashMap<>(5);
     private Map<Card, JPanel> enemyMonsterList = new HashMap<>(5);
+
     public PlayZonePanel(Game game, Player player, Player enemy) {
         this.game = game;
         this.player = player;
@@ -235,7 +238,7 @@ public class PlayZonePanel extends JPanel {
 
                                         //공격에서 수비표시로 전향하신분이라 전투가능요원에서 배제
                                         fightableList.remove(card, cardImage);
-
+                                        enemy.getDfp().getCenter().getFightableEnemyMonsterList().remove(card);
                                         System.out.println("지워진카드:" + card.getName());
 
 
@@ -265,6 +268,7 @@ public class PlayZonePanel extends JPanel {
 
                                         //frame2 update
                                         enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, y, location);
+                                        enemy.getDfp().getCenter().addToEnemyMonsterList(card, cardImage2);
                                     }
 
                                 });
@@ -313,7 +317,7 @@ public class PlayZonePanel extends JPanel {
 
                                         //지금 수비에서 공격으로 전향하신분이기때문에 공격준비태세에넣음
                                         fightableList.put(card, cardImage);
-
+                                        enemy.getDfp().getCenter().getFightableEnemyMonsterList().add(card);
                                         System.out.println("더해진카드:" + card.getName());
                                         //물밑작업
 
@@ -342,6 +346,7 @@ public class PlayZonePanel extends JPanel {
 
                                         //frame2 update
                                         enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, y, location);
+                                        enemy.getDfp().getCenter().addToEnemyMonsterList(card, cardImage2);
                                     }
 
                                 });
@@ -355,7 +360,7 @@ public class PlayZonePanel extends JPanel {
 
                 //공격표시로 소환되었기때문에 공격준비완료
                 fightableList.put(card, cardImage);
-
+                enemy.getDfp().getCenter().getFightableEnemyMonsterList().add(card);
 
                 System.out.println("더해진카드:" + card.getName());
             } else {//세트할시.
@@ -424,7 +429,7 @@ public class PlayZonePanel extends JPanel {
 
 
                 //   enemy.getDfp().getCenter().updateEnemyFieldGraphicForSet(card, cardBack2, y, location);
-
+                //enemy.getDfp().getCenter().addToEnemyMonsterList(card, cardImage2);
 
                 cardBack.addMouseListener(new MouseAdapter() {
                     @Override
@@ -457,11 +462,11 @@ public class PlayZonePanel extends JPanel {
 
                                     //반전소환되었다는말은, 공격표시로 되었기때문에, 전투가능요원에 배치
                                     fightableList.put(card, cardImage);
-
+                                    enemy.getDfp().getCenter().getFightableEnemyMonsterList().add(card);
 
                                     System.out.println("더해진카드:" + card.getName());
                                     enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, y, location);
-
+                                    enemy.getDfp().getCenter().addToEnemyMonsterList(card, cardImage2);
                                     JPopupMenu pm = new JPopupMenu("선택창");
                                     JMenuItem m1 = new JMenuItem("수비표시");
 
@@ -519,7 +524,7 @@ public class PlayZonePanel extends JPanel {
 
                                                             //수비로간놈제거
                                                             fightableList.remove(card, cardImage);
-
+                                                            enemy.getDfp().getCenter().getFightableEnemyMonsterList().remove(card);
                                                             System.out.println("지워진카드:" + card.getName());
                                                             m1.removeActionListener(m1.getActionListeners()[0]);
 
@@ -549,6 +554,7 @@ public class PlayZonePanel extends JPanel {
 
                                                             //frame2 update
                                                             enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, y, location);
+                                                            enemy.getDfp().getCenter().addToEnemyMonsterList(card, cardImage2);
                                                         }
 
                                                     });
@@ -594,7 +600,7 @@ public class PlayZonePanel extends JPanel {
 
                                                             //공격으로 전향하신분
                                                             fightableList.put(card, cardImage);
-
+                                                            enemy.getDfp().getCenter().getFightableEnemyMonsterList().add(card);
 
                                                             System.out.println("더해진카드:" + card.getName());
                                                             //물밑작업 반전소환 적의필드 업뎅티ㅡ
@@ -624,6 +630,7 @@ public class PlayZonePanel extends JPanel {
 
                                                             //frame2 update
                                                             enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, y, location);
+                                                            enemy.getDfp().getCenter().addToEnemyMonsterList(card, cardImage2);
                                                         }
 
                                                     });
@@ -762,7 +769,7 @@ public class PlayZonePanel extends JPanel {
             if (!set) {
                 enemyZones[y][location].add(cardImage);
                 enemyZones[y][location].validate();
-               addToEnemyMonsterList(card, cardImage);
+                addToEnemyMonsterList(card, cardImage);
 
             } else {//세트할시.
                 ImageIcon img = new ImageIcon(card.getBackIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
@@ -918,12 +925,17 @@ public class PlayZonePanel extends JPanel {
     }
 
     public void addToEnemyMonsterList(Card card, JPanel cardImage){
+        System.out.println("새로넣어진카드는?" + card.getName());
         enemyMonsterList.put(card, cardImage);
     }
     public Map<Card, JPanel> getEnemyMonsterList(){
         return enemyMonsterList;
     }
 
+
+    public ArrayList<Card> getFightableEnemyMonsterList(){
+        return fightableEnemyMonsterList;
+    }
 
 }
 

@@ -14,6 +14,11 @@ public class DuelField extends JPanel {
     private Player enemy;
     private HandPanel hp;
     private PhasePanel east;
+    private JPanel lpPanel;
+    private JPanel north;
+    private  JLabel lp;
+    private  JLabel lp2;
+
     public DuelField(Game game, Player player, Player enemy) {
 
         this.player = player;
@@ -44,19 +49,19 @@ public class DuelField extends JPanel {
 
 
 
-        JPanel north = new JPanel();
+        north = new JPanel();
 
-        JPanel lpPanel = new JPanel();
+        lpPanel = new JPanel();
         lpPanel.setPreferredSize(new Dimension(1000, 30));
         lpPanel.setLayout(new BorderLayout());
 
-        JLabel lp = new JLabel("생존점수:" + player.getLp());
+       lp = new JLabel("생존점수:" + player.getLp());
         lp.setHorizontalAlignment( JLabel.LEFT);
         lp.setAlignmentX(Component.LEFT_ALIGNMENT);
         lpPanel.add(lp, BorderLayout.WEST);
 
 
-        JLabel lp2 = new JLabel("생존점수:" + enemy.getLp());
+       lp2= new JLabel("생존점수:" + enemy.getLp());
        //lp2.setHorizontalAlignment( JLabel.RIGHT);
         lp2.setAlignmentX(Component.RIGHT_ALIGNMENT);
         lpPanel.add(lp2, BorderLayout.EAST);
@@ -89,5 +94,23 @@ public class DuelField extends JPanel {
 
     public PhasePanel getEast(){
         return east;
+    }
+
+    public void updatePlayerLp(){
+        lp.setText("생존점수"+ player.getLp());
+        lpPanel.repaint();
+        lpPanel.validate();
+
+        north.repaint();
+        north.validate();
+
+    }
+    public void updateEnemyLp(){
+        lp2.setText("생존점수"+ enemy.getLp());
+        lpPanel.repaint();
+        lpPanel.validate();
+
+        north.repaint();
+        north.validate();
     }
 }
