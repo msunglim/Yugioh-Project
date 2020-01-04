@@ -13,6 +13,7 @@ public class BattlePhase extends Phase {
     private Card attacker;
     private Card victim;
     private boolean letsFight;
+
     public BattlePhase(Game game, Player player, Player enemy) {
 
 //        this.game = game;
@@ -27,36 +28,58 @@ public class BattlePhase extends Phase {
 
 
         //    System.out.println("왜안해");
-            setVictim();
+        setVictim();
         //}
     }
 
     public void setVictim() {
         for (Map.Entry<Card, JPanel> entry : player.getDfp().getCenter().getEnemyMonsterList().entrySet()) {
-
-
+            System.out.println("적들" + entry.getKey().getName());
             entry.getValue().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-
                     //  entry.getValue().removeMouseListener(entry.getValue().getMouseListeners()[entry.getValue().getMouseListeners().length- 1]);
                     if (letsFight) {
                         victim = entry.getKey();
 
                         System.out.println(entry.getKey().getName() + "을/를 공격했습니다!");
 
+                        if (player.getDfp().getCenter().getFightableEnemyMonsterList().contains(entry.getKey())) {
+                            int damage = ((Monster) (attacker)).getATK() - ((Monster) (victim)).getATK();
+                            if (damage < 0) {
+                                player.setLp(player.getLp()+damage);
+                                player.getDfp().updatePlayerLp();
+                                enemy.getDfp().updateEnemyLp();
 
-                        if (((Monster) (attacker)).getATK() < ((Monster) (victim)).getATK()) {
-                            System.out.println("공격한놈의 공격력이 맞은놈의 공격력보다 낮아 공격한놈이 파괴되었습니다.");
-                        } else if (((Monster) (attacker)).getATK() > ((Monster) (victim)).getATK()) {
-                            System.out.println("공격한놈의 공격력이 맞은놈의 공격력보다 높아 맞은놈이 파괴되었습니다.");
+                                System.out.println("플레이어 생존점수:"+ player.getLp());
+                                System.out.println("공격한놈의 공격력이 맞은놈의 공격력보다 낮아 공격한놈이 파괴되었습니다.");
+                            } else if (damage > 0) {
+                                enemy.setLp(enemy.getLp() - damage);
+                                player.getDfp().updateEnemyLp();
+                                enemy.getDfp().updatePlayerLp();
+                                System.out.println("적의 생존점수:"+ enemy.getLp());
+                                System.out.println("공격한놈의 공격력이 맞은놈의 공격력보다 높아 맞은놈이 파괴되었습니다.");
+                            } else {
+                                //같을경우
+                                System.out.println("공격한놈의 공격력이 맞은놈의 공격력과 같아 동반자살하였습니다.");
+                            }
                         } else {
-                            //같을경우
-                            System.out.println("공격한놈의 공격력이 맞은놈의 공격력과 같아 동반자살하였습니다.");
+                            int damage = ((Monster) (attacker)).getATK() - ((Monster) (victim)).getDEF();
+                            if (damage < 0) {
+                                player.setLp(player.getLp()+damage);
+                                player.getDfp().updatePlayerLp();
+                                enemy.getDfp().updateEnemyLp();
+                                System.out.println("플레이어 생존점수:"+ player.getLp());
+                                System.out.println("공격한놈의 공격력이 맞은놈의 수비력보다 낮아 공격한 놈의 컨트롤러가 그 수치만큼 데미지를 입습니다.");
+                            } else if (damage > 0) {
+                                System.out.println("공격한놈의 공격력이 맞은놈의 수비력보다 높아 맞은놈이 파괴되었습니다.");
+                            } else {
+                                //같을경우
+                                System.out.println("공격한놈의 공격력이 맞은놈의 수비력과 같아 서로 아무 데미지도 입지않았습니다.");
+                            }
                         }
-
-                        letsFight =false;
+                        letsFight = false;
                     }
                 }
 
@@ -85,7 +108,7 @@ public class BattlePhase extends Phase {
                     pm.show(e.getComponent(),
                             e.getX(), e.getY());
 
-               //     System.out.println("검찰1");
+                    //     System.out.println("검찰1");
                     m1.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -93,12 +116,12 @@ public class BattlePhase extends Phase {
 
 //                            System.out.println("검찰2");
 //                            System.out.println("이건뭐냐"+m1.getMouseListeners().length);
-                        //    entry.getValue().removeMouseListener(entry.getValue().getMouseListeners()[entry.getValue().getMouseListeners().length- 1]);
+                            //    entry.getValue().removeMouseListener(entry.getValue().getMouseListeners()[entry.getValue().getMouseListeners().length- 1]);
 
                             m1.removeActionListener(m1.getActionListeners()[0]);
 
                             letsFight = true;
-                        //    System.out.println("렛츠파잇"+ letsFight);
+                            //    System.out.println("렛츠파잇"+ letsFight);
                         }
 
                     });
