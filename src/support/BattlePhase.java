@@ -6,6 +6,7 @@ import main.Game;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class BattlePhase extends Phase {
@@ -13,6 +14,10 @@ public class BattlePhase extends Phase {
     private Card attacker;
     private Card victim;
     private boolean letsFight;
+
+
+    //싸운놈리시트
+    ArrayList<Card> hasFought;
 
     public BattlePhase(Game game, Player player, Player enemy) {
 
@@ -22,17 +27,13 @@ public class BattlePhase extends Phase {
         phaseName = "배틀";
         this.mainPhase2 = true;
         System.out.println("베틀페이즈 입니다.");
-
-
         setFightable();
-
-
-        //    System.out.println("왜안해");
         setVictim();
-        //}
+        hasFought = new ArrayList<>(5);
     }
 
     public void setVictim() {
+        //적의 몬스터에 마우스어뎁터 추가요.
         for (Map.Entry<Card, JPanel> entry : player.getDfp().getCenter().getEnemyMonsterList().entrySet()) {
             System.out.println("적들" + entry.getKey().getName());
             entry.getValue().addMouseListener(new MouseAdapter() {
@@ -40,43 +41,66 @@ public class BattlePhase extends Phase {
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
                     //  entry.getValue().removeMouseListener(entry.getValue().getMouseListeners()[entry.getValue().getMouseListeners().length- 1]);
-                    if (letsFight) {
+                    if (letsFight) {//공격선언을 해야 적의 몬스터들을 클릭했을때 전투를 실행하다.
                         victim = entry.getKey();
 
                         System.out.println(entry.getKey().getName() + "을/를 공격했습니다!");
 
+                        //공격표시로 존재하는 몬스터를 공격했을때,
                         if (player.getDfp().getCenter().getFightableEnemyMonsterList().contains(entry.getKey())) {
                             int damage = ((Monster) (attacker)).getATK() - ((Monster) (victim)).getATK();
                             if (damage < 0) {
-                                player.setLp(player.getLp()+damage);
+                                //쨉도안되는 공격력으로 깝쳤을경우
+                                player.setLp(player.getLp() + damage);
                                 player.getDfp().updatePlayerLp();
                                 enemy.getDfp().updateEnemyLp();
 
-                                System.out.println("플레이어 생존점수:"+ player.getLp());
+                                System.out.println("플레이어 생존점수:" + player.getLp());
                                 System.out.println("공격한놈의 공격력이 맞은놈의 공격력보다 낮아 공격한놈이 파괴되었습니다.");
                             } else if (damage > 0) {
+                                //상대몬스터를 개팻을경우
                                 enemy.setLp(enemy.getLp() - damage);
                                 player.getDfp().updateEnemyLp();
                                 enemy.getDfp().updatePlayerLp();
-                                System.out.println("적의 생존점수:"+ enemy.getLp());
+                                System.out.println("적의 생존점수:" + enemy.getLp());
                                 System.out.println("공격한놈의 공격력이 맞은놈의 공격력보다 높아 맞은놈이 파괴되었습니다.");
                             } else {
                                 //같을경우
                                 System.out.println("공격한놈의 공격력이 맞은놈의 공격력과 같아 동반자살하였습니다.");
                             }
-                        } else {
+                        } else { //수비표시로 존재하는 몬스터를 공격했을때.
                             int damage = ((Monster) (attacker)).getATK() - ((Monster) (victim)).getDEF();
-                            if (damage < 0) {
-                                player.setLp(player.getLp()+damage);
-                                player.getDfp().updatePlayerLp();
-                                enemy.getDfp().updateEnemyLp();
-                                System.out.println("플레이어 생존점수:"+ player.getLp());
-                                System.out.println("공격한놈의 공격력이 맞은놈의 수비력보다 낮아 공격한 놈의 컨트롤러가 그 수치만큼 데미지를 입습니다.");
-                            } else if (damage > 0) {
-                                System.out.println("공격한놈의 공격력이 맞은놈의 수비력보다 높아 맞은놈이 파괴되었습니다.");
+                            if (player.getDfp().getCenter().getSetEnemyMonsterList().containsKey(entry.getKey())) {
+                                System.out.println("세트된 몬스터를 공격하셨군요");
+
+                                entry.getValue().removeAll();
+                                entry.getValue().repaint();
+                                JPanel reversedImage=entry.getKey().getCardPreviewImage();
+
+                                player.getDfp().getCenter().reverseSetMonster(entry.getKey(), reversedImage );
+                                JPanel container = ((JPanel) (entry.getValue().getParent()));
+
+                                container.add(reversedImage);
+                                container.remove(entry.getValue());
+                                container.repaint();
+                                container.validate();
+
+                                //여기서 새로만들거 헌정하자
+                                //JPanel reversedImageCopy = new 이렇게하는건 안되는것같은데..
+                                enemy.getDfp().getCenter().updateMyMonsterZone(entry.getKey());
                             } else {
-                                //같을경우
-                                System.out.println("공격한놈의 공격력이 맞은놈의 수비력과 같아 서로 아무 데미지도 입지않았습니다.");
+                                if (damage < 0) {
+                                    player.setLp(player.getLp() + damage);
+                                    player.getDfp().updatePlayerLp();
+                                    enemy.getDfp().updateEnemyLp();
+                                    System.out.println("플레이어 생존점수:" + player.getLp());
+                                    System.out.println("공격한놈의 공격력이 맞은놈의 수비력보다 낮아 공격한 놈의 컨트롤러가 그 수치만큼 데미지를 입습니다.");
+                                } else if (damage > 0) {
+                                    System.out.println("공격한놈의 공격력이 맞은놈의 수비력보다 높아 맞은놈이 파괴되었습니다.");
+                                } else {
+                                    //같을경우
+                                    System.out.println("공격한놈의 공격력이 맞은놈의 수비력과 같아 서로 아무 데미지도 입지않았습니다.");
+                                }
                             }
                         }
                         letsFight = false;
@@ -98,6 +122,7 @@ public class BattlePhase extends Phase {
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
 
+                    System.out.println("하이");
                     attacker = entry.getKey();
 
                     JPopupMenu pm = new JPopupMenu("선택창");
@@ -114,14 +139,16 @@ public class BattlePhase extends Phase {
                         public void actionPerformed(ActionEvent e) {
                             System.out.println(entry.getKey().getName() + "이/가 공격합니다!!");
 
-//                            System.out.println("검찰2");
-//                            System.out.println("이건뭐냐"+m1.getMouseListeners().length);
-                            //    entry.getValue().removeMouseListener(entry.getValue().getMouseListeners()[entry.getValue().getMouseListeners().length- 1]);
-
                             m1.removeActionListener(m1.getActionListeners()[0]);
 
                             letsFight = true;
-                            //    System.out.println("렛츠파잇"+ letsFight);
+
+
+                            //한번 공격버튼을 누르면 이번턴에 공격불가능
+                            entry.getValue().removeMouseListener(entry.getValue().getMouseListeners()[entry.getValue().getMouseListeners().length - 1]);
+                            //싸운놈 리스트에 명단올라가
+                            hasFought.add(entry.getKey());
+
                         }
 
                     });
@@ -148,17 +175,12 @@ public class BattlePhase extends Phase {
 
     public void removeFightable() {
         for (Map.Entry<Card, JPanel> entry : player.getDfp().getCenter().getFightableList().entrySet()) {
-            //이거 뺏었다가 나중에 끝날때 돌려줘야해.....
-//            MouseListener []ml = player.getDfp().getCenter().getFightableList().get(i).getMouseListeners();
-//
-//            for(int j= 0; j < ml.length; j++) {
-//                player.getDfp().getCenter().getFightableList().get(i).removeMouseListener(ml[j]);
-//            }
 
-            //   final int ii = i;
+            if (!hasFought.contains(entry.getKey())) {
+                //자이제 새로운 세팅 출력합시다. 음 근데 이거 어짜피 배틀페이지에 표시형식변경 못하게해놨잫ㄴ아..? 지금이 전략 안먹힌다면, 그냥 에드리스너만 해도될듯..
+                entry.getValue().removeMouseListener(entry.getValue().getMouseListeners()[entry.getValue().getMouseListeners().length - 1]);
 
-            //자이제 새로운 세팅 출력합시다. 음 근데 이거 어짜피 배틀페이지에 표시형식변경 못하게해놨잫ㄴ아..? 지금이 전략 안먹힌다면, 그냥 에드리스너만 해도될듯..
-            entry.getValue().removeMouseListener(entry.getValue().getMouseListeners()[entry.getValue().getMouseListeners().length - 1]);
+            }
         }
     }
 }

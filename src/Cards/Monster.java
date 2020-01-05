@@ -41,12 +41,14 @@ public class Monster extends Card {
     }
 
 
-    public int getATK(){
+    public int getATK() {
         return ATK;
     }
-    public int getDEF(){
+
+    public int getDEF() {
         return DEF;
     }
+
     public String getName() {
         return name;
     }
@@ -122,7 +124,7 @@ public class Monster extends Card {
         //밑에
         JPanel bottom = new JPanel();
 
-        bottom.setPreferredSize(new Dimension(300,125));
+        bottom.setPreferredSize(new Dimension(300, 125));
         bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
         //간격
         bottom.add(Box.createRigidArea(new Dimension(0, 1)));

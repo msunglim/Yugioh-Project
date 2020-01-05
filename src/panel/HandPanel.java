@@ -121,7 +121,7 @@ public class HandPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //자기턴이아니면 선택할기회조차주어지지않는다. 메인페이즈가아니면 페에서 선택할 기회조차 주어지지않는다.
-                if(player.getMyTurn() && game.getCurrnetPhase().isMainPhase()) {
+                if (player.getMyTurn() && game.getCurrnetPhase().isMainPhase()) {
                     super.mouseClicked(e);
                     // System.out.println("두둥탁!");
                     //   System.out.println("카드타입을알수있나요?" + game.getPlayer().getDeck()[ii].getCardType());
@@ -139,7 +139,7 @@ public class HandPanel extends JPanel {
                             m1.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    if ( player.getDfp().getCenter().getNumberOfMonsters() + 1 <= 5) {
+                                    if (player.getDfp().getCenter().getNumberOfMonsters() + 1 <= 5) {
                                         System.out.println(player.getHand().get(ii).getName() + "을/를 소환합니다");
                                         //    JPanel summon = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.CENTER);
                                         //summon.removeAll();
@@ -275,11 +275,10 @@ public class HandPanel extends JPanel {
 //
 //                    System.out.println("마우스 좌표:" + MouseInfo.getPointerInfo().getLocation().y);
 
-                }
-                else{
+                } else {
 
                     //자기턴이 아닐 땐 패에서 소환/세트/발동이 허락되지않는다.
-                //      System.out.println("자기턴이아닌데 왜만져");
+                    //      System.out.println("자기턴이아닌데 왜만져");
                 }
             }
         });

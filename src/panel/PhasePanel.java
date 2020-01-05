@@ -24,53 +24,51 @@ public class PhasePanel extends JPanel {
         add(new JButton("메인1"));
 
 
-            battlePhase.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+        battlePhase.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-                    if (player.getMyTurn() && game.getCurrnetPhase() instanceof MainPhase && !game.getCurrnetPhase().isMainPhase2()) {
-                        ((MainPhase) (game.getCurrnetPhase())).goFight();
-                    }
+                if (player.getMyTurn() && game.getCurrnetPhase() instanceof MainPhase && !game.getCurrnetPhase().isMainPhase2()) {
+                    ((MainPhase) (game.getCurrnetPhase())).goFight();
                 }
-            });
-            mainPhase2.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            }
+        });
+        mainPhase2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-                    if (player.getMyTurn() && game.getCurrnetPhase() instanceof BattlePhase) {
-                        ((BattlePhase) (game.getCurrnetPhase())).goMain();
-                    }
+                if (player.getMyTurn() && game.getCurrnetPhase() instanceof BattlePhase) {
+                    ((BattlePhase) (game.getCurrnetPhase())).goMain();
                 }
-            });
+            }
+        });
 
 
+        endPahse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //  System.out.println("머"+ game.getCurrnetPhase().toString());
+                //    System.out.println("챜"+game.getCurrnetPhase().toString().equals("메인1"));
+                if (player.getMyTurn()) {
+                    if (game.getCurrnetPhase() instanceof MainPhase) {
 
-            endPahse.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    //  System.out.println("머"+ game.getCurrnetPhase().toString());
-                    //    System.out.println("챜"+game.getCurrnetPhase().toString().equals("메인1"));
-                    if (player.getMyTurn()) {
-                        if (game.getCurrnetPhase() instanceof MainPhase ) {
+                        ((MainPhase) (game.getCurrnetPhase())).goEnd();
 
-                            ((MainPhase) (game.getCurrnetPhase())).goEnd();
+                    } else if (game.getCurrnetPhase() instanceof BattlePhase) {
+                        ((BattlePhase) (game.getCurrnetPhase())).goEnd();
 
-                        } else if (game.getCurrnetPhase() instanceof BattlePhase) {
-                            ((BattlePhase) (game.getCurrnetPhase())).goEnd();
+                        //    System.out.println("엔드를눌렀을때..."+game.getCurrnetPhase().toString());
 
-                            //    System.out.println("엔드를눌렀을때..."+game.getCurrnetPhase().toString());
+                        //   System.out.println("game.getCurrnetPhase().toString());
 
-                            //   System.out.println("game.getCurrnetPhase().toString());
-
-                        }
-                        ((EndPhase) (game.getCurrnetPhase())).goNext();
-                        ((StandbyPhase) (game.getCurrnetPhase())).goDraw();
-
-                        ((DrawPhase) (game.getCurrnetPhase())).goMain();
                     }
-                }
-            });
+                    ((EndPhase) (game.getCurrnetPhase())).goNext();
+                    ((StandbyPhase) (game.getCurrnetPhase())).goDraw();
 
+                    ((DrawPhase) (game.getCurrnetPhase())).goMain();
+                }
+            }
+        });
 
 
         add(battlePhase);

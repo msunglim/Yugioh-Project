@@ -54,11 +54,12 @@ public abstract class Phase {
 
         return phase;
     }
-    public boolean isMainPhase(){
+
+    public boolean isMainPhase() {
         return (phase instanceof MainPhase);
     }
 
-    public boolean isMainPhase2(){
+    public boolean isMainPhase2() {
         return mainPhase2;
     }
 }
