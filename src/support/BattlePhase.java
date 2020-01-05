@@ -75,9 +75,9 @@ public class BattlePhase extends Phase {
 
                                 entry.getValue().removeAll();
                                 entry.getValue().repaint();
-                                JPanel reversedImage=entry.getKey().getCardPreviewImage();
+                                JPanel reversedImage = entry.getKey().getCardPreviewImage();
 
-                                player.getDfp().getCenter().reverseSetMonster(entry.getKey(), reversedImage );
+                                player.getDfp().getCenter().reverseSetMonster(entry.getKey(), reversedImage);
                                 JPanel container = ((JPanel) (entry.getValue().getParent()));
 
                                 container.add(reversedImage);
@@ -86,8 +86,7 @@ public class BattlePhase extends Phase {
                                 container.validate();
 
                                 //여기서 새로만들거 헌정하자
-                                //JPanel reversedImageCopy = new 이렇게하는건 안되는것같은데..
-                                enemy.getDfp().getCenter().updateMyMonsterZone(entry.getKey());
+                                enemy.getDfp().getCenter().updateMyMonsterZone(entry.getKey(), reversedImage);
                             } else {
                                 if (damage < 0) {
                                     player.setLp(player.getLp() + damage);

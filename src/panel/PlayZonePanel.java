@@ -198,7 +198,7 @@ public class PlayZonePanel extends JPanel {
                     public void mouseClicked(MouseEvent e) {
                         super.mouseClicked(e);
 
-                        monsterMouseClickSetting(card, cardImage, cardImage2, pm, m1, e, y, location);
+                        monsterMouseClickSetting(card, cardImage, cardImage2, pm, m1, e, zones[y][location],enemy.getDfp().getCenter().getEnemyZones()[(y == 1) ? 0 : 1][location]);
                     }
                 });
 
@@ -295,7 +295,7 @@ public class PlayZonePanel extends JPanel {
                                         public void mouseClicked(MouseEvent e) {
                                             super.mouseClicked(e);
 
-                                            monsterMouseClickSetting(card, cardImage, cardImage2, pm, m1, e, y, location);
+                                            monsterMouseClickSetting(card, cardImage, cardImage2, pm, m1, e,zones[y][location],enemy.getDfp().getCenter().getEnemyZones()[(y == 1) ? 0 : 1][location]);
                                         }
                                     });
                                 }
@@ -669,13 +669,26 @@ public class PlayZonePanel extends JPanel {
         return myFieldMonsterZone;
     }
 
-    public void updateMyMonsterZone(Card card) {
+    public void updateMyMonsterZone(Card card, JPanel reversedImage) {
         JPanel defensePositionImage = card.getCardPreviewImage();
         //낡은 이미지를 청산했는데 이미지가 2개가 보이거나 노란색배경화면이 아닌가요?
         //이문제를 3번겪어서 후세에 또 겪을시 보고 참조하라고 남김니다. 일단 그 올드이미지를 ㅍ ㅔ널에서 지우고 새 jpanel을 넣으시고 validate하십시오.
         //  System.out.println("꿍짜꿍짜");
         myFieldMonsterZone.get(card).remove(1);
         getRotateImage(card, defensePositionImage);
+        JPopupMenu pm = new JPopupMenu("선택창");
+        JMenuItem m1 = new JMenuItem("공격표시");
+
+
+        pm.add(m1);
+        defensePositionImage.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                monsterMouseClickSetting(card, defensePositionImage,reversedImage,pm,m1,e, myFieldMonsterZone.get(card), (JPanel)reversedImage.getParent());
+
+            }
+        });
         defensePositionImage.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -720,7 +733,7 @@ public class PlayZonePanel extends JPanel {
 
     }
 
-    public void monsterMouseClickSetting(Card card, JPanel cardImage, JPanel cardImage2, JPopupMenu pm, JMenuItem m1, MouseEvent e, int y, int location) {
+    public void monsterMouseClickSetting(Card card, JPanel cardImage, JPanel cardImage2, JPopupMenu pm, JMenuItem m1, MouseEvent e,JPanel zone, JPanel enemyZone) {
         if (player.getMyTurn() && game.getCurrnetPhase().isMainPhase() && !unchangableList.contains(card)) {
             pm.show(e.getComponent(),
                     e.getX(), e.getY());
@@ -736,8 +749,8 @@ public class PlayZonePanel extends JPanel {
 
 
                         getRotateImage(card, cardImage);
-                        zones[y][location].add(cardImage);
-                        zones[y][location].validate();
+                        zone.add(cardImage);
+                        zone.validate();
 //
 //                                                            //수비로간놈제거
                         fightableList.remove(card, cardImage);
@@ -770,7 +783,7 @@ public class PlayZonePanel extends JPanel {
                         getRotateImage(card, cardImage2);
 
                         //frame2 update
-                        enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, enemy.getDfp().getCenter().getEnemyZones()[(y == 1) ? 0 : 1][location]);
+                        enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, enemyZone);
                         enemy.getDfp().getCenter().addToEnemyMonsterList(card, cardImage2);
                     }
 
@@ -809,8 +822,8 @@ public class PlayZonePanel extends JPanel {
 //                                                            cardImage.validate();
 
 
-                        zones[y][location].add(cardImage);
-                        zones[y][location].validate();
+                        zone.add(cardImage);
+                        zone.validate();
 
 
                         m1.removeActionListener(m1.getActionListeners()[0]);
@@ -846,7 +859,7 @@ public class PlayZonePanel extends JPanel {
                         getRotateZeroImage(card, cardImage2);
 
                         //frame2 update
-                        enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, enemy.getDfp().getCenter().getEnemyZones()[(y == 1) ? 0 : 1][location]);
+                        enemy.getDfp().getCenter().updateEnemyFieldGraphic(card, cardImage2, enemyZone);
                         enemy.getDfp().getCenter().addToEnemyMonsterList(card, cardImage2);
                     }
 
