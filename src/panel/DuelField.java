@@ -16,20 +16,19 @@ public class DuelField extends JPanel {
     private PhasePanel east;
     private JPanel lpPanel;
     private JPanel north;
-    private  JLabel lp;
-    private  JLabel lp2;
+    private JLabel lp;
+    private JLabel lp2;
 
     public DuelField(Game game, Player player, Player enemy) {
 
         this.player = player;
-        this.enemy= enemy;
+        this.enemy = enemy;
         //  gameField = new JPanel();
         // gameField.setPreferredSize(new Dimension(1280,720));
         setLayout(new BorderLayout());
 
 
-
-         west = new JPanel();
+        west = new JPanel();
 
         west.setBorder(BorderFactory.createLineBorder(Color.darkGray));
         west.add(player.getHand().get(0).getCardImage());
@@ -39,7 +38,7 @@ public class DuelField extends JPanel {
         center.setBorder(BorderFactory.createLineBorder(Color.lightGray));
         add(center, BorderLayout.CENTER);
 
-         hp = new HandPanel(game, player, enemy);
+        hp = new HandPanel(game, player, enemy);
 
         add(hp, BorderLayout.SOUTH);
 
@@ -48,21 +47,20 @@ public class DuelField extends JPanel {
         add(east, BorderLayout.EAST);
 
 
-
         north = new JPanel();
 
         lpPanel = new JPanel();
         lpPanel.setPreferredSize(new Dimension(1000, 30));
         lpPanel.setLayout(new BorderLayout());
 
-       lp = new JLabel("생존점수:" + player.getLp());
-        lp.setHorizontalAlignment( JLabel.LEFT);
+        lp = new JLabel("생존점수:" + player.getLp());
+        lp.setHorizontalAlignment(JLabel.LEFT);
         lp.setAlignmentX(Component.LEFT_ALIGNMENT);
         lpPanel.add(lp, BorderLayout.WEST);
 
 
-       lp2= new JLabel("생존점수:" + enemy.getLp());
-       //lp2.setHorizontalAlignment( JLabel.RIGHT);
+        lp2 = new JLabel("생존점수:" + enemy.getLp());
+        //lp2.setHorizontalAlignment( JLabel.RIGHT);
         lp2.setAlignmentX(Component.RIGHT_ALIGNMENT);
         lpPanel.add(lp2, BorderLayout.EAST);
         north.add(lpPanel);
@@ -71,12 +69,12 @@ public class DuelField extends JPanel {
         // add(gameField);
     }
 
-    public PlayZonePanel getCenter(){
+    public PlayZonePanel getCenter() {
         return center;
     }
 
-    public void addAtWest(JPanel cardImage){
-      //  JPanel useMe = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.WEST);
+    public void addAtWest(JPanel cardImage) {
+        //  JPanel useMe = (JPanel) ((BorderLayout) (game.getDfp().getLayout())).getLayoutComponent(BorderLayout.WEST);
         //JPanel useMe =  (JPanel)(((BorderLayout)DuelField.getGameField().getLayout()).getLayoutComponent(BorderLayout.WEST));
 
         //borderLayout을 쓰는 Panel의 west size acess하기...
@@ -88,16 +86,16 @@ public class DuelField extends JPanel {
         west.validate();
     }
 
-    public HandPanel getHp(){
+    public HandPanel getHp() {
         return hp;
     }
 
-    public PhasePanel getEast(){
+    public PhasePanel getEast() {
         return east;
     }
 
-    public void updatePlayerLp(){
-        lp.setText("생존점수"+ player.getLp());
+    public void updatePlayerLp() {
+        lp.setText("생존점수" + player.getLp());
         lpPanel.repaint();
         lpPanel.validate();
 
@@ -105,8 +103,9 @@ public class DuelField extends JPanel {
         north.validate();
 
     }
-    public void updateEnemyLp(){
-        lp2.setText("생존점수"+ enemy.getLp());
+
+    public void updateEnemyLp() {
+        lp2.setText("생존점수" + enemy.getLp());
         lpPanel.repaint();
         lpPanel.validate();
 

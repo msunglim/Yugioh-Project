@@ -32,12 +32,14 @@ public class Player {
 //        deckSize -= 5;
     }
 
-    public void setMyTurn(boolean tf){
-        myTurn= tf;
+    public void setMyTurn(boolean tf) {
+        myTurn = tf;
     }
-    public boolean getMyTurn(){
-        return  myTurn;
+
+    public boolean getMyTurn() {
+        return myTurn;
     }
+
     public void gameStart() {
         lp = 2000;
         for (int i = 0; i < 5; i++) {
@@ -63,11 +65,10 @@ public class Player {
     public void drawCard() {
 //        System.out.println("드로");
 //
-        if (deckStack.size() != 0){
+        if (deckStack.size() != 0) {
             System.out.println("드로된 카드:" + (Card) deckStack.peek());
             hand.add((Card) deckStack.pop());
-        }
-        else{
+        } else {
             System.out.println("드로우 할 카드가 없습니다.");
             defeat = true;
         }
@@ -76,9 +77,10 @@ public class Player {
 //
     }
 
-    public boolean getDefeat(){
+    public boolean getDefeat() {
         return defeat;
     }
+
     public Stack getDeckStack() {
         return deckStack;
     }
@@ -138,9 +140,13 @@ public class Player {
         return lp;
     }
 
-    public void setLp(int newLp){
+    public void setLp(int newLp) {
         lp = newLp;
+        if (lp <= 0) {
+            defeat = true;
+        }
     }
+
     public ArrayList<Card> getHand() {
         return hand;
     }

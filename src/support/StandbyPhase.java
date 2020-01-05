@@ -2,10 +2,10 @@ package support;
 
 import main.Game;
 
-public class StandbyPhase extends Phase{
+public class StandbyPhase extends Phase {
 
 
-    public StandbyPhase(Game game, Player player, Player enemy){
+    public StandbyPhase(Game game, Player player, Player enemy) {
         this.game = game;
         this.player = player;
         this.enemy = enemy;
@@ -19,13 +19,11 @@ public class StandbyPhase extends Phase{
         System.out.println("스텐바이 페이즈입니다.");
 
 
-     }
+    }
 
-     public void goDraw(){
-         setPhase(new DrawPhase(game, player, enemy));
-     }
-
-
+    public void goDraw() {
+        setPhase(new DrawPhase(game, player, enemy));
+    }
 
 
 }
