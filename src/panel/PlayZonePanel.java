@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +51,8 @@ public class PlayZonePanel extends JPanel {
     //뒷면수비표시로 존재하는 적의 몬스터들
     private Map<Card, JPanel> setEnemyMonsterList = new HashMap<>(5);
 
+
+    private ArrayList<Card> cemetery = new ArrayList<>();
 
     public PlayZonePanel(Game game, Player player, Player enemy) {
         this.game = game;
@@ -171,6 +172,7 @@ public class PlayZonePanel extends JPanel {
         JPanel cardBack = card.getCardBack();
         // JPanel cardBack2 = card.getCardBack();
         unchangableList.add(card);
+        //  unchangeableListCheck(card);
         if (y == 1) {
 //            System.out.println("row좌표는: " + y);
 //            System.out.println("column좌표는: " + numberOfMonsters);
@@ -198,7 +200,7 @@ public class PlayZonePanel extends JPanel {
                     public void mouseClicked(MouseEvent e) {
                         super.mouseClicked(e);
 
-                        monsterMouseClickSetting(card, cardImage, cardImage2, pm, m1, e, zones[y][location],enemy.getDfp().getCenter().getEnemyZones()[(y == 1) ? 0 : 1][location]);
+                        monsterMouseClickSetting(card, cardImage, cardImage2, pm, m1, e, zones[y][location], enemy.getDfp().getCenter().getEnemyZones()[(y == 1) ? 0 : 1][location]);
                     }
                 });
 
@@ -295,7 +297,7 @@ public class PlayZonePanel extends JPanel {
                                         public void mouseClicked(MouseEvent e) {
                                             super.mouseClicked(e);
 
-                                            monsterMouseClickSetting(card, cardImage, cardImage2, pm, m1, e,zones[y][location],enemy.getDfp().getCenter().getEnemyZones()[(y == 1) ? 0 : 1][location]);
+                                            monsterMouseClickSetting(card, cardImage, cardImage2, pm, m1, e, zones[y][location], enemy.getDfp().getCenter().getEnemyZones()[(y == 1) ? 0 : 1][location]);
                                         }
                                     });
                                 }
@@ -685,7 +687,7 @@ public class PlayZonePanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                monsterMouseClickSetting(card, defensePositionImage,reversedImage,pm,m1,e, myFieldMonsterZone.get(card), (JPanel)reversedImage.getParent());
+                monsterMouseClickSetting(card, defensePositionImage, reversedImage, pm, m1, e, myFieldMonsterZone.get(card), (JPanel) reversedImage.getParent());
 
             }
         });
@@ -733,7 +735,7 @@ public class PlayZonePanel extends JPanel {
 
     }
 
-    public void monsterMouseClickSetting(Card card, JPanel cardImage, JPanel cardImage2, JPopupMenu pm, JMenuItem m1, MouseEvent e,JPanel zone, JPanel enemyZone) {
+    public void monsterMouseClickSetting(Card card, JPanel cardImage, JPanel cardImage2, JPopupMenu pm, JMenuItem m1, MouseEvent e, JPanel zone, JPanel enemyZone) {
         if (player.getMyTurn() && game.getCurrnetPhase().isMainPhase() && !unchangableList.contains(card)) {
             pm.show(e.getComponent(),
                     e.getX(), e.getY());
@@ -746,7 +748,7 @@ public class PlayZonePanel extends JPanel {
                         unchangableList.add(card);
                         m1.setText("공격표시");
                         //            m1.validate();
-
+                        //    unchangeableListCheck(card);
 
                         getRotateImage(card, cardImage);
                         zone.add(cardImage);
@@ -794,6 +796,7 @@ public class PlayZonePanel extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         unchangableList.add(card);
                         m1.setText("수비표시");
+                        //       unchangeableListCheck(card);
                         //             m1.validate();
                         getRotateZeroImage(card, cardImage);
 //                                                            ImageIcon img = new ImageIcon(card.getIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
@@ -869,5 +872,22 @@ public class PlayZonePanel extends JPanel {
 
 
         }
+    }
+
+    public void goToCemetery(Card card, JPanel cardImage) {
+        System.out.println("삼가 "+ card.getName() +" 의 명복을 빕니다.");
+        cemetery.add(card);
+
+        JPanel zone = (JPanel)cardImage.getParent();
+        zone.remove(1);
+        zone.repaint();
+        zone.validate();
+
+    }
+
+    public void unchangeableListCheck(Card card) {
+        System.out.println("바꿀수없는 것:" + unchangableList);
+
+        System.out.println("해쉬:" + card.hashCode());
     }
 }

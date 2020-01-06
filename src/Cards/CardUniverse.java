@@ -100,11 +100,28 @@ public class CardUniverse {
     }
 
 
-    public void assignMonsterDeck(Character character, int... i) {
+    public void assignMonsterDeck(Character character, int i) {
 
-        for (int k : i) {
-            character.addCard(monsters[k - 1]);
-        }
+        File folder = new File("data/images/cards/Monsters");
+
+        File[] filesDefault = folder.listFiles();
+
+
+        String cardImageURL = "data/images/cards/Monsters/" + i + ".PNG";
+
+
+          //  monsters[j] = Card.getCard(monsterCardNames[j], cardImageURL, monsterCardDescription[j],monsterCardLevel[j],monsterCardAttribute[j],monsterCardType[j],ATK[j],DEF[j]);
+
+       System.out.println(monsterCardNames[i-1]);
+                 character.addCard(Card.getCard(monsterCardNames[i-1],
+                         cardImageURL,
+                         monsterCardDescription[i-1],
+                         monsterCardLevel[i-1],
+                         monsterCardAttribute[i-1],
+                         monsterCardType[i-1]
+                         ,ATK[i-1],
+                         DEF[i-1]));
+
 
     }
 
