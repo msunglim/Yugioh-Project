@@ -48,6 +48,7 @@ public class PlayZonePanel extends JPanel {
     //공격 표시로 존재하는 적의 몬스터들
     private ArrayList<Card> fightableEnemyMonsterList = new ArrayList<>(5);
 
+    private Map<Card, JPanel> enemyMonsterZone = new HashMap<>(5);
     //뒷면수비표시로 존재하는 적의 몬스터들
     private Map<Card, JPanel> setEnemyMonsterList = new HashMap<>(5);
 
@@ -328,6 +329,7 @@ public class PlayZonePanel extends JPanel {
 
             addToMyFieldMonsterZone(card, zones[y][numberOfMonsters]);
 
+
         } else {
             final int location = numberOfMagicTrap + 1;
             //그냥 발동이었을때
@@ -432,7 +434,8 @@ public class PlayZonePanel extends JPanel {
                 enemyZones[y][location].add(cardImage);
                 enemyZones[y][location].validate();
                 addToEnemyMonsterList(card, cardImage);
-
+                System.out.println("존"+ y +" 로케이션 "+location);
+                addToEnemyMonsterZone(card, enemyZones[y][location]);
             } else {//세트할시.
                 ImageIcon img = new ImageIcon(card.getBackIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
                 //image의 quality 를 2번 scaledInstance하는것과같고, 그 여파로 west에 image와 preview의 image가 전부 doomed 되는것을 볼수있다.
@@ -467,6 +470,9 @@ public class PlayZonePanel extends JPanel {
                 enemyZones[y][location].validate();
 
                 addToEnemyMonsterList(card, cardBack);
+
+                System.out.println("존"+ y +" 로케이션 "+location);
+                addToEnemyMonsterZone(card, enemyZones[y][location]);
             }
 
             numberOfMonstersOfEnemy++;
@@ -883,11 +889,21 @@ public class PlayZonePanel extends JPanel {
         zone.repaint();
         zone.validate();
 
+     //   enemy.getDfp().getCenter().goToCemetery(card, cardImage);
     }
 
     public void unchangeableListCheck(Card card) {
         System.out.println("바꿀수없는 것:" + unchangableList);
 
         System.out.println("해쉬:" + card.hashCode());
+    }
+
+    public void addToEnemyMonsterZone(Card card, JPanel zone){
+        System.out.println(card.getName());
+        enemyMonsterZone.put(card, zone);
+    }
+
+    public Map<Card,JPanel> getEnemyMonsterZone(){
+        return enemyMonsterZone;
     }
 }

@@ -2,6 +2,7 @@ package support;
 
 import Cards.Card;
 import Cards.Monster;
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import main.Game;
 
 import javax.swing.*;
@@ -65,15 +66,18 @@ public class BattlePhase extends Phase {
                                 System.out.println("공격한놈의 공격력이 맞은놈의 공격력보다 낮아 공격한놈이 파괴되었습니다.");
 
                               //  player.getDfp().getCenter().goToCemetery(attacker, attackerImage);
-
-                                player.getDfp().getCenter().getMyFieldMonsterZone().get(attacker).remove(1);
-                                player.getDfp().getCenter().getMyFieldMonsterZone().get(attacker).repaint();
-                                player.getDfp().getCenter().getMyFieldMonsterZone().get(attacker).validate();
+                                System.out.println("공격자"+ attacker.getName());
+                        //        player.getDfp().getCenter().getMyFieldMonsterZone().get(attacker).remove(1);
+                       //         player.getDfp().getCenter().getMyFieldMonsterZone().get(attacker).repaint();
+                         //       player.getDfp().getCenter().getMyFieldMonsterZone().get(attacker).validate();
 
 
                                 //이거만손보면도ㅐ
                                 //지금안되는이유는 공격한놈 frame에서는 공격자 제거가 가능한데, 정작 맞은놈쪽에서 공격자의 이미지를 제거할 방법이없다.
                                 enemy.getDfp().getCenter().goToCemetery(attacker, attackerImage);
+                                enemy.getDfp().getCenter().getEnemyMonsterZone().get(attacker).remove(1);
+                                enemy.getDfp().getCenter().getEnemyMonsterZone().get(attacker).repaint();
+                                enemy.getDfp().getCenter().getEnemyMonsterZone().get(attacker).validate();
 
 
 
