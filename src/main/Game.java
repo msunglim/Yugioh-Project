@@ -90,6 +90,7 @@ public class Game {
         player2 = new Player(character2);
         player2.shuffleDeck();
         player2.gameStart();
+
         dfp = new DuelField(this, player, player2);
         player.setDfp(dfp);
         jf.setContentPane(dfp);

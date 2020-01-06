@@ -44,8 +44,11 @@ public class Character {
                 System.out.println("유희입니다.");
                 name = "유희";
 
-                game.getCardUniverse().assignMonsterDeck(this, 2, 3, 11, 13, 16, 17);
-
+         //       game.getCardUniverse().assignMonsterDeck(this, 2, 3, 11, 13, 16, 17);
+                int [] deckIndex1 = {2,3,11,13,16,17};
+                for(int k : deckIndex1) {
+                    game.getCardUniverse().assignMonsterDeck(this, k);
+                }
                 game.getCardUniverse().assignMagicDeck(this, 1, 5, 7);
 
                 game.getCardUniverse().assignTrapDeck(this, 4, 5);
@@ -55,12 +58,16 @@ public class Character {
             case 2:
                 System.out.println("조이입니다.");
                 name = "조이";
-                game.getCardUniverse().assignMonsterDeck(this, 4,5,7,15,18);
+             //   game.getCardUniverse().assignMonsterDeck(this, 4,5,7,15,18);
 
                 game.getCardUniverse().assignMagicDeck(this, 5,6,8);
 
                 game.getCardUniverse().assignTrapDeck(this, 2);
 
+                int [] deckIndex2 = {4,5,7,15,18};
+                for(int k : deckIndex2) {
+                    game.getCardUniverse().assignMonsterDeck(this, k);
+                }
                 System.out.println("완전부활 초 퍼펙트 죠노우치님이시다!");
 
                 break;
@@ -68,8 +75,11 @@ public class Character {
             case 3:
                 name = "카이바";
                 System.out.println("훙.");
-                game.getCardUniverse().assignMonsterDeck(this, 1,1,1,6,8,9,12,14);
-
+          //      game.getCardUniverse().assignMonsterDeck(this, 1,1,1,6,8,9,12,14);
+                int [] deckIndex3 = {1,1,1,6,8,9,12,14};
+                for(int k : deckIndex3) {
+                    game.getCardUniverse().assignMonsterDeck(this, k);
+                }
                 game.getCardUniverse().assignMagicDeck(this, 3,4,5);
 
                 game.getCardUniverse().assignTrapDeck(this, 1,3);
@@ -79,11 +89,14 @@ public class Character {
             case 4:
                 name = "마리크";
                 System.out.println("오픈뿡뿡 뿡뿌뿡뿡뿡 존존존존존존존존존");
-          //      game.getCardUniverse().assignMonsterDeck(this, 1,1,1,6,8,9,12,14);
 
+                int [] deckIndex4 = {1,1,1,1,1,1,1};
+                for(int k : deckIndex4) {
+                    game.getCardUniverse().assignMonsterDeck(this, k);
+                }
                 game.getCardUniverse().assignMagicDeck(this, 5);
 
-            //    game.getCardUniverse().assignTrapDeck(this, 1,3);
+               game.getCardUniverse().assignTrapDeck(this, 1,3);
 
                 break;
 
@@ -134,6 +147,7 @@ public class Character {
     public void addCard(Card card) {
         if (deckSize + 1 < deck.length) {
             deck[deckSize] = card;
+
             deckSize++;
         }
         else{
