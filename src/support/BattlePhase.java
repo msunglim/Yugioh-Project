@@ -80,6 +80,8 @@ public class BattlePhase extends Phase {
                                 //공 < 공
                                 battleBetweenAttackPositionMonsters(enemy, player, attacker);
 
+                                player.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters() - 1);
+                                enemy.getDfp().getCenter().setNumberOfMonstersOfEnemy(player.getDfp().getCenter().getNumberOfMonsters());
 
                             } else if (damage > 0) {
                                 //상대몬스터를 개팻을경우
@@ -90,7 +92,7 @@ public class BattlePhase extends Phase {
                                 System.out.println("공격한놈의 공격력이 맞은놈의 공격력보다 높아 맞은놈이 파괴되었습니다.");
 
                                 //공격자의 필드에서 보이는 상대방 필드에있는 피해자삭제
-                                player.getDfp().getCenter().goToCemetery(victim, victimImage);
+                                enemy.getDfp().getCenter().goToCemetery(victim, victimImage);
 
                                 //맞은놈의 필드에서 맞은놈 삭제
                                 enemy.getDfp().getCenter().getMyFieldMonsterZone().get(victim).remove(1);
@@ -100,28 +102,44 @@ public class BattlePhase extends Phase {
                                 //공 > 공
                                 battleBetweenAttackPositionMonsters(player, enemy, victim);
 
+
+                                enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters() - 1);
+                                player.getDfp().getCenter().setNumberOfMonstersOfEnemy(enemy.getDfp().getCenter().getNumberOfMonsters());
+
                             } else {
                                 //같을경우
                                 System.out.println("공격한놈의 공격력이 맞은놈의 공격력과 같아 동반자살하였습니다.");
 
+                                //그냥 위에두개 복붙함.
+                                player.setLp(player.getLp() + damage);
+                                player.getDfp().updatePlayerLp();
+                                enemy.getDfp().updateEnemyLp();
 
-                                player.getDfp().getCenter().goToCemetery(victim, victimImage);
+                                player.getDfp().getCenter().goToCemetery(attacker, attackerImage);
 
+                                enemy.getDfp().getCenter().getEnemyMonsterZone().get(attacker).remove(1);
+                                enemy.getDfp().getCenter().getEnemyMonsterZone().get(attacker).repaint();
+                                enemy.getDfp().getCenter().getEnemyMonsterZone().get(attacker).validate();
+
+
+                                battleBetweenAttackPositionMonsters(enemy, player, attacker);
+
+                                player.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters() - 1);
+                                enemy.getDfp().getCenter().setNumberOfMonstersOfEnemy(player.getDfp().getCenter().getNumberOfMonsters());
+                                enemy.getDfp().getCenter().goToCemetery(victim, victimImage);
+
+                                //맞은놈의 필드에서 맞은놈 삭제
                                 enemy.getDfp().getCenter().getMyFieldMonsterZone().get(victim).remove(1);
-
                                 enemy.getDfp().getCenter().getMyFieldMonsterZone().get(victim).repaint();
-
                                 enemy.getDfp().getCenter().getMyFieldMonsterZone().get(victim).validate();
 
 
-                                enemy.getDfp().getCenter().goToCemetery(attacker, attackerImage);
-                                player.getDfp().getCenter().getMyFieldMonsterZone().get(attacker).remove(1);
-                                player.getDfp().getCenter().getMyFieldMonsterZone().get(attacker).repaint();
-                                player.getDfp().getCenter().getMyFieldMonsterZone().get(attacker).validate();
+                                battleBetweenAttackPositionMonsters(player, enemy, victim);
 
 
-                                battleBetweenAttackPositionMonsters(player, enemy, attacker);
-                                battleBetweenAttackPositionMonsters(enemy, player, victim);
+                                enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters());
+                                player.getDfp().getCenter().setNumberOfMonstersOfEnemy(enemy.getDfp().getCenter().getNumberOfMonsters());
+
                             }
                         } else { //수비표시로 존재하는 몬스터를 공격했을때.
                             int damage = ((Monster) (attacker)).getATK() - ((Monster) (victim)).getDEF();
@@ -155,13 +173,16 @@ public class BattlePhase extends Phase {
                                     System.out.println("공격한놈의 공격력이 맞은놈의 수비력보다 높아 맞은놈이 파괴되었습니다.");
 
                                     //공격자의 frame중 맞은놈을 삭제 (맞은놈이라함은 공격자의 frame에서 보이는 상대방필드입니다.
-                                    player.getDfp().getCenter().goToCemetery(victim, victimImage);
+                                    enemy.getDfp().getCenter().goToCemetery(victim, victimImage);
                                     //피해자의 frame중 맞은놈을 삭제.
                                     enemy.getDfp().getCenter().getMyFieldMonsterZone().get(victim).remove(1);
                                     enemy.getDfp().getCenter().getMyFieldMonsterZone().get(victim).repaint();
                                     enemy.getDfp().getCenter().getMyFieldMonsterZone().get(victim).validate();
 
                                     battleBetweenEachPositionMonster(player, enemy, victim);
+
+                                    enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters() - 1);
+                                    player.getDfp().getCenter().setNumberOfMonstersOfEnemy(enemy.getDfp().getCenter().getNumberOfMonsters());
 
                                 } else {
                                     //같을경우
@@ -177,10 +198,14 @@ public class BattlePhase extends Phase {
                                 } else if (damage > 0) {
                                     System.out.println("공격한놈의 공격력이 맞은놈의 수비력보다 높아 맞은놈이 파괴되었습니다.");
 
-                                    player.getDfp().getCenter().goToCemetery(victim, victimImage);
+                                    enemy.getDfp().getCenter().goToCemetery(victim, victimImage);
                                     enemy.getDfp().getCenter().getMyFieldMonsterZone().get(victim).remove(1);
 
                                     battleBetweenEachPositionMonster(player, enemy, victim);
+
+
+                                    enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters() - 1);
+                                    player.getDfp().getCenter().setNumberOfMonstersOfEnemy(enemy.getDfp().getCenter().getNumberOfMonsters());
                                 } else {
                                     //같을경우
                                     System.out.println("공격한놈의 공격력이 맞은놈의 수비력과 같아 서로 아무 데미지도 입지않았습니다.");
@@ -234,7 +259,7 @@ public class BattlePhase extends Phase {
                             entry.getValue().removeMouseListener(entry.getValue().getMouseListeners()[entry.getValue().getMouseListeners().length - 1]);
                             //싸운놈 리스트에 명단올라가
                             hasFought.add(entry.getKey());
-           
+
                             if (player.getDfp().getCenter().getEnemyMonsterList().size() == 0) {
                                 System.out.println(entry.getKey().getName() + "의 직접공격!");
                                 directAttack(((Monster) (entry.getKey())).getATK());
