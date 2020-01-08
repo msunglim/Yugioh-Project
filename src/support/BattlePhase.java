@@ -103,7 +103,7 @@ public class BattlePhase extends Phase {
                                 battleBetweenAttackPositionMonsters(player, enemy, victim);
 
 
-                                enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters() - 1);
+                                enemy.getDfp().getCenter().setNumberOfMonsters(enemy.getDfp().getCenter().getNumberOfMonsters() - 1);
                                 player.getDfp().getCenter().setNumberOfMonstersOfEnemy(enemy.getDfp().getCenter().getNumberOfMonsters());
 
                             } else {
@@ -137,8 +137,11 @@ public class BattlePhase extends Phase {
                                 battleBetweenAttackPositionMonsters(player, enemy, victim);
 
 
-                                enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters());
+                                enemy.getDfp().getCenter().setNumberOfMonsters(enemy.getDfp().getCenter().getNumberOfMonsters() - 1);
                                 player.getDfp().getCenter().setNumberOfMonstersOfEnemy(enemy.getDfp().getCenter().getNumberOfMonsters());
+
+  //                              enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters());
+//                                player.getDfp().getCenter().setNumberOfMonstersOfEnemy(enemy.getDfp().getCenter().getNumberOfMonsters());
 
                             }
                         } else { //수비표시로 존재하는 몬스터를 공격했을때.
@@ -181,7 +184,7 @@ public class BattlePhase extends Phase {
 
                                     battleBetweenEachPositionMonster(player, enemy, victim);
 
-                                    enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters() - 1);
+                                    enemy.getDfp().getCenter().setNumberOfMonsters(enemy.getDfp().getCenter().getNumberOfMonsters() - 1);
                                     player.getDfp().getCenter().setNumberOfMonstersOfEnemy(enemy.getDfp().getCenter().getNumberOfMonsters());
 
                                 } else {
@@ -204,8 +207,10 @@ public class BattlePhase extends Phase {
                                     battleBetweenEachPositionMonster(player, enemy, victim);
 
 
+
                                     enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters() - 1);
                                     player.getDfp().getCenter().setNumberOfMonstersOfEnemy(enemy.getDfp().getCenter().getNumberOfMonsters());
+
                                 } else {
                                     //같을경우
                                     System.out.println("공격한놈의 공격력이 맞은놈의 수비력과 같아 서로 아무 데미지도 입지않았습니다.");
