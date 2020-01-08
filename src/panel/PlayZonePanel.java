@@ -56,6 +56,9 @@ public class PlayZonePanel extends JPanel {
 
     private ArrayList<Card> cemetery = new ArrayList<>();
 
+    private JFrame Cemetery;
+    private JFrame enemyCemetery;
+
     public PlayZonePanel(Game game, Player player, Player enemy) {
         this.game = game;
         this.player = player;
@@ -110,12 +113,7 @@ public class PlayZonePanel extends JPanel {
 
                         pm.add(m1);
 
-                        JFrame enemyCemetery = new JFrame();
 
-                        enemyCemetery.setPreferredSize(new Dimension(300, 150));
-                        enemyCemetery.pack();
-                        enemyCemetery.setLocationRelativeTo(null);
-                        enemyCemetery.setTitle("묘지리스트");
                         enemyZone.addMouseListener(new MouseAdapter() {
                             @Override
                             public void mouseClicked(MouseEvent e) {
@@ -125,10 +123,15 @@ public class PlayZonePanel extends JPanel {
                                 m1.addActionListener(new ActionListener() {
                                     @Override
                                     public void actionPerformed(ActionEvent e) {
+                                        enemyCemetery = new JFrame();
 
+                                        enemyCemetery.setPreferredSize(new Dimension(300, 150));
+                                        enemyCemetery.pack();
+                                        enemyCemetery.setLocationRelativeTo(null);
+                                        enemyCemetery.setTitle("묘지리스트");
                                         enemyCemetery.setVisible(true);
                                         cemeteryListShow(enemyCemetery, enemy.getDfp().getCenter().getCemetery());
-
+                                        //  enemy.getDfp().getCenter().cemeteryListShow(enemy.getDfp().getCenter().getCe);
                                         m1.removeActionListener(m1.getActionListeners()[0]);
 
                                     }
@@ -178,12 +181,7 @@ public class PlayZonePanel extends JPanel {
 
                         pm.add(m1);
 
-                        JFrame Cemetery = new JFrame();
 
-                        Cemetery.setPreferredSize(new Dimension(300, 150));
-                        Cemetery.pack();
-                        Cemetery.setLocationRelativeTo(null);
-                        Cemetery.setTitle("묘지리스트");
                         zone.addMouseListener(new MouseAdapter() {
                             @Override
                             public void mouseClicked(MouseEvent e) {
@@ -193,7 +191,12 @@ public class PlayZonePanel extends JPanel {
                                 m1.addActionListener(new ActionListener() {
                                     @Override
                                     public void actionPerformed(ActionEvent e) {
-
+                                        Cemetery = new JFrame();
+                                        //죽으면 업데이트가 다음턴부터 안되는 버그가있었는데 세메터리를 클릭할떄로 옮겨주니 업뎃이잘된다.
+                                        Cemetery.setPreferredSize(new Dimension(300, 150));
+                                        Cemetery.pack();
+                                        Cemetery.setLocationRelativeTo(null);
+                                        Cemetery.setTitle("묘지리스트");
                                         Cemetery.setVisible(true);
                                         cemeteryListShow(Cemetery, cemetery);
 
@@ -260,11 +263,22 @@ public class PlayZonePanel extends JPanel {
 //            System.out.println("row좌표는: " + y);
 //            System.out.println("column좌표는: " + numberOfMonsters);
 
-            final int location = numberOfMonsters + 1;
+            //여기했던거 나중에 필요시 마함에도 적용할수있도록,,
+            int locationDemo = numberOfMonsters +1;
+            boolean tf = zones[y][locationDemo].getComponentCount() ==2;
+            while(tf){
+                locationDemo++;
+                if(locationDemo ==6){
+                    locationDemo = 1;
+                }
+                tf = zones[y][locationDemo].getComponentCount() ==2;
+
+            }
+            final int location = locationDemo;
             if (!set) {
-                System.out.println("넘버몬" + numberOfMonsters);
-                zones[y][numberOfMonsters + 1].add(cardImage);
-                zones[y][numberOfMonsters + 1].validate();
+
+                zones[y][location].add(cardImage);
+                zones[y][location].validate();
 
 
                 //지금은 공격표시로 소환된상황입니다.
@@ -325,7 +339,7 @@ public class PlayZonePanel extends JPanel {
 
                 pm.add(m1);
 
-
+                System.out.println("넘버몬" + numberOfMonsters);
                 zones[y][location].add(cardBack);
 
                 // addToMyFieldMonsterZone(card, zones[y][numberOfMonsters+1]);
@@ -394,7 +408,7 @@ public class PlayZonePanel extends JPanel {
                 });
 
 
-                //    numberOfMonsters++;
+                //어짜피올라가지않ㄴ았나요?    numberOfMonsters++;
 
 
             }
@@ -410,7 +424,7 @@ public class PlayZonePanel extends JPanel {
             //     zones[x][y].repaint();
             numberOfMonsters++;
 
-            addToMyFieldMonsterZone(card, zones[y][numberOfMonsters]);
+            addToMyFieldMonsterZone(card, zones[y][location]);
 
 
         } else {
@@ -512,12 +526,22 @@ public class PlayZonePanel extends JPanel {
         JPanel cardBack = card.getCardBack();
         if (y == 0) {
 
-            final int location = numberOfMonstersOfEnemy + 1;
+            int locationDemo = numberOfMonstersOfEnemy +1;
+            boolean tf = enemyZones[y][locationDemo].getComponentCount() ==2;
+            while(tf){
+                locationDemo++;
+                if(locationDemo == 6){
+                    locationDemo = 1;
+                }
+                tf =enemyZones[y][locationDemo].getComponentCount() ==2;
+
+            }
+            final int location = locationDemo;
             if (!set) {
                 enemyZones[y][location].add(cardImage);
                 enemyZones[y][location].validate();
                 addToEnemyMonsterList(card, cardImage);
-                System.out.println("존" + y + " 로케이션 " + location);
+            //    System.out.println("존" + y + " 로케이션 " + location);
                 addToEnemyMonsterZone(card, enemyZones[y][location]);
             } else {//세트할시.
                 ImageIcon img = new ImageIcon(card.getBackIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
@@ -554,7 +578,7 @@ public class PlayZonePanel extends JPanel {
 
                 addToEnemyMonsterList(card, cardBack);
 
-                System.out.println("존" + y + " 로케이션 " + location);
+          //      System.out.println("존" + y + " 로케이션 " + location);
                 addToEnemyMonsterZone(card, enemyZones[y][location]);
             }
 
@@ -959,7 +983,7 @@ public class PlayZonePanel extends JPanel {
     }
 
     public void addToEnemyMonsterZone(Card card, JPanel zone) {
-        System.out.println(card.getName());
+    //    System.out.println(card.getName());
         enemyMonsterZone.put(card, zone);
     }
 
@@ -977,18 +1001,30 @@ public class PlayZonePanel extends JPanel {
         showCards.setLayout(new FlowLayout(FlowLayout.LEFT));
         showCards.setAlignmentX(Component.LEFT_ALIGNMENT);
         for (Card card : selectedCemetery) {
-            //   System.out.println("묘지에있는놈" + card.getName());
+
             JPanel cardImage = card.getCardPreviewImage();
+            cardImage.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    super.mouseEntered(e);
+                    player.getDfp().addAtWest(card.getCardImage());
+
+                }
+            });
+
 
             showCards.add(cardImage);
+            showCards.repaint();
+            showCards.validate();
         }
 
         //큰 panel과 스크롤페널, 그리고 스크롤페널이 담을 수있는 작은 페널이필요합니다.
         JScrollPane scroll = new JScrollPane();
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         //
-        //    scroll.setPreferredSize(new Dimension(750, 100)); //textArea에 prefferedSize하면 스크롤이안되거나 지맘대로 들쭉날쭉한 사이즈가된다. scrollPane에 적용하자.
-
+        scroll.setPreferredSize(new Dimension(750, 100)); //textArea에 prefferedSize하면 스크롤이안되거나 지맘대로 들쭉날쭉한 사이즈가된다. scrollPane에 적용하자.
+        showCards.repaint();
+        showCards.validate();
         scroll.getViewport().add(showCards);
         cp.add(scroll, BorderLayout.CENTER);
         cp.setBorder(BorderFactory.createLineBorder(Color.black));
