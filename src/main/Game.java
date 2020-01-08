@@ -86,7 +86,7 @@ public class Game {
         player.gameStart();
 
 
-        Character character2 = new Character(this, 1);
+        Character character2 = new Character(this, 5);
         player2 = new Player(character2);
         player2.shuffleDeck();
         player2.gameStart();

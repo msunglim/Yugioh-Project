@@ -1,6 +1,7 @@
 package panel;
 
 import Cards.Card;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import main.Game;
 import org.w3c.dom.ls.LSOutput;
@@ -47,7 +48,7 @@ public class PlayZonePanel extends JPanel {
     private Map<Card, JPanel> enemyMonsterList = new HashMap<>(5);
     //공격 표시로 존재하는 적의 몬스터들//상대방 공격표시몬스터를 파악할때 쓰인다
     private ArrayList<Card> fightableEnemyMonsterList = new ArrayList<>(5);
-//적의 몬스터존을 가져올때 쓰인다 제이페널은 존을 담는다.
+    //적의 몬스터존을 가져올때 쓰인다 제이페널은 존을 담는다.
     private Map<Card, JPanel> enemyMonsterZone = new HashMap<>(5);
     //뒷면수비표시로 존재하는 적의 몬스터들
     private Map<Card, JPanel> setEnemyMonsterList = new HashMap<>(5);
@@ -101,6 +102,47 @@ public class PlayZonePanel extends JPanel {
                         enemyZone.setBorder(BorderFactory.createLineBorder(Color.darkGray));
                         text.setText("융합");
                         text2.setText("묘지");
+
+
+                        JPopupMenu pm = new JPopupMenu("리스트보자꾸나");
+                        JMenuItem m1 = new JMenuItem("묘지리스트보기");
+
+
+                        pm.add(m1);
+
+                        JFrame enemyCemetery = new JFrame();
+
+                        enemyCemetery.setPreferredSize(new Dimension(300, 150));
+                        enemyCemetery.pack();
+                        enemyCemetery.setLocationRelativeTo(null);
+                        enemyCemetery.setTitle("묘지리스트");
+                        enemyZone.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                super.mouseClicked(e);
+                                pm.show(e.getComponent(), e.getX(), e.getY());
+
+                                m1.addActionListener(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+
+                                        enemyCemetery.setVisible(true);
+                                        cemeteryListShow(enemyCemetery, enemy.getDfp().getCenter().getCemetery());
+
+                                        m1.removeActionListener(m1.getActionListeners()[0]);
+
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                                super.mouseEntered(e);
+                                if (enemy.getDfp().getCenter().getCemetery().size() != 0) {
+                                    player.getDfp().addAtWest(enemy.getDfp().getCenter().getCemetery().get(enemy.getDfp().getCenter().getCemetery().size() - 1).getCardImage());
+                                }
+                            }
+                        });
                     } else if (j == 6) {
                         zone.setBorder(BorderFactory.createLineBorder(Color.GRAY));
                         enemyZone.setBorder(BorderFactory.createLineBorder(Color.green));
@@ -128,6 +170,46 @@ public class PlayZonePanel extends JPanel {
                         enemyZone.setBorder(BorderFactory.createLineBorder(Color.BLUE));
                         text.setText("묘지");
                         text2.setText("융합");
+
+
+                        JPopupMenu pm = new JPopupMenu("리스트보자꾸나");
+                        JMenuItem m1 = new JMenuItem("묘지리스트보기");
+
+
+                        pm.add(m1);
+
+                        JFrame Cemetery = new JFrame();
+
+                        Cemetery.setPreferredSize(new Dimension(300, 150));
+                        Cemetery.pack();
+                        Cemetery.setLocationRelativeTo(null);
+                        Cemetery.setTitle("묘지리스트");
+                        zone.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                super.mouseClicked(e);
+                                pm.show(e.getComponent(), e.getX(), e.getY());
+
+                                m1.addActionListener(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+
+                                        Cemetery.setVisible(true);
+                                        cemeteryListShow(Cemetery, cemetery);
+
+                                        m1.removeActionListener(m1.getActionListeners()[0]);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                                super.mouseEntered(e);
+                                if (cemetery.size() != 0) {
+                                    player.getDfp().addAtWest(cemetery.get(cemetery.size() - 1).getCardImage());
+                                }
+                            }
+                        });
                     } else {
                         zone.setBorder(BorderFactory.createLineBorder(Color.RED));
                         enemyZone.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -180,6 +262,7 @@ public class PlayZonePanel extends JPanel {
 
             final int location = numberOfMonsters + 1;
             if (!set) {
+                System.out.println("넘버몬" + numberOfMonsters);
                 zones[y][numberOfMonsters + 1].add(cardImage);
                 zones[y][numberOfMonsters + 1].validate();
 
@@ -434,7 +517,7 @@ public class PlayZonePanel extends JPanel {
                 enemyZones[y][location].add(cardImage);
                 enemyZones[y][location].validate();
                 addToEnemyMonsterList(card, cardImage);
-                System.out.println("존"+ y +" 로케이션 "+location);
+                System.out.println("존" + y + " 로케이션 " + location);
                 addToEnemyMonsterZone(card, enemyZones[y][location]);
             } else {//세트할시.
                 ImageIcon img = new ImageIcon(card.getBackIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
@@ -471,7 +554,7 @@ public class PlayZonePanel extends JPanel {
 
                 addToEnemyMonsterList(card, cardBack);
 
-                System.out.println("존"+ y +" 로케이션 "+location);
+                System.out.println("존" + y + " 로케이션 " + location);
                 addToEnemyMonsterZone(card, enemyZones[y][location]);
             }
 
@@ -556,6 +639,14 @@ public class PlayZonePanel extends JPanel {
 
     public int getNumberOfMonsters() {
         return numberOfMonsters;
+    }
+
+    public int getNumberOfMonstersOfEnemy() {
+        return numberOfMonstersOfEnemy;
+    }
+
+    public void setNumberOfMonstersOfEnemy(int newNumberOfMonsters) {
+        numberOfMonstersOfEnemy = newNumberOfMonsters;
     }
 
     public int getNumberOfMagicTrap() {
@@ -766,28 +857,6 @@ public class PlayZonePanel extends JPanel {
                         //       System.out.println("지워진카드:" + card.getName());
                         m1.removeActionListener(m1.getActionListeners()[0]);
 
-                        //물밑작업 적의 필드업데이트
-//                                                            ImageIcon img2 = new ImageIcon(card.getIcon().getImage());
-//
-//                                                            img2.setImage(img2.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)); //아마 여기서 ㅇㅈㄹ하기때문에 이미지가 shrink 되는거같다.
-//                                                            JLabel previewImage2 = new JLabel(null, img2, JLabel.CENTER) {
-//                                                                @Override
-//                                                                protected void paintComponent(Graphics g) {
-//                                                                    super.paintComponent(g);
-//                                                                    Graphics2D g2 = (Graphics2D) g;
-//                                                                    g2.rotate(Math.PI / 2f, img2.getIconWidth() / 2, img2.getIconHeight() / 2);
-//                                                                    g2.drawImage(img2.getImage(), 0, 0, null);
-//                                                                }
-//                                                            };
-//
-//                                                            previewImage2.setAlignmentX(0.75f);
-//                                                            previewImage2.setAlignmentY(Component.CENTER_ALIGNMENT);
-//                                                            cardImage2.removeAll();
-//                                                            cardImage2.repaint();
-//                                                            cardImage2.setPreferredSize(new Dimension(80, 60));
-//                                                            cardImage2.add(Box.createRigidArea(new Dimension(0, 4)));
-//                                                            cardImage2.add(previewImage2);
-//                                                            cardImage2.validate();
                         getRotateImage(card, cardImage2);
 
                         //frame2 update
@@ -805,30 +874,6 @@ public class PlayZonePanel extends JPanel {
                         //       unchangeableListCheck(card);
                         //             m1.validate();
                         getRotateZeroImage(card, cardImage);
-//                                                            ImageIcon img = new ImageIcon(card.getIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
-//                                                            //image의 quality 를 2번 scaledInstance하는것과같고, 그 여파로 west에 image와 preview의 image가 전부 doomed 되는것을 볼수있다.
-//                                                            //하지만 이렇게 instiantiate를 하면, 이미지 본연을 받아 다시 scale을 하기때문에 1번 만 shirnk되는것을 볼수있다.
-//
-//                                                            img.setImage(img.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
-//                                                            JLabel previewImage = new JLabel(null, img, JLabel.CENTER) {
-//                                                                @Override
-//                                                                protected void paintComponent(Graphics g) {
-//                                                                    super.paintComponent(g);
-//                                                                    Graphics2D g2 = (Graphics2D) g;
-//                                                                    g2.rotate(0, img.getIconWidth() / 2, img.getIconHeight() / 2);
-//                                                                    g2.drawImage(img.getImage(), 0, 0, null);
-//                                                                }
-//                                                            };
-//
-//                                                            previewImage.setAlignmentX(Component.CENTER_ALIGNMENT);
-//                                                            previewImage.setAlignmentY(Component.CENTER_ALIGNMENT);
-//
-//
-//                                                            cardImage.setPreferredSize(new Dimension(60, 80));
-//                                                            cardImage.removeAll();
-//                                                            cardImage.add(Box.createRigidArea(new Dimension(0, 5)));
-//                                                            cardImage.add(previewImage);
-//                                                            cardImage.validate();
 
 
                         zone.add(cardImage);
@@ -881,29 +926,75 @@ public class PlayZonePanel extends JPanel {
     }
 
     public void goToCemetery(Card card, JPanel cardImage) {
-        System.out.println("삼가 "+ card.getName() +" 의 명복을 빕니다.");
+        System.out.println("삼가 " + card.getName() + " 의 명복을 빕니다.");
         cemetery.add(card);
 
-        JPanel zone = (JPanel)cardImage.getParent();
+        JPanel zone = (JPanel) cardImage.getParent();
         zone.remove(1);
         zone.repaint();
         zone.validate();
 
-     //   enemy.getDfp().getCenter().goToCemetery(card, cardImage);
+
+        //묘지용이미지들
+
+        JPanel newCardImage = card.getCardPreviewImage();
+        if (zones[1][6].getComponentCount() != 1) {
+            zones[1][6].remove(1);
+            enemy.getDfp().getCenter().getEnemyZones()[0][0].remove(1);
+        }
+        zones[1][6].add(newCardImage);
+        zones[1][6].repaint();
+        zones[1][6].validate();
+
+
+        JPanel newCardImage2 = card.getCardPreviewImage();
+        enemy.getDfp().getCenter().getEnemyZones()[0][0].add(newCardImage2);
+        enemy.getDfp().getCenter().getEnemyZones()[0][0].repaint();
+        enemy.getDfp().getCenter().getEnemyZones()[0][0].validate();
+
     }
 
-    public void unchangeableListCheck(Card card) {
-        System.out.println("바꿀수없는 것:" + unchangableList);
-
-        System.out.println("해쉬:" + card.hashCode());
+    public ArrayList<Card> getCemetery() {
+        return cemetery;
     }
 
-    public void addToEnemyMonsterZone(Card card, JPanel zone){
+    public void addToEnemyMonsterZone(Card card, JPanel zone) {
         System.out.println(card.getName());
         enemyMonsterZone.put(card, zone);
     }
 
-    public Map<Card,JPanel> getEnemyMonsterZone(){
+    public Map<Card, JPanel> getEnemyMonsterZone() {
         return enemyMonsterZone;
     }
+
+    public void cemeteryListShow(JFrame Cemetary, ArrayList<Card> selectedCemetery) {
+
+        JPanel cp = new JPanel();
+        cp.setLayout(new BorderLayout());
+        //   cp.setPreferredSize(new Dimension(50,280));
+        JPanel showCards = new JPanel();
+
+        showCards.setLayout(new FlowLayout(FlowLayout.LEFT));
+        showCards.setAlignmentX(Component.LEFT_ALIGNMENT);
+        for (Card card : selectedCemetery) {
+            //   System.out.println("묘지에있는놈" + card.getName());
+            JPanel cardImage = card.getCardPreviewImage();
+
+            showCards.add(cardImage);
+        }
+
+        //큰 panel과 스크롤페널, 그리고 스크롤페널이 담을 수있는 작은 페널이필요합니다.
+        JScrollPane scroll = new JScrollPane();
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        //
+        //    scroll.setPreferredSize(new Dimension(750, 100)); //textArea에 prefferedSize하면 스크롤이안되거나 지맘대로 들쭉날쭉한 사이즈가된다. scrollPane에 적용하자.
+
+        scroll.getViewport().add(showCards);
+        cp.add(scroll, BorderLayout.CENTER);
+        cp.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        Cemetary.add(cp);
+
+    }
+
 }

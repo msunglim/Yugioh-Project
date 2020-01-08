@@ -90,7 +90,7 @@ public class Character {
                 name = "마리크";
                 System.out.println("오픈뿡뿡 뿡뿌뿡뿡뿡 존존존존존존존존존");
 
-                int [] deckIndex4 = {1,1,1,1,1,1,1};
+                int [] deckIndex4 = {1,1,1,1,1,1,1,1,1,1,1,1,1,1};
                 for(int k : deckIndex4) {
                     game.getCardUniverse().assignMonsterDeck(this, k);
                 }
@@ -111,6 +111,10 @@ public class Character {
 
             case 6:
 
+                int [] deckIndex6 = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+                for(int k : deckIndex6) {
+                    game.getCardUniverse().assignMonsterDeck(this, k);
+                }
                 name = "페가사스";
 
                 game.getCardUniverse().assignMagicDeck(this, 5);
