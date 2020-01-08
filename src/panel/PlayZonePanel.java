@@ -41,13 +41,13 @@ public class PlayZonePanel extends JPanel {
     //공격 할 수 있는 자신의 몬스터들
     private Map<Card, JPanel> fightableList = new HashMap<>(5);
 
-    //나의 필드에 있는 몬스터들.
+    //나의 필드에 있는 몬스터들. 배틀패이지에서 변화가있을때 쓰인다.
     private Map<Card, JPanel> myFieldMonsterZone = new HashMap<>(5);
-    //적의 몬스터들
+    //적의 몬스터들 //배틀패이즈 개시시 모든 몬스터에 addListner 할때 쓰인다
     private Map<Card, JPanel> enemyMonsterList = new HashMap<>(5);
-    //공격 표시로 존재하는 적의 몬스터들
+    //공격 표시로 존재하는 적의 몬스터들//상대방 공격표시몬스터를 파악할때 쓰인다
     private ArrayList<Card> fightableEnemyMonsterList = new ArrayList<>(5);
-
+//적의 몬스터존을 가져올때 쓰인다 제이페널은 존을 담는다.
     private Map<Card, JPanel> enemyMonsterZone = new HashMap<>(5);
     //뒷면수비표시로 존재하는 적의 몬스터들
     private Map<Card, JPanel> setEnemyMonsterList = new HashMap<>(5);
