@@ -1,5 +1,9 @@
 package Cards;
 
+import Cards.MagicCard.M1;
+import Cards.MagicCard.M2;
+import support.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -54,7 +58,7 @@ public abstract class Card {
 
 
             case 1:
-                card = new Magic(name, imgURL, description);
+                card = new M1(name, imgURL, description);
 
                 return card;
 
@@ -64,10 +68,27 @@ public abstract class Card {
                 return card;
 
             default:
-                card = new Magic(name, imgURL, description);
+                // card = new Magic(name, imgURL, description);
                 return card;
 
         }
+
+    }
+
+    public static Card getMagicCard(String name, String imgURL, int cardNumber, String description) {
+
+        switch (cardNumber) {
+            case 1:
+                card = new M1(name, imgURL, description);
+                return card;
+            case 2:
+                card = new M2(name, imgURL, description);
+                return card;
+            default:
+                card = new M2(name, imgURL, description);
+                return card;
+        }
+
 
     }
 
@@ -136,4 +157,5 @@ public abstract class Card {
         return cardType;
     }
 
+    public abstract void activate(Player player, Player Enemy);
 }

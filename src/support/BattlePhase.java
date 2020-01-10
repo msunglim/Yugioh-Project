@@ -140,7 +140,7 @@ public class BattlePhase extends Phase {
                                 enemy.getDfp().getCenter().setNumberOfMonsters(enemy.getDfp().getCenter().getNumberOfMonsters() - 1);
                                 player.getDfp().getCenter().setNumberOfMonstersOfEnemy(enemy.getDfp().getCenter().getNumberOfMonsters());
 
-  //                              enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters());
+                                //                              enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters());
 //                                player.getDfp().getCenter().setNumberOfMonstersOfEnemy(enemy.getDfp().getCenter().getNumberOfMonsters());
 
                             }
@@ -205,7 +205,6 @@ public class BattlePhase extends Phase {
                                     enemy.getDfp().getCenter().getMyFieldMonsterZone().get(victim).remove(1);
 
                                     battleBetweenEachPositionMonster(player, enemy, victim);
-
 
 
                                     enemy.getDfp().getCenter().setNumberOfMonsters(player.getDfp().getCenter().getNumberOfMonsters() - 1);
@@ -313,13 +312,7 @@ public class BattlePhase extends Phase {
 
     public void battleBetweenAttackPositionMonsters(Player p1, Player p2, Card card) {
 
-//        System.out.println("p1몬스터리스트"+ p1.getDfp().getCenter().getEnemyMonsterList());
-//        System.out.println("p1공격표시몬스터리스트"+   p1.getDfp().getCenter().getFightableEnemyMonsterList());
-//        System.out.println("p1몬스터존에있는몬스터리스트"+    p1.getDfp().getCenter().getEnemyMonsterZone());
-//
-//        System.out.println("p2공격표시몬스터리스트"+  p2.getDfp().getCenter().getFightableList());
-//        System.out.println("p2몬스터리스트"+    p2.getDfp().getCenter().getMyFieldMonsterZone());
-//        System.out.println("전투후ㅡㅡㅡㅡ");
+
         p1.getDfp().getCenter().getEnemyMonsterList().remove(card);
         p1.getDfp().getCenter().getFightableEnemyMonsterList().remove(card);
         p1.getDfp().getCenter().getEnemyMonsterZone().remove(card);
@@ -327,12 +320,6 @@ public class BattlePhase extends Phase {
         p2.getDfp().getCenter().getFightableList().remove(card);
         p2.getDfp().getCenter().getMyFieldMonsterZone().remove(card);
 
-//        System.out.println("p1몬스터리스트"+ p1.getDfp().getCenter().getEnemyMonsterList());
-//        System.out.println("p1공격표시몬스터리스트"+   p1.getDfp().getCenter().getFightableEnemyMonsterList());
-//        System.out.println("p1몬스터존에있는몬스터리스트"+    p1.getDfp().getCenter().getEnemyMonsterZone());
-//
-//        System.out.println("p2공격표시몬스터리스트"+  p2.getDfp().getCenter().getFightableList());
-//        System.out.println("p2몬스터리스트"+    p2.getDfp().getCenter().getMyFieldMonsterZone());
     }
 
     public void battleBetweenEachPositionMonster(Player p1, Player p2, Card card) {

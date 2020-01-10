@@ -16,6 +16,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -68,7 +69,7 @@
       <workItem from="1577132374353" duration="108181000" />
       <workItem from="1577600406276" duration="6704000" />
       <workItem from="1577607226791" duration="152201000" />
-      <workItem from="1578364081972" duration="20829000" />
+      <workItem from="1578364081972" duration="43618000" />
     </task>
     <servers />
   </component>
