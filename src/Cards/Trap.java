@@ -1,5 +1,7 @@
 package Cards;
 
+import support.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -96,5 +98,9 @@ public class Trap extends Card {
         p.add(bottom);
 
         return p;
+    }
+
+    public void activate(Player player, Player enemey){
+        System.out.println("함정발동이다");
     }
 }

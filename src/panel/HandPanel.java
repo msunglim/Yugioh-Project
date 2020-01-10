@@ -203,12 +203,12 @@ public class HandPanel extends JPanel {
                                         //   summon.validate();
 
                                         player.getDfp().getCenter().setCard(card, 0, false);
-                                        enemy.getDfp().getCenter().updateEnemyField(card, 1, false);
                                         remove(preview);
-                                        enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+
 
                                         repaint();
                                         validate();
+
                                     } else {
                                         System.out.println("필드에 마법/함정카드가 이미 5장이라 새로운 몬스터를 소환 할 수 없습니다.");
                                     }
@@ -221,9 +221,8 @@ public class HandPanel extends JPanel {
                                         System.out.println(player.getHand().get(ii).getName() + "을/를 세트합니다");
 
                                         player.getDfp().getCenter().setCard(card, 0, true);
-                                        enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
                                         remove(preview);
-                                        enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+
 
                                         repaint();
                                         validate();
@@ -253,9 +252,9 @@ public class HandPanel extends JPanel {
 
 
                                         player.getDfp().getCenter().setCard(card, 0, true);
-                                        enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
+                               //         enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
                                         remove(preview);
-                                        enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+                           //             enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
 
                                         repaint();
                                         validate();

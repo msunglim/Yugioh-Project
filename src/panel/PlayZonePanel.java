@@ -59,6 +59,11 @@ public class PlayZonePanel extends JPanel {
     private JFrame Cemetery;
     private JFrame enemyCemetery;
 
+    //마법함정에쓰일 맵. 존을 담는다.
+    private Map<Card, JPanel> enemyMagicTrapZone = new HashMap<>(5);
+    //jpanel은 카드이미지. 효과발동처리때쓰인다.
+    private Map<Card, JPanel> activatingCard = new HashMap<>();
+
     public PlayZonePanel(Game game, Player player, Player enemy) {
         this.game = game;
         this.player = player;
@@ -264,14 +269,14 @@ public class PlayZonePanel extends JPanel {
 //            System.out.println("column좌표는: " + numberOfMonsters);
 
             //여기했던거 나중에 필요시 마함에도 적용할수있도록,,
-            int locationDemo = numberOfMonsters +1;
-            boolean tf = zones[y][locationDemo].getComponentCount() ==2;
-            while(tf){
+            int locationDemo = numberOfMonsters + 1;
+            boolean tf = zones[y][locationDemo].getComponentCount() == 2;
+            while (tf) {
                 locationDemo++;
-                if(locationDemo ==6){
+                if (locationDemo == 6) {
                     locationDemo = 1;
                 }
-                tf = zones[y][locationDemo].getComponentCount() ==2;
+                tf = zones[y][locationDemo].getComponentCount() == 2;
 
             }
             final int location = locationDemo;
@@ -339,7 +344,7 @@ public class PlayZonePanel extends JPanel {
 
                 pm.add(m1);
 
-                System.out.println("넘버몬" + numberOfMonsters);
+
                 zones[y][location].add(cardBack);
 
                 // addToMyFieldMonsterZone(card, zones[y][numberOfMonsters+1]);
@@ -408,20 +413,8 @@ public class PlayZonePanel extends JPanel {
                 });
 
 
-                //어짜피올라가지않ㄴ았나요?    numberOfMonsters++;
-
-
             }
-//            cardImage.addMouseListener(new MouseAdapter() { 오히려 이거있으면 에러가뜨는..
-//                @Override
-//                public void mouseEntered(MouseEvent e) {
-//                    super.mouseEntered(e);
-//                    System.out.println("둠다");
-//
-//
-//                }
-//            });
-            //     zones[x][y].repaint();
+
             numberOfMonsters++;
 
             addToMyFieldMonsterZone(card, zones[y][location]);
@@ -434,14 +427,27 @@ public class PlayZonePanel extends JPanel {
                 //그냥 발동이면, 아무것도 add할필요없잖아?
                 zones[y][location].add(cardImage);
                 zones[y][location].validate();
+                numberOfMagicTrap++;
 
-                //    cardImage.removeMouseListener(cardImage.getMouseListeners()[1]); 이제 새로운 cardImage기 때문에 preview와 연관이없다.
+                //이걸 다여기로옮깁시다!
+                enemy.getDfp().getCenter().updateEnemyField(card, 1, false);
+                enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
+
+                //마법카드발동.
+                activatingCard.put(card, cardImage);
+                card.activate(player, enemy);
+
+
+                numberOfMagicTrap--;
+
             } //이하는 세트일때
             else {
 
                 zones[y][location].add(cardBack);
                 zones[y][location].validate();
+                enemy.getDfp().getCenter().updateEnemyField(card, 1, true);
 
+                enemy.getDfp().getCenter().getEnemyHand().updateEnemyGraphic(-1);
                 JPopupMenu pm = new JPopupMenu("선택창");
                 JMenuItem m1 = new JMenuItem("발동(리버스)");
 
@@ -490,9 +496,9 @@ public class PlayZonePanel extends JPanel {
 
                 //    numberOfMonsters++;
 
-
+                numberOfMagicTrap++;
             }
-            numberOfMagicTrap++;
+
 
         }
 
@@ -526,14 +532,14 @@ public class PlayZonePanel extends JPanel {
         JPanel cardBack = card.getCardBack();
         if (y == 0) {
 
-            int locationDemo = numberOfMonstersOfEnemy +1;
-            boolean tf = enemyZones[y][locationDemo].getComponentCount() ==2;
-            while(tf){
+            int locationDemo = numberOfMonstersOfEnemy + 1;
+            boolean tf = enemyZones[y][locationDemo].getComponentCount() == 2;
+            while (tf) {
                 locationDemo++;
-                if(locationDemo == 6){
+                if (locationDemo == 6) {
                     locationDemo = 1;
                 }
-                tf =enemyZones[y][locationDemo].getComponentCount() ==2;
+                tf = enemyZones[y][locationDemo].getComponentCount() == 2;
 
             }
             final int location = locationDemo;
@@ -541,7 +547,7 @@ public class PlayZonePanel extends JPanel {
                 enemyZones[y][location].add(cardImage);
                 enemyZones[y][location].validate();
                 addToEnemyMonsterList(card, cardImage);
-            //    System.out.println("존" + y + " 로케이션 " + location);
+
                 addToEnemyMonsterZone(card, enemyZones[y][location]);
             } else {//세트할시.
                 ImageIcon img = new ImageIcon(card.getBackIcon().getImage()); //왜 이렇게 instantiate 하냐면 그냥 img = card.getIcon()하면 밑에서 setImage할때 img.getImage는 card.getIcon.getImage하는것과같아,
@@ -578,7 +584,7 @@ public class PlayZonePanel extends JPanel {
 
                 addToEnemyMonsterList(card, cardBack);
 
-          //      System.out.println("존" + y + " 로케이션 " + location);
+                //      System.out.println("존" + y + " 로케이션 " + location);
                 addToEnemyMonsterZone(card, enemyZones[y][location]);
             }
 
@@ -594,16 +600,17 @@ public class PlayZonePanel extends JPanel {
                 enemyZones[y][location].add(cardImage);
                 enemyZones[y][location].validate();
 
+                enemyMagicTrapZone.put(card, enemyZones[y][location]);
                 //    cardImage.removeMouseListener(cardImage.getMouseListeners()[1]); 이제 새로운 cardImage기 때문에 preview와 연관이없다.
             } //이하는 세트일때
             else {
 
                 enemyZones[y][location].add(cardBack);
                 enemyZones[y][location].validate();
-
+                numberOfMagicTrapOfEnemy++; //발동하고 바로묘지로가니까 굳이 발동시에 늘릴필요없어서 세트시에만늘리도록햇습니다.
 
             }
-            numberOfMagicTrapOfEnemy++;
+
 
         }
         cardImage.addMouseListener(new MouseAdapter() {
@@ -691,11 +698,7 @@ public class PlayZonePanel extends JPanel {
     }
 
     public Map<Card, JPanel> getFightableList() {
-// jpanel을 프린트할순없잖아
 
-//        for (int i = 0; i < player.getDfp().getCenter().getFightableList().size(); i++) {
-//            System.out.println(fightableList.get(i).getName());
-//        }
         return fightableList;
     }
 
@@ -959,13 +962,20 @@ public class PlayZonePanel extends JPanel {
         zone.validate();
 
 
-        //묘지용이미지들
 
+        addToCemetery(card);
+
+
+    }
+
+    public void addToCemetery(Card card) {
+        //묘지용이미지.
         JPanel newCardImage = card.getCardPreviewImage();
         if (zones[1][6].getComponentCount() != 1) {
             zones[1][6].remove(1);
             enemy.getDfp().getCenter().getEnemyZones()[0][0].remove(1);
         }
+
         zones[1][6].add(newCardImage);
         zones[1][6].repaint();
         zones[1][6].validate();
@@ -975,7 +985,6 @@ public class PlayZonePanel extends JPanel {
         enemy.getDfp().getCenter().getEnemyZones()[0][0].add(newCardImage2);
         enemy.getDfp().getCenter().getEnemyZones()[0][0].repaint();
         enemy.getDfp().getCenter().getEnemyZones()[0][0].validate();
-
     }
 
     public ArrayList<Card> getCemetery() {
@@ -983,7 +992,7 @@ public class PlayZonePanel extends JPanel {
     }
 
     public void addToEnemyMonsterZone(Card card, JPanel zone) {
-    //    System.out.println(card.getName());
+        //    System.out.println(card.getName());
         enemyMonsterZone.put(card, zone);
     }
 
@@ -1033,4 +1042,11 @@ public class PlayZonePanel extends JPanel {
 
     }
 
+    public Map<Card, JPanel> getActivatingCard() {
+        return activatingCard;
+    }
+
+    public Map<Card, JPanel> getEnemyMagicTrapZone() {
+        return enemyMagicTrapZone;
+    }
 }

@@ -49,7 +49,14 @@ public class Character {
                 for(int k : deckIndex1) {
                     game.getCardUniverse().assignMonsterDeck(this, k);
                 }
-                game.getCardUniverse().assignMagicDeck(this, 1, 5, 7);
+
+                //마법
+              int [] deckMagicIndex1 = {1,2};
+                //  int [] deckMagicIndex1 = {1,5,7};
+                for(int k : deckMagicIndex1) {
+                    game.getCardUniverse().assignMagicDeck(this, k);
+                }
+ //               game.getCardUniverse().assignMagicDeck(this, 1, 5, 7);
 
                 game.getCardUniverse().assignTrapDeck(this, 4, 5);
                 System.out.println("룰과 메너를 지켜 즐거운 듀얼을 하자!");
@@ -59,8 +66,12 @@ public class Character {
                 System.out.println("조이입니다.");
                 name = "조이";
              //   game.getCardUniverse().assignMonsterDeck(this, 4,5,7,15,18);
-
-                game.getCardUniverse().assignMagicDeck(this, 5,6,8);
+                //마법
+                int [] deckMagicIndex2 = {5,6,8};
+                for(int k : deckMagicIndex2) {
+                    game.getCardUniverse().assignMagicDeck(this, k);
+                }
+         //       game.getCardUniverse().assignMagicDeck(this, 5,6,8);
 
                 game.getCardUniverse().assignTrapDeck(this, 2);
 
@@ -80,7 +91,7 @@ public class Character {
                 for(int k : deckIndex3) {
                     game.getCardUniverse().assignMonsterDeck(this, k);
                 }
-                game.getCardUniverse().assignMagicDeck(this, 3,4,5);
+             //   game.getCardUniverse().assignMagicDeck(this, 3,4,5);
 
                 game.getCardUniverse().assignTrapDeck(this, 1,3);
 
@@ -94,7 +105,8 @@ public class Character {
                 for(int k : deckIndex4) {
                     game.getCardUniverse().assignMonsterDeck(this, k);
                 }
-                game.getCardUniverse().assignMagicDeck(this, 5);
+
+        //        game.getCardUniverse().assignMagicDeck(this, 5);
 
                game.getCardUniverse().assignTrapDeck(this, 1,3);
 
@@ -104,21 +116,26 @@ public class Character {
                 name = "바쿠라";
                 System.out.println("최후에 어둠으로 사라지는 건 네놈이다...");
 
-                game.getCardUniverse().assignMagicDeck(this, 5);
+          //      game.getCardUniverse().assignMagicDeck(this, 5);
 
                 break;
 
 
             case 6:
 
-                int [] deckIndex6 = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+                int [] deckIndex6 = {1};
                 for(int k : deckIndex6) {
                     game.getCardUniverse().assignMonsterDeck(this, k);
                 }
                 name = "페가사스";
 
                 game.getCardUniverse().assignMagicDeck(this, 5);
-
+                //마법
+                int [] deckMagicIndex6 = {1,2,1,2,1,2,1,2};
+                //  int [] deckMagicIndex1 = {1,5,7};
+                for(int k : deckMagicIndex6) {
+                    game.getCardUniverse().assignMagicDeck(this, k);
+                }
                 System.out.println("ME는 YOU의 패를 전부 파악하고 있습니다!");
                 break;
 

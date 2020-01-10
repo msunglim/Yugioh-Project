@@ -1,6 +1,7 @@
 package Cards;
 
 import sun.plugin2.util.ColorUtil;
+import support.Player;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -179,5 +180,9 @@ public class Monster extends Card {
         p.add(bottom);
 
         return p;
+    }
+
+    public void activate(Player player, Player enemey) {
+        System.out.println("특수효과 발동이다");
     }
 }

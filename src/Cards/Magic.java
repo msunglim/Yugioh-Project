@@ -1,9 +1,11 @@
 package Cards;
 
+import support.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class Magic extends Card {
+public abstract class Magic extends Card {
 
     public Magic(String name, String imgURL, String description){
         this.name = name;
@@ -105,5 +107,18 @@ public class Magic extends Card {
         p.add(bottom);
 
         return p;
+    }
+
+    public abstract void activate(Player player, Player enemey);
+
+    public void removeCard(Player player, Player enemy){
+
+        enemy.getDfp().getCenter().getEnemyMagicTrapZone().get(this).remove(1);
+        enemy.getDfp().getCenter().getEnemyMagicTrapZone().get(this).repaint();
+        enemy.getDfp().getCenter().getEnemyMagicTrapZone().get(this).validate();
+        enemy.getDfp().getCenter().getEnemyMagicTrapZone().remove(this);
+        player.getDfp().getCenter().goToCemetery(this, player.getDfp().getCenter().getActivatingCard().get(this)); //p1 frame p2 frame에서 전부 묘지로보내는구나
+        //탕치기
+        player.getDfp().getCenter().getActivatingCard().remove(this);
     }
 }

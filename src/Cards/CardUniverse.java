@@ -109,10 +109,6 @@ public class CardUniverse {
 
         String cardImageURL = "data/images/cards/Monsters/" + i + ".PNG";
 
-
-          //  monsters[j] = Card.getCard(monsterCardNames[j], cardImageURL, monsterCardDescription[j],monsterCardLevel[j],monsterCardAttribute[j],monsterCardType[j],ATK[j],DEF[j]);
-
-       System.out.println(monsterCardNames[i-1]);
                  character.addCard(Card.getCard(monsterCardNames[i-1],
                          cardImageURL,
                          monsterCardDescription[i-1],
@@ -125,11 +121,22 @@ public class CardUniverse {
 
     }
 
-    public void assignMagicDeck(Character character, int... i) {
+    public void assignMagicDeck(Character character, int i) {
 
-        for (int k : i) {
-            character.addCard(magics[k - 1]);
-        }
+//        for (int k : i) {
+//            character.addCard(magics[k - 1]);
+//        }
+        File folder = new File("data/images/cards/Monsters");
+
+        File[] filesDefault = folder.listFiles();
+
+
+        String cardImageURL = "data/images/cards/Magic/" + i + ".PNG";
+
+        character.addCard(Card.getMagicCard(magicCardNames[i-1],
+                cardImageURL,
+                i,magicCardDescription[i-1]
+               ));
 
     }
 
